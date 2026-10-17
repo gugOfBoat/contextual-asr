@@ -1,0 +1,22 @@
+xong 79 từ, lỗi 0
+W1015 18:11:20.190000 3347 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1015 18:11:20.229000 3347 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Loading weights:   0%|          | 0/1259 [00:00<?, ?it/s]Loading weights:  21%|██▏       | 270/1259 [00:00<00:00, 2576.17it/s]Loading weights:  42%|████▏     | 528/1259 [00:00<00:00, 2183.49it/s]Loading weights: 100%|██████████| 1259/1259 [00:00<00:00, 4883.80it/s]
+0/209604  frame trung bình 35.6
+12800/209604  frame trung bình 40.5
+25600/209604  frame trung bình 39.0
+38400/209604  frame trung bình 39.3
+51200/209604  frame trung bình 39.7
+64000/209604  frame trung bình 39.7
+76800/209604  frame trung bình 39.4
+89600/209604  frame trung bình 39.1
+102400/209604  frame trung bình 39.2
+115200/209604  frame trung bình 39.4
+128000/209604  frame trung bình 39.5
+140800/209604  frame trung bình 39.5
+153600/209604  frame trung bình 39.5
+166400/209604  frame trung bình 39.7
+179200/209604  frame trung bình 39.8
+192000/209604  frame trung bình 39.7
+204800/209604  frame trung bình 39.8
+xong 209604 từ, 8330365 frame, 21.3 GB

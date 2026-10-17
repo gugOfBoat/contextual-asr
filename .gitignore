@@ -1,0 +1,36 @@
+# ---- môi trường / IDE / agent cục bộ ----
+.venv/
+.vscode/
+.claude/
+__pycache__/
+*.pyc
+
+# ---- LaTeX build ----
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.synctex.gz
+
+# ---- dữ liệu lớn: tải hoặc tạo lại được (xem bench/data/README.md) ----
+datasets/
+bench/data/is21/*.biasing_*.tsv
+bench/protocol/*/audio.tsv
+bench/protocol/*/ctx_*.json
+!bench/protocol/*/ctx_none.json
+!bench/protocol/*/ctx_oracle.json
+
+# ---- code bên thứ ba: clone lại theo bench/third_party/README.md ----
+bench/third_party/*/
+
+# ---- output nặng của scorer chỉ có trên server ----
+scorer/work/
+scorer/runs/2026-10-15/bias.idx
+
+# ---- hướng cũ đã bỏ (giữ cục bộ, không đẩy lên) ----
+archive/
+
+# ---- chỉ dẫn riêng máy (tên, đường dẫn, server) ----
+AGENTS.local.md
