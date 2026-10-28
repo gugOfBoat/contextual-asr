@@ -20,7 +20,7 @@ def tts_path(w):
 
 def libri_path(libri, uid):
     spk, chap, _ = uid.split("-")  # uid LibriSpeech không chứa tên split → thử lần lượt
-    for s in ["test-clean", "test-other", "dev-clean", "train-clean-100"]:
+    for s in ["test-clean", "test-other", "dev-clean", "dev-other", "train-clean-100"]:
         p = Path(libri) / s / spk / chap / f"{uid}.flac"
         if p.exists():
             return p

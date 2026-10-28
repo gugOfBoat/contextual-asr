@@ -3,7 +3,7 @@
   python -m data.g2p
 
 g2p_en: tra CMUdict, từ không có trong CMUdict thì đoán bằng model seq2seq có sẵn [B]. Bỏ số trọng âm (AH0 → AH).
-Gồm cả mọi từ trong bản chép lần 1 của Qwen (work/pass1_*.jsonl, bench/out/*/qwen3asr_none.tsv) cho hxattn.
+Gồm cả mọi từ trong list IS21 của bench/protocol/*/ctx_N2000.json (dev chưa có trong vocab) và mọi từ trong bản chép lần 1 của Qwen (work/pass1_*.jsonl, bench/out/*/qwen3asr_none.tsv) cho hxattn.
 Đầu ra: work/phones.tsv  (từ \\t âm vị cách nhau bởi dấu cách)
 """
 import json, re
@@ -26,6 +26,8 @@ if __name__ == "__main__":
     words = set(open(WORK / "vocab.txt", encoding="utf-8").read().split())
     for f in WORK.glob("pass1_*.jsonl"):
         words |= {w for line in open(f, encoding="utf-8") for w in json.loads(line)["hyp"].split()}
+    for f in BENCH.glob("protocol/*/ctx_N2000.json"):
+        words |= {w for ws in json.load(open(f, encoding="utf-8")).values() for w in ws}
     for f in BENCH.glob("out/*/qwen3asr_none.tsv"):
         words |= {w for line in open(f, encoding="utf-8") for w in line.rstrip("\n").partition("\t")[2].split()}
     words = sorted(words)

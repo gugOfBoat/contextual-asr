@@ -29,7 +29,8 @@ Paper mốc: **Hou25** (Interspeech 2025, scorer TTS-audio + CNN, top-50) và **
 | 16–17/10 | Đưa list đã lọc vào Qwen3-ASR (28 lượt) | **pxattn + lọc p ≥ 0.5: B-WER 4.78 / 9.71** (top-50 kiểu Hou25: 5.71 / 11.57) | `scorer/results.md` §4 |
 | 16–17/10 | Nhãn "từ khó" (Qwen lần 1 chép sai) + `hxattn` (scorer biết lỗi của ASR) | Qwen sai 7% từ hiếm trên train; hxattn **kém** (6.58), nghi học tắt | `scorer/results.md` §2–4 |
 
-So với PTC-Bias (số trong paper, N2000): ngang bản chỉ chọn từ CTC-Filter (4.81 / 9.45), còn thua bản đầy đủ (4.10 / 7.76).
+Tham chiếu PTC-Bias (paper, N2000, **Qwen3-ASR-0.6B**, khác model của nhóm): CTC-Filter 4.81 / 9.45, PTC-Bias 4.10 / 7.76.
+Protocol đánh giá scorer thống nhất: **`EVAL_PROTOCOL.md`**.
 Báo cáo họp 17/10 (10 slide + kịch bản): `meetings/2026-10-17/`.
 
 ## Bước tiếp theo

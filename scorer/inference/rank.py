@@ -7,7 +7,7 @@
       --name cascade --lists N100 N2000 all ...
 
 Đầu ra:
-  work/out/<name>/<split>/rank_<L>.json        {uid: list xếp GIẢM dần} → bench/eval_retrieval.py
+  work/out/<name>/<split>/rank_<L>.json        {uid: [[từ, logit], ...] xếp GIẢM dần} → bench/eval_retrieval.py (cần điểm cho Recall_B@99)
   bench/protocol/<split>/ctx_<name>_<L>.json   top-k (=50) xếp TĂNG dần, từ điểm cao đứng CUỐI (Hou25 §4.1.2, Bảng 3)
   work/out/<name>/<split>/time.json            thời gian chấm trung bình mỗi câu (ms), tách tầng 1 / tầng 2
   work/out/<name>/<split>/prob_<L>.json        {uid: [[từ, xác suất], ...]} top-k theo tầng cuối
@@ -31,7 +31,7 @@ ap.add_argument("--split", default="test-clean")
 ap.add_argument("--libri", required=True)
 ap.add_argument("--lists", nargs="+", default=["N100", "N500", "N1000", "N2000"])
 ap.add_argument("--k", type=int, default=50)
-ap.add_argument("--keep", type=int, default=1000, help="số từ lưu trong rank_all.json")
+ap.add_argument("--keep", type=int, default=2000, help="số từ lưu trong rank_<L>.json (2000 = đủ list N2000)")
 ap.add_argument("--bs", type=int, default=16)
 ap.add_argument("--limit", type=int, help="chỉ chấm n câu đầu (chạy thử)")
 ap.add_argument("--thr", type=float, nargs="*", default=[0.5], help="ngưỡng xác suất cho list lọc theo độ liên quan")
@@ -142,9 +142,10 @@ if __name__ == "__main__":
             s, dt = timed(f_main, fs, u, hyps[uid])
             t2 += dt
             s2 = dict(zip(u, s))
-            for L, ws in lists.items():
-                rank[L][uid] = (sorted(ws, key=s2.get, reverse=True) + tail[L])[:a.keep]
-                prob[L][uid] = [[w, round(1 / (1 + math.exp(-s2[w])), 4)] for w in rank[L][uid][:a.k] if w in s2]
+            for L, ws in lists.items():  # lưu kèm logit; từ bị tầng 1 loại: logit tầng 1 − 1000 (luôn xếp sau)
+                rank[L][uid] = ([[w, round(s2[w], 3)] for w in sorted(ws, key=s2.get, reverse=True)]
+                                + [[w, round(s1[w] - 1000, 3)] for w in tail[L]])[:a.keep]
+                prob[L][uid] = [[w, round(1 / (1 + math.exp(-s)), 4)] for w, s in rank[L][uid][:a.k] if w in s2]
         print(f"{i + len(bu)}/{len(uids)}  tầng1 {1000 * t1 / (i + len(bu)):.0f}ms/câu  "
               f"tầng2 {1000 * t2 / (i + len(bu)):.0f}ms/câu", flush=True)
 
@@ -152,7 +153,7 @@ if __name__ == "__main__":
     out.mkdir(parents=True, exist_ok=True)
     for L, r in rank.items():
         json.dump(r, open(out / f"rank_{L}.json", "w", encoding="utf-8"))
-        json.dump({u: ws[:a.k][::-1] for u, ws in r.items()},
+        json.dump({u: [w for w, _ in ws[:a.k]][::-1] for u, ws in r.items()},
                   open(proto / f"ctx_{a.name}_{L}.json", "w", encoding="utf-8"), ensure_ascii=False)
         json.dump(prob[L], open(out / f"prob_{L}.json", "w", encoding="utf-8"))
         for thr in a.thr:

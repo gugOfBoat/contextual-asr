@@ -1,0 +1,56 @@
+# 18/10 đêm (GPU 0 + GPU 2). eval_retrieval.py --phones (H theo BR-ASR), list N2000, rank_N2000.json có logit (server, không kéo về)
+# hou25 = Hou25 tái hiện (TTS edge-tts + encoder Whisper-large-v3 + cross-attn + CNN), train clean-100, best = ep 1 (ep 2 bị dừng ở giới hạn giờ)
+# pxattn_list = pxattn + 200 từ nhiễu ngẫu nhiên/câu + loss theo list (train.py --list_neg 200), 4 epoch, best = ep 3
+# pxattn / pmaxsim = ckpt 16/10, chấm lại để có điểm
+### test-other hou25 N2000
+Recall_B#10 88.80 | Recall_B#50 95.39 | K99 293 | Recall_B@99 180.8 | N_H 20955 | Recall_H#10 4.31 | Recall_H#50 17.59   | 922 ms/câu
+### test-other pxattn_list N2000
+Recall_B#10 87.88 | Recall_B#50 94.95 | K99 378 | Recall_B@99 518.8 | N_H 20955 | Recall_H#10 7.50 | Recall_H#50 22.28   | 362 ms/câu
+### test-other pxattn N2000
+Recall_B#10 92.97 | Recall_B#50 97.71 | K99 132 | Recall_B@99 106.7 | N_H 20955 | Recall_H#10 6.14 | Recall_H#50 21.58   | 332 ms/câu
+### test-other pmaxsim N2000
+Recall_B#10 95.43 | Recall_B#50 98.44 | K99 147 | Recall_B@99 99.8 | N_H 20955 | Recall_H#10 8.55 | Recall_H#50 25.52    | 4 ms/câu (chưa tính encoder)
+### test-clean hou25 N2000
+Recall_B#10 92.71 | Recall_B#50 97.77 | K99 151 | Recall_B@99 81.4 | N_H 17374 | Recall_H#10 3.74 | Recall_H#50 16.09
+### test-clean pxattn_list N2000
+Recall_B#10 91.37 | Recall_B#50 98.05 | K99 119 | Recall_B@99 77.1 | N_H 17374 | Recall_H#10 7.82 | Recall_H#50 23.45
+### test-clean pmaxsim N2000
+Recall_B#10 97.26 | Recall_B#50 99.51 | K99 21 | Recall_B@99 10.6 | N_H 17374 | Recall_H#10 8.66 | Recall_H#50 26.35
+### dev-other (238 / 162 lượt từ không có feature TTS / âm vị vì vocab không gồm list dev → K99, @99 n/a)
+hou25       Recall_B#10 84.55 | Recall_B#50 90.78 | Recall_H#50 15.58
+pxattn_list Recall_B#10 86.82 | Recall_B#50 93.54 | Recall_H#50 23.32
+
+# E1 thử: z-norm điểm trong từng câu → Recall_B@99 (thứ hạng trong câu không đổi) — TỆ HƠN, bỏ
+test-other: hou25 303.8 | pxattn 146.5 | pmaxsim 157.3 | pxattn_list 375.7 ; test-clean: hou25 160.2 | pmaxsim 17.3 | pxattn_list 119.4
+
+# 19/10 sớm: pmaxsim train 960h, ckpt step17836 (= cùng số bước với pmaxsim clean-100 5 epoch), chấm N2000
+### test-other pmaxsim_960s N2000
+Recall_B#10 96.06 | Recall_B#50 98.82 | K99 83 | Recall_B@99 53.8 | N_H 20955 | Recall_H#10 7.96 | Recall_H#50 24.86
+### test-clean pmaxsim_960s N2000
+Recall_B#10 97.45 | Recall_B#50 99.54 | K99 17 | Recall_B@99 7.9 | N_H 17374 | Recall_H#10 8.24 | Recall_H#50 26.67
+
+# 19/10: train 960h xong 1 epoch (35156 bước, pmaxsim + pxattn chung encoder, best theo dev-other R@10 = step 22295 cho cả hai)
+# _960s = ckpt step17836 (cùng số bước với bản clean-100); _960 = best.pt
+test-other: Recall_B#10 | #50 | K99 | @99 | H#10 | H#50
+pmaxsim      95.43 98.44 147 99.8  8.55 25.52
+pmaxsim_960s 96.06 98.82  83 53.8  7.96 24.86
+pmaxsim_960  96.47 98.57 105 64.9  7.78 24.29
+pxattn       92.97 97.71 132 106.7 6.14 21.58
+pxattn_960s  93.94 98.17  96 93.5  5.52 20.59
+pxattn_960   94.70 98.59  75 63.9  5.87 21.47
+test-clean:
+pmaxsim      97.26 99.51 21 10.6 8.66 26.35
+pmaxsim_960s 97.45 99.54 17  7.9 8.24 26.67
+pmaxsim_960  97.58 99.49 18  7.7 8.27 26.42
+pxattn       96.17 99.17 37 18.1 5.81 22.29
+pxattn_960s  96.80 99.54 23 14.6 5.32 19.69
+pxattn_960   96.94 99.49 23 11.8 5.46 21.94
+
+# 19/10: vì sao @99 cao — diag_at99.py trên pmaxsim_960s test-other (5248 từ đúng)
+recall 90% → 2.0 từ/câu | 95% → 3.3 | 98% → 16.0 | 99% → 53.8   (đuôi rất dốc: @99 do ~52 từ tệ nhất quyết định)
+54 từ tệ nhất: ~10 mảnh từ rút gọn bị tách trong ref (n't, ve, ll, in't, t'other; g2p đọc thành chữ cái: n't = EH N T AY),
+  ~13 chính tả giọng địa phương (mistah, ol, wi, haid, yuss, fam'ly...), ~5 lỗi ref (fourteenthat's, andbut, awk ward),
+  ~5-7 nằm sau giây 30 của câu > 30 s (encoder Whisper cắt ở 30 s; test-other có 7 câu > 30 s), còn lại là tên riêng / từ cổ thật sự khó.
+  Qwen lần 1 cũng chép sai 47/54.
+Mô phỏng (cận trên, KHÔNG phải số báo cáo): bỏ từ có dấu ' hoặc thuộc nhóm trên khỏi tập từ đúng → @99:
+  pmaxsim 100.0 → 42.2 (→ 36.9 nếu bỏ thêm câu > 30 s) | pmaxsim_960s 53.8 → 20.3 (→ 19.0) | pxattn_960 65.0 → 43.4 (→ 41.1)

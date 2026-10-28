@@ -1,0 +1,50 @@
+none test-clean 2620 câu | WER 2.64 | U-WER 1.81 | B-WER 9.43 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.89 | U-WER 1.82 | B-WER 9.17 
+none test-other 2939 câu | WER 4.87 | U-WER 3.27 | B-WER 18.92 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 5.34 | U-WER 3.25 | B-WER 17.99 
+N100 test-clean 2620 câu | WER 2.55 | U-WER 1.87 | B-WER 8.04 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.36 | U-WER 1.63 | B-WER 6.60 
+N100 test-other 2939 câu | WER 4.20 | U-WER 3.09 | B-WER 13.98 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 4.46 | U-WER 2.98 | B-WER 13.43 
+N500 test-clean 2620 câu | WER 2.68 | U-WER 1.92 | B-WER 8.87 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.75 | U-WER 1.74 | B-WER 8.66 
+N500 test-other 2939 câu | WER 4.70 | U-WER 3.16 | B-WER 18.22 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 5.13 | U-WER 3.09 | B-WER 17.41 
+N1000 test-clean 2620 câu | WER 2.78 | U-WER 2.00 | B-WER 9.20 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.69 | U-WER 1.64 | B-WER 8.85 
+N1000 test-other 2939 câu | WER 4.97 | U-WER 3.45 | B-WER 18.32 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 5.30 | U-WER 3.30 | B-WER 17.43 
+N2000 test-clean 2620 câu | WER 2.79 | U-WER 2.01 | B-WER 9.15 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.72 | U-WER 1.67 | B-WER 8.83 
+N2000 test-other 2939 câu | WER 4.97 | U-WER 3.40 | B-WER 18.69 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 5.17 | U-WER 3.12 | B-WER 17.59 
+oracle test-clean 2620 câu | WER 20.08 | U-WER 21.92 | B-WER 5.12 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.02 | U-WER 1.63 | B-WER 4.33 
+oracle test-other 2939 câu | WER 20.89 | U-WER 20.29 | B-WER 26.24 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 4.56 | U-WER 3.89 | B-WER 8.63 
+N100_spoken test-clean 2620 câu | WER 2.32 | U-WER 1.73 | B-WER 7.12 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.51 | U-WER 1.76 | B-WER 6.94 
+N100_spoken test-other 2939 câu | WER 4.30 | U-WER 3.14 | B-WER 14.56 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 4.62 | U-WER 3.06 | B-WER 14.03 
+pxattn_N100 test-clean 2620 câu | WER 2.18 | U-WER 1.89 | B-WER 4.57 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 1.98 | U-WER 1.58 | B-WER 4.37 
+pxattn_N100 test-other 2939 câu | WER 3.66 | U-WER 3.06 | B-WER 8.92 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 3.72 | U-WER 2.93 | B-WER 8.47 
+pxattn_N500 test-clean 2620 câu | WER 2.23 | U-WER 1.90 | B-WER 4.89 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.03 | U-WER 1.57 | B-WER 4.68 
+pxattn_N500 test-other 2939 câu | WER 3.78 | U-WER 3.17 | B-WER 9.21 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 3.89 | U-WER 3.07 | B-WER 8.87 
+pxattn_N1000 test-clean 2620 câu | WER 2.35 | U-WER 2.01 | B-WER 5.16 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.14 | U-WER 1.66 | B-WER 4.96 
+pxattn_N1000 test-other 2939 câu | WER 3.91 | U-WER 3.23 | B-WER 9.79 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 3.96 | U-WER 3.07 | B-WER 9.29 
+pxattn_N2000 test-clean 2620 câu | WER 2.35 | U-WER 1.99 | B-WER 5.29 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.15 | U-WER 1.65 | B-WER 5.10 
+pxattn_N2000 test-other 2939 câu | WER 4.23 | U-WER 3.58 | B-WER 10.00 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 4.48 | U-WER 3.64 | B-WER 9.58 
+pmaxsim_N100 test-clean 2620 câu | WER 1.92 | U-WER 1.59 | B-WER 4.60 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.03 | U-WER 1.62 | B-WER 4.45 
+pmaxsim_N100 test-other 2939 câu | WER 3.81 | U-WER 3.07 | B-WER 10.30 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 3.94 | U-WER 2.91 | B-WER 10.18 
+pmaxsim_N500 test-clean 2620 câu | WER 2.36 | U-WER 2.04 | B-WER 4.95 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.02 | U-WER 1.57 | B-WER 4.64 
+pmaxsim_N500 test-other 2939 câu | WER 3.78 | U-WER 3.12 | B-WER 9.53 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 3.84 | U-WER 2.94 | B-WER 9.25 
+pmaxsim_N1000 test-clean 2620 câu | WER 2.26 | U-WER 1.90 | B-WER 5.17 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.07 | U-WER 1.58 | B-WER 4.92 
+pmaxsim_N1000 test-other 2939 câu | WER 3.86 | U-WER 3.18 | B-WER 9.83 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 3.91 | U-WER 3.04 | B-WER 9.20 
+pmaxsim_N2000 test-clean 2620 câu | WER 2.22 | U-WER 1.82 | B-WER 5.47 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.17 | U-WER 1.66 | B-WER 5.14 
+pmaxsim_N2000 test-other 2939 câu | WER 4.31 | U-WER 3.62 | B-WER 10.37 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 4.43 | U-WER 3.54 | B-WER 9.83 
+pxattn_N100_p0.5 test-clean 2620 câu | WER 19.58 | U-WER 20.95 | B-WER 8.42 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 4.87 | U-WER 4.35 | B-WER 7.96 
+pxattn_N100_p0.5 test-other 2939 câu | WER 21.03 | U-WER 20.09 | B-WER 29.35 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 10.01 | U-WER 9.70 | B-WER 11.89 
+pxattn_N500_p0.5 test-clean 2620 câu | WER 19.11 | U-WER 20.45 | B-WER 8.14 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 3.64 | U-WER 2.94 | B-WER 7.71 
+pxattn_N500_p0.5 test-other 2939 câu | WER 15.28 | U-WER 14.85 | B-WER 19.10 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 7.86 | U-WER 7.43 | B-WER 10.47 
+pxattn_N1000_p0.5 test-clean 2620 câu | WER 17.31 | U-WER 18.44 | B-WER 8.16 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 3.67 | U-WER 2.95 | B-WER 7.87 
+pxattn_N1000_p0.5 test-other 2939 câu | WER 14.94 | U-WER 13.99 | B-WER 23.29 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 7.94 | U-WER 7.30 | B-WER 11.81 
+pxattn_N2000_p0.5 test-clean 2620 câu | WER 11.22 | U-WER 11.57 | B-WER 8.33 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.56 | U-WER 1.64 | B-WER 7.98 
+pxattn_N2000_p0.5 test-other 2939 câu | WER 9.22 | U-WER 8.85 | B-WER 12.45 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 6.28 | U-WER 5.56 | B-WER 10.65 
+pmaxsim_N100_p0.5 test-clean 2620 câu | WER 21.46 | U-WER 23.33 | B-WER 6.30 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 4.13 | U-WER 3.88 | B-WER 5.57 
+pmaxsim_N100_p0.5 test-other 2939 câu | WER 23.49 | U-WER 22.94 | B-WER 28.34 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 10.11 | U-WER 10.03 | B-WER 10.63 
+pmaxsim_N500_p0.5 test-clean 2620 câu | WER 20.72 | U-WER 22.51 | B-WER 6.23 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 3.03 | U-WER 2.60 | B-WER 5.53 
+pmaxsim_N500_p0.5 test-other 2939 câu | WER 21.76 | U-WER 22.03 | B-WER 19.42 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 10.11 | U-WER 10.07 | B-WER 10.40 
+pmaxsim_N1000_p0.5 test-clean 2620 câu | WER 17.97 | U-WER 19.42 | B-WER 6.20 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.99 | U-WER 2.56 | B-WER 5.51 
+pmaxsim_N1000_p0.5 test-other 2939 câu | WER 21.51 | U-WER 21.02 | B-WER 25.89 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 8.80 | U-WER 8.52 | B-WER 10.47 
+pmaxsim_N2000_p0.5 test-clean 2620 câu | WER 16.78 | U-WER 18.07 | B-WER 6.32 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 3.31 | U-WER 2.90 | B-WER 5.67 
+pmaxsim_N2000_p0.5 test-other 2939 câu | WER 15.44 | U-WER 15.18 | B-WER 17.70 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 7.46 | U-WER 6.95 | B-WER 10.54 
+pxattn_N100_p0.5_spoken test-clean 2620 câu | WER 2.37 | U-WER 2.03 | B-WER 5.09 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.50 | U-WER 2.07 | B-WER 5.02 
+pxattn_N100_p0.5_spoken test-other 2939 câu | WER 3.78 | U-WER 3.11 | B-WER 9.61 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 3.95 | U-WER 3.05 | B-WER 9.36 
+pmaxsim_N100_p0.5_spoken test-clean 2620 câu | WER 2.29 | U-WER 1.96 | B-WER 4.96 | N_bias 5761   câu >1 từ hiếm: 1289 câu | WER 2.39 | U-WER 1.97 | B-WER 4.84 
+pmaxsim_N100_p0.5_spoken test-other 2939 câu | WER 3.82 | U-WER 3.12 | B-WER 9.96 | N_bias 5350   câu >1 từ hiếm: 1304 câu | WER 4.02 | U-WER 3.07 | B-WER 9.74 

@@ -1,0 +1,102 @@
+### test-clean pxattn N100
+Recall_B#10 98.63 | Recall_B#50 99.98 | K99 11 | Recall_B@99 3.0 | N_H 36 | Recall_H#10 55.56 | Recall_H#50 100.00
+từ khó: Recall_B#10 93.63 | Recall_B#50 100.00
+@0.5: P 97.6 | R 94.5 | từ/câu 2.10 | rỗng 24.6% | R từ khó 71.6
+@0.7: P 98.6 | R 91.8 | từ/câu 2.02 | rỗng 25.6% | R từ khó 64.2
+### test-clean pxattn N2000
+Recall_B#10 96.19 | Recall_B#50 99.17 | K99 37 | Recall_B@99 17.9 | N_H 812 | Recall_H#10 22.17 | Recall_H#50 55.91
+từ khó: Recall_B#10 77.45 | Recall_B#50 92.65
+@0.5: P 67.4 | R 94.5 | từ/câu 3.04 | rỗng 15.0% | R từ khó 71.6
+@0.7: P 79.8 | R 91.8 | từ/câu 2.50 | rỗng 19.5% | R từ khó 64.2
+### test-clean pxattn missing_N2000
+N_H 812 | Recall_H#10 28.57 | Recall_H#50 57.27
+@0.5: P 0.0 | R nan | từ/câu 0.99 | rỗng 46.1%
+@0.7: P 0.0 | R nan | từ/câu 0.50 | rỗng 63.6%
+### test-clean pmaxsim N100
+Recall_B#10 98.84 | Recall_B#50 99.98 | K99 11 | Recall_B@99 2.6 | N_H 36 | Recall_H#10 69.44 | Recall_H#50 94.44
+từ khó: Recall_B#10 94.36 | Recall_B#50 99.75
+@0.5: P 98.7 | R 96.3 | từ/câu 2.12 | rỗng 25.2% | R từ khó 70.6
+@0.7: P 99.8 | R 89.1 | từ/câu 1.94 | rỗng 27.6% | R từ khó 49.0
+### test-clean pmaxsim N2000
+Recall_B#10 97.26 | Recall_B#50 99.51 | K99 21 | Recall_B@99 10.5 | N_H 812 | Recall_H#10 38.92 | Recall_H#50 70.57
+từ khó: Recall_B#10 82.11 | Recall_B#50 94.61
+@0.5: P 80.1 | R 96.3 | từ/câu 2.61 | rỗng 20.8% | R từ khó 70.6
+@0.7: P 95.7 | R 89.1 | từ/câu 2.02 | rỗng 26.8% | R từ khó 49.0
+### test-clean pmaxsim missing_N2000
+N_H 812 | Recall_H#10 50.37 | Recall_H#50 72.04
+@0.5: P 0.0 | R nan | từ/câu 0.52 | rỗng 64.9%
+@0.7: P 0.0 | R nan | từ/câu 0.09 | rỗng 92.0%
+### test-clean pcascade N2000
+Recall_B#10 96.82 | Recall_B#50 99.56 | K99 21 | Recall_B@99 10.6 | N_H 812 | Recall_H#10 26.48 | Recall_H#50 70.57
+từ khó: Recall_B#10 81.13 | Recall_B#50 95.83
+@0.5: P 71.4 | R 94.5 | từ/câu 2.87 | rỗng 16.0% | R từ khó 71.6
+@0.7: P 81.7 | R 91.8 | từ/câu 2.44 | rỗng 19.9% | R từ khó 64.2
+### test-clean pcascade missing_N2000
+N_H 812 | Recall_H#10 36.70 | Recall_H#50 72.04
+@0.5: P 0.0 | R nan | từ/câu 0.82 | rỗng 50.6%
+@0.7: P 0.0 | R nan | từ/câu 0.45 | rỗng 66.3%
+### test-clean hx N100
+Recall_B#10 71.71 | Recall_B#50 96.29 | K99 n/a | Recall_B@99 n/a (không đạt 99% trong top đã lưu) | N_H 36 | Recall_H#10 25.00 | Recall_H#50 69.44
+từ khó: Recall_B#10 54.66 | Recall_B#50 91.18
+@0.5: P 43.5 | R 49.1 | từ/câu 2.45 | rỗng 25.3% | R từ khó 30.6
+@0.7: P 51.1 | R 38.4 | từ/câu 1.63 | rỗng 32.8% | R từ khó 20.8
+### test-clean hx N2000
+Recall_B#10 26.58 | Recall_B#50 54.15 | K99 n/a | Recall_B@99 n/a (không đạt 99% trong top đã lưu) | N_H 812 | Recall_H#10 5.54 | Recall_H#50 18.60
+từ khó: Recall_B#10 14.46 | Recall_B#50 36.27
+@0.5: P 4.0 | R 47.1 | từ/câu 25.73 | rỗng 9.3% | R từ khó 27.7
+@0.7: P 5.0 | R 38.3 | từ/câu 16.55 | rỗng 11.6% | R từ khó 20.3
+### test-clean hx missing_N2000
+N_H 812 | Recall_H#10 6.03 | Recall_H#50 19.46
+@0.5: P 0.0 | R nan | từ/câu 25.00 | rỗng 9.3%
+@0.7: P 0.0 | R nan | từ/câu 15.76 | rỗng 11.7%
+### test-other pxattn N100
+Recall_B#10 98.49 | Recall_B#50 99.90 | K99 12 | Recall_B@99 7.0 | N_H 38 | Recall_H#10 63.16 | Recall_H#50 97.37
+từ khó: Recall_B#10 95.07 | Recall_B#50 99.64
+@0.5: P 94.6 | R 88.8 | từ/câu 1.68 | rỗng 29.1% | R từ khó 68.8
+@0.7: P 97.4 | R 83.7 | từ/câu 1.53 | rỗng 31.7% | R từ khó 59.2
+### test-other pxattn N2000
+Recall_B#10 92.99 | Recall_B#50 97.71 | K99 n/a | Recall_B@99 n/a (không đạt 99% trong top đã lưu) | N_H 762 | Recall_H#10 19.16 | Recall_H#50 45.54
+từ khó: Recall_B#10 77.86 | Recall_B#50 90.49
+@0.5: P 48.1 | R 88.8 | từ/câu 3.30 | rỗng 13.3% | R từ khó 68.8
+@0.7: P 67.0 | R 83.7 | từ/câu 2.23 | rỗng 21.7% | R từ khó 59.2
+### test-other pxattn missing_N2000
+N_H 762 | Recall_H#10 23.49 | Recall_H#50 46.72
+@0.5: P 0.0 | R nan | từ/câu 1.71 | rỗng 33.6%
+@0.7: P 0.0 | R nan | từ/câu 0.74 | rỗng 55.6%
+### test-other pmaxsim N100
+Recall_B#10 98.55 | Recall_B#50 99.85 | K99 13 | Recall_B@99 6.7 | N_H 38 | Recall_H#10 68.42 | Recall_H#50 94.74
+từ khó: Recall_B#10 94.34 | Recall_B#50 99.16
+@0.5: P 97.2 | R 91.1 | từ/câu 1.67 | rỗng 29.3% | R từ khó 67.0
+@0.7: P 99.4 | R 79.2 | từ/câu 1.42 | rỗng 34.4% | R từ khó 46.7
+### test-other pmaxsim N2000
+Recall_B#10 95.43 | Recall_B#50 98.44 | K99 n/a | Recall_B@99 n/a (không đạt 99% trong top đã lưu) | N_H 762 | Recall_H#10 37.27 | Recall_H#50 65.35
+từ khó: Recall_B#10 82.07 | Recall_B#50 92.30
+@0.5: P 69.5 | R 91.1 | từ/câu 2.34 | rỗng 21.5% | R từ khó 67.0
+@0.7: P 92.5 | R 79.2 | từ/câu 1.53 | rỗng 32.5% | R từ khó 46.7
+### test-other pmaxsim missing_N2000
+N_H 762 | Recall_H#10 43.31 | Recall_H#50 66.27
+@0.5: P 0.0 | R nan | từ/câu 0.71 | rỗng 56.5%
+@0.7: P 0.0 | R nan | từ/câu 0.12 | rỗng 89.6%
+### test-other pcascade N2000
+Recall_B#10 93.90 | Recall_B#50 98.57 | K99 n/a | Recall_B@99 n/a (không đạt 99% trong top đã lưu) | N_H 762 | Recall_H#10 23.10 | Recall_H#50 62.99
+từ khó: Recall_B#10 79.30 | Recall_B#50 93.14
+@0.5: P 53.5 | R 88.8 | từ/câu 2.96 | rỗng 14.7% | R từ khó 68.7
+@0.7: P 69.9 | R 83.7 | từ/câu 2.14 | rỗng 22.4% | R từ khó 59.2
+### test-other pcascade missing_N2000
+N_H 762 | Recall_H#10 29.13 | Recall_H#50 65.09
+@0.5: P 0.0 | R nan | từ/câu 1.38 | rỗng 38.8%
+@0.7: P 0.0 | R nan | từ/câu 0.64 | rỗng 58.8%
+### test-other hx N100
+Recall_B#10 68.35 | Recall_B#50 95.81 | K99 n/a | Recall_B@99 n/a (không đạt 99% trong top đã lưu) | N_H 38 | Recall_H#10 42.11 | Recall_H#50 78.95
+từ khó: Recall_B#10 54.27 | Recall_B#50 90.37
+@0.5: P 35.8 | R 43.5 | từ/câu 2.17 | rỗng 28.2% | R từ khó 30.4
+@0.7: P 43.5 | R 34.7 | từ/câu 1.42 | rỗng 36.7% | R từ khó 23.1
+### test-other hx N2000
+Recall_B#10 24.03 | Recall_B#50 48.95 | K99 n/a | Recall_B@99 n/a (không đạt 99% trong top đã lưu) | N_H 762 | Recall_H#10 4.99 | Recall_H#50 19.03
+từ khó: Recall_B#10 15.16 | Recall_B#50 35.86
+@0.5: P 2.9 | R 41.9 | từ/câu 25.68 | rỗng 9.5% | R từ khó 29.0
+@0.7: P 3.7 | R 34.6 | từ/câu 16.54 | rỗng 11.6% | R từ khó 22.9
+### test-other hx missing_N2000
+N_H 762 | Recall_H#10 5.25 | Recall_H#50 19.42
+@0.5: P 0.0 | R nan | từ/câu 25.15 | rỗng 9.5%
+@0.7: P 0.0 | R nan | từ/câu 15.96 | rỗng 11.7%

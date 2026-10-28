@@ -1,0 +1,7 @@
+dev-clean: 2703 câu, 5755 từ hiếm, 640 câu không có từ hiếm
+dev-other: 2864 câu, 4893 từ hiếm, 851 câu không có từ hiếm
+L2: 12268 từ đúng có âm vị, 75 không có (bỏ qua)
+test-clean: hard_N2000 trung bình 43.4 từ gần/câu có từ hiếm; 1726/5692 từ đúng có từ đồng âm hoàn toàn trong kho (đã loại)
+test-other: hard_N2000 trung bình 39.4 từ gần/câu có từ hiếm; 1896/5248 từ đúng có từ đồng âm hoàn toàn trong kho (đã loại)
+dev-clean: hard_N2000 trung bình 43.0 từ gần/câu có từ hiếm; 1887/5755 từ đúng có từ đồng âm hoàn toàn trong kho (đã loại)
+dev-other: hard_N2000 trung bình 37.0 từ gần/câu có từ hiếm; 1600/4893 từ đúng có từ đồng âm hoàn toàn trong kho (đã loại)

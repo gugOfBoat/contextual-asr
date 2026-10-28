@@ -1,0 +1,1898 @@
+{
+"type": "excalidraw",
+"version": 2,
+"source": "https://excalidraw.com",
+"appState": {
+"viewBackgroundColor": "#ffffff",
+"gridSize": 20
+},
+"files": {},
+"elements": [
+{
+"type": "text",
+"id": "title",
+"x": 20,
+"y": 20,
+"width": 1300,
+"height": 38,
+"text": "Scorer: (câu nói, 1 từ trong list) → xác suất từ đó được nói",
+"originalText": "Scorer: (câu nói, 1 từ trong list) → xác suất từ đó được nói",
+"fontSize": 30,
+"fontFamily": 3,
+"textAlign": "left",
+"verticalAlign": "top",
+"strokeColor": "#1e40af",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100001
+},
+{
+"type": "ellipse",
+"id": "a_in",
+"x": 20,
+"y": 100,
+"width": 230,
+"height": 110,
+"strokeColor": "#c2410c",
+"backgroundColor": "#fed7aa",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"seed": 100002
+},
+{
+"type": "text",
+"id": "a_in_t",
+"x": 20,
+"y": 132,
+"width": 230,
+"height": 45,
+"text": "audio 16 kHz\ncâu 7 s",
+"originalText": "audio 16 kHz\ncâu 7 s",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#374151",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100003
+},
+{
+"type": "arrow",
+"id": "a_ar1",
+"x": 252,
+"y": 155,
+"width": 46,
+"height": 0,
+"points": [
+[
+0,
+0
+],
+[
+46,
+0
+]
+],
+"strokeColor": "#c2410c",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 100004
+},
+{
+"type": "rectangle",
+"id": "mel",
+"x": 300,
+"y": 100,
+"width": 200,
+"height": 110,
+"strokeColor": "#1e40af",
+"backgroundColor": "#dbeafe",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"strokeStyle": "dashed",
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 100005
+},
+{
+"type": "text",
+"id": "mel_t",
+"x": 300,
+"y": 121,
+"width": 200,
+"height": 68,
+"text": "log-mel\n128 × 3000\n(pad tới 30 s)",
+"originalText": "log-mel\n128 × 3000\n(pad tới 30 s)",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#374151",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100006
+},
+{
+"type": "arrow",
+"id": "a_ar2",
+"x": 502,
+"y": 155,
+"width": 46,
+"height": 0,
+"points": [
+[
+0,
+0
+],
+[
+46,
+0
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 100007
+},
+{
+"type": "rectangle",
+"id": "enc",
+"x": 550,
+"y": 100,
+"width": 300,
+"height": 110,
+"strokeColor": "#1e40af",
+"backgroundColor": "#dbeafe",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"strokeStyle": "dashed",
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 100008
+},
+{
+"type": "text",
+"id": "enc_t",
+"x": 550,
+"y": 121,
+"width": 300,
+"height": 68,
+"text": "Whisper-large-v3\nencoder 32 lớp\nĐÓNG BĂNG",
+"originalText": "Whisper-large-v3\nencoder 32 lớp\nĐÓNG BĂNG",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#374151",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100009
+},
+{
+"type": "arrow",
+"id": "a_ar3",
+"x": 852,
+"y": 155,
+"width": 46,
+"height": 0,
+"points": [
+[
+0,
+0
+],
+[
+46,
+0
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 100010
+},
+{
+"type": "rectangle",
+"id": "H",
+"x": 900,
+"y": 100,
+"width": 280,
+"height": 110,
+"strokeColor": "#1e293b",
+"backgroundColor": "#1e293b",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 100011
+},
+{
+"type": "text",
+"id": "H_t",
+"x": 900,
+"y": 121,
+"width": 280,
+"height": 68,
+"text": "H: T × 1280\nT ≈ 350 frame\n(20 ms / frame)",
+"originalText": "H: T × 1280\nT ≈ 350 frame\n(20 ms / frame)",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#22c55e",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100012
+},
+{
+"type": "arrow",
+"id": "a_ar4",
+"x": 1182,
+"y": 155,
+"width": 46,
+"height": 0,
+"points": [
+[
+0,
+0
+],
+[
+46,
+0
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 100013
+},
+{
+"type": "rectangle",
+"id": "lin",
+"x": 1230,
+"y": 100,
+"width": 260,
+"height": 110,
+"strokeColor": "#1e3a5f",
+"backgroundColor": "#60a5fa",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 100014
+},
+{
+"type": "text",
+"id": "lin_t",
+"x": 1230,
+"y": 121,
+"width": 260,
+"height": 68,
+"text": "Linear 1280→256\n+ 1 lớp\nTransformer",
+"originalText": "Linear 1280→256\n+ 1 lớp\nTransformer",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#1e293b",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100015
+},
+{
+"type": "arrow",
+"id": "a_ar5",
+"x": 1492,
+"y": 155,
+"width": 46,
+"height": 0,
+"points": [
+[
+0,
+0
+],
+[
+46,
+0
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 100016
+},
+{
+"type": "rectangle",
+"id": "A",
+"x": 1540,
+"y": 100,
+"width": 180,
+"height": 110,
+"strokeColor": "#1e293b",
+"backgroundColor": "#1e293b",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 100017
+},
+{
+"type": "text",
+"id": "A_t",
+"x": 1540,
+"y": 130,
+"width": 180,
+"height": 50,
+"text": "A\nT × 256",
+"originalText": "A\nT × 256",
+"fontSize": 20,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#22c55e",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100018
+},
+{
+"type": "ellipse",
+"id": "w_in",
+"x": 20,
+"y": 290,
+"width": 230,
+"height": 110,
+"strokeColor": "#c2410c",
+"backgroundColor": "#fed7aa",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"seed": 100020
+},
+{
+"type": "text",
+"id": "w_in_t",
+"x": 20,
+"y": 322,
+"width": 230,
+"height": 45,
+"text": "1 từ trong list\n\"cabinet\"",
+"originalText": "1 từ trong list\n\"cabinet\"",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#374151",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100021
+},
+{
+"type": "arrow",
+"id": "w_ar1",
+"x": 252,
+"y": 345,
+"width": 46,
+"height": 0,
+"points": [
+[
+0,
+0
+],
+[
+46,
+0
+]
+],
+"strokeColor": "#c2410c",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 100022
+},
+{
+"type": "rectangle",
+"id": "g2p",
+"x": 300,
+"y": 290,
+"width": 200,
+"height": 110,
+"strokeColor": "#1e40af",
+"backgroundColor": "#dbeafe",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"strokeStyle": "dashed",
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 100023
+},
+{
+"type": "text",
+"id": "g2p_t",
+"x": 300,
+"y": 311,
+"width": 200,
+"height": 68,
+"text": "g2p\nCMUdict\n+ đoán",
+"originalText": "g2p\nCMUdict\n+ đoán",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#374151",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100024
+},
+{
+"type": "arrow",
+"id": "w_ar2",
+"x": 502,
+"y": 345,
+"width": 46,
+"height": 0,
+"points": [
+[
+0,
+0
+],
+[
+46,
+0
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 100025
+},
+{
+"type": "rectangle",
+"id": "ph",
+"x": 550,
+"y": 290,
+"width": 630,
+"height": 110,
+"strokeColor": "#1e293b",
+"backgroundColor": "#1e293b",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 100026
+},
+{
+"type": "text",
+"id": "ph_t",
+"x": 550,
+"y": 322,
+"width": 630,
+"height": 45,
+"text": "K  AE  B  AH  N  AH  T      (7 âm vị)\nid = [20, 2, 7, 3, 23, 3, 31]",
+"originalText": "K  AE  B  AH  N  AH  T      (7 âm vị)\nid = [20, 2, 7, 3, 23, 3, 31]",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#22c55e",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100027
+},
+{
+"type": "arrow",
+"id": "w_ar3",
+"x": 1182,
+"y": 345,
+"width": 46,
+"height": 0,
+"points": [
+[
+0,
+0
+],
+[
+46,
+0
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 100028
+},
+{
+"type": "rectangle",
+"id": "pe",
+"x": 1230,
+"y": 290,
+"width": 260,
+"height": 110,
+"strokeColor": "#1e3a5f",
+"backgroundColor": "#60a5fa",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 100029
+},
+{
+"type": "text",
+"id": "pe_t",
+"x": 1230,
+"y": 311,
+"width": 260,
+"height": 68,
+"text": "Embedding âm vị\n+ vị trí\n+ 2 lớp Transformer",
+"originalText": "Embedding âm vị\n+ vị trí\n+ 2 lớp Transformer",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#1e293b",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100030
+},
+{
+"type": "arrow",
+"id": "w_ar4",
+"x": 1492,
+"y": 345,
+"width": 46,
+"height": 0,
+"points": [
+[
+0,
+0
+],
+[
+46,
+0
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 100031
+},
+{
+"type": "rectangle",
+"id": "P",
+"x": 1540,
+"y": 290,
+"width": 180,
+"height": 110,
+"strokeColor": "#1e293b",
+"backgroundColor": "#1e293b",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 100032
+},
+{
+"type": "text",
+"id": "P_t",
+"x": 1540,
+"y": 320,
+"width": 180,
+"height": 50,
+"text": "P\n7 × 256",
+"originalText": "P\n7 × 256",
+"fontSize": 20,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#22c55e",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100033
+},
+{
+"type": "text",
+"id": "legend",
+"x": 1790,
+"y": 110,
+"width": 270,
+"height": 160,
+"text": "nét đứt = cố định,\nkhông train\n\nxanh = phần train\n(2–5M tham số)",
+"originalText": "nét đứt = cố định,\nkhông train\n\nxanh = phần train\n(2–5M tham số)",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "left",
+"verticalAlign": "top",
+"strokeColor": "#64748b",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100040
+},
+{
+"type": "line",
+"id": "busA",
+"x": 1720,
+"y": 155,
+"width": 60,
+"height": 315,
+"points": [
+[
+0,
+0
+],
+[
+40,
+0
+],
+[
+40,
+315
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"seed": 100041
+},
+{
+"type": "line",
+"id": "busP",
+"x": 1630,
+"y": 400,
+"width": 0,
+"height": 70,
+"points": [
+[
+0,
+0
+],
+[
+0,
+70
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"seed": 100042
+},
+{
+"type": "line",
+"id": "bus",
+"x": 340,
+"y": 470,
+"width": 1420,
+"height": 0,
+"points": [
+[
+0,
+0
+],
+[
+1420,
+0
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"seed": 100043
+},
+{
+"type": "text",
+"id": "bus_t",
+"x": 360,
+"y": 440,
+"width": 1300,
+"height": 25,
+"text": "A, P → cách ① ②.   Cách ③ (Hou25) không dùng A, P: lấy thẳng H + audio TTS",
+"originalText": "A, P → cách ① ②.   Cách ③ (Hou25) không dùng A, P: lấy thẳng H + audio TTS",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "left",
+"verticalAlign": "top",
+"strokeColor": "#3b82f6",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 100044
+},
+{
+"type": "arrow",
+"id": "d1",
+"x": 340,
+"y": 470,
+"width": 0,
+"height": 48,
+"points": [
+[
+0,
+0
+],
+[
+0,
+48
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 200001
+},
+{
+"type": "arrow",
+"id": "d2",
+"x": 1040,
+"y": 470,
+"width": 0,
+"height": 48,
+"points": [
+[
+0,
+0
+],
+[
+0,
+48
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 200002
+},
+{
+"type": "text",
+"id": "c1_title",
+"x": 20,
+"y": 528,
+"width": 640,
+"height": 30,
+"text": "① pmaxsim — nhanh",
+"originalText": "① pmaxsim — nhanh",
+"fontSize": 24,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#1e40af",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200010
+},
+{
+"type": "text",
+"id": "c1_sub",
+"x": 20,
+"y": 562,
+"width": 640,
+"height": 20,
+"text": "2.72M tham số · phía từ tính trước cho cả kho 209k",
+"originalText": "2.72M tham số · phía từ tính trước cho cả kho 209k",
+"fontSize": 16,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#64748b",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200011
+},
+{
+"type": "rectangle",
+"id": "c1_S",
+"x": 20,
+"y": 595,
+"width": 640,
+"height": 210,
+"strokeColor": "#1e293b",
+"backgroundColor": "#1e293b",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 200012
+},
+{
+"type": "text",
+"id": "c1_S_t",
+"x": 45,
+"y": 610,
+"width": 600,
+"height": 180,
+"text": "S = P · Aᵀ   (7 × T, độ giống cosine)\n\n       t1    t2    t3    t4   …   tT\n K    .10  [.85]  .20   .05  …  .10\n AE   .05   .15 [.90]   .10  …  .05\n B    .00   .10   .20  [.80] …  .10\n …\nmax theo hàng → [.85  .90  .80  …]",
+"originalText": "S = P · Aᵀ   (7 × T, độ giống cosine)\n\n       t1    t2    t3    t4   …   tT\n K    .10  [.85]  .20   .05  …  .10\n AE   .05   .15 [.90]   .10  …  .05\n B    .00   .10   .20  [.80] …  .10\n …\nmax theo hàng → [.85  .90  .80  …]",
+"fontSize": 16,
+"fontFamily": 3,
+"textAlign": "left",
+"verticalAlign": "top",
+"strokeColor": "#22c55e",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200013
+},
+{
+"type": "arrow",
+"id": "c1_a1",
+"x": 340,
+"y": 807,
+"width": 0,
+"height": 36,
+"points": [
+[
+0,
+0
+],
+[
+0,
+36
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 200014
+},
+{
+"type": "rectangle",
+"id": "c1_m",
+"x": 90,
+"y": 845,
+"width": 500,
+"height": 80,
+"strokeColor": "#1e3a5f",
+"backgroundColor": "#60a5fa",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 200015
+},
+{
+"type": "text",
+"id": "c1_m_t",
+"x": 90,
+"y": 862,
+"width": 500,
+"height": 45,
+"text": "m = trung bình 7 giá trị max\nlogit = a·m + c",
+"originalText": "m = trung bình 7 giá trị max\nlogit = a·m + c",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#1e293b",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200016
+},
+{
+"type": "arrow",
+"id": "c1_a2",
+"x": 340,
+"y": 927,
+"width": 0,
+"height": 36,
+"points": [
+[
+0,
+0
+],
+[
+0,
+36
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 200017
+},
+{
+"type": "ellipse",
+"id": "c1_o",
+"x": 180,
+"y": 965,
+"width": 320,
+"height": 80,
+"strokeColor": "#047857",
+"backgroundColor": "#a7f3d0",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"seed": 200018
+},
+{
+"type": "text",
+"id": "c1_o_t",
+"x": 180,
+"y": 993,
+"width": 320,
+"height": 23,
+"text": "p = sigmoid(logit)",
+"originalText": "p = sigmoid(logit)",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#374151",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200019
+},
+{
+"type": "text",
+"id": "c1_note",
+"x": 20,
+"y": 1060,
+"width": 640,
+"height": 20,
+"text": "⚠ không xét thứ tự âm: stone ≈ notes",
+"originalText": "⚠ không xét thứ tự âm: stone ≈ notes",
+"fontSize": 16,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#dc2626",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200020
+},
+{
+"type": "text",
+"id": "c2_title",
+"x": 720,
+"y": 528,
+"width": 640,
+"height": 30,
+"text": "② pxattn — kỹ hơn (bản đưa vào ASR)",
+"originalText": "② pxattn — kỹ hơn (bản đưa vào ASR)",
+"fontSize": 24,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#1e40af",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200030
+},
+{
+"type": "text",
+"id": "c2_sub",
+"x": 720,
+"y": 562,
+"width": 640,
+"height": 20,
+"text": "4.96M tham số · 332 ms/câu với list 2000 từ",
+"originalText": "4.96M tham số · 332 ms/câu với list 2000 từ",
+"fontSize": 16,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#64748b",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200031
+},
+{
+"type": "rectangle",
+"id": "c2_sa",
+"x": 760,
+"y": 595,
+"width": 540,
+"height": 66,
+"strokeColor": "#6d28d9",
+"backgroundColor": "#ddd6fe",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 200032
+},
+{
+"type": "text",
+"id": "c2_sa_t",
+"x": 760,
+"y": 605,
+"width": 540,
+"height": 45,
+"text": "Self-attention\n7 âm vị nhìn nhau (K, AE, B, …)",
+"originalText": "Self-attention\n7 âm vị nhìn nhau (K, AE, B, …)",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#374151",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200033
+},
+{
+"type": "arrow",
+"id": "c2_a1",
+"x": 1030,
+"y": 663,
+"width": 0,
+"height": 24,
+"points": [
+[
+0,
+0
+],
+[
+0,
+24
+]
+],
+"strokeColor": "#6d28d9",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 200034
+},
+{
+"type": "rectangle",
+"id": "c2_ca",
+"x": 760,
+"y": 689,
+"width": 540,
+"height": 80,
+"strokeColor": "#6d28d9",
+"backgroundColor": "#ddd6fe",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 200035
+},
+{
+"type": "text",
+"id": "c2_ca_t",
+"x": 760,
+"y": 706,
+"width": 540,
+"height": 45,
+"text": "Cross-attention: mỗi âm vị (query)\n\"tìm\" trong T frame audio A (key, value)",
+"originalText": "Cross-attention: mỗi âm vị (query)\n\"tìm\" trong T frame audio A (key, value)",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#374151",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200036
+},
+{
+"type": "line",
+"id": "c2_br",
+"x": 1310,
+"y": 595,
+"width": 15,
+"height": 174,
+"points": [
+[
+0,
+0
+],
+[
+15,
+0
+],
+[
+15,
+174
+],
+[
+0,
+174
+]
+],
+"strokeColor": "#6d28d9",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"seed": 200037
+},
+{
+"type": "text",
+"id": "c2_br_t",
+"x": 1300,
+"y": 670,
+"width": 70,
+"height": 23,
+"text": "× 2",
+"originalText": "× 2",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "right",
+"verticalAlign": "top",
+"strokeColor": "#6d28d9",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200038
+},
+{
+"type": "arrow",
+"id": "c2_a2",
+"x": 1030,
+"y": 771,
+"width": 0,
+"height": 24,
+"points": [
+[
+0,
+0
+],
+[
+0,
+24
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 200039
+},
+{
+"type": "rectangle",
+"id": "c2_pool",
+"x": 760,
+"y": 797,
+"width": 540,
+"height": 56,
+"strokeColor": "#1e3a5f",
+"backgroundColor": "#60a5fa",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 200040
+},
+{
+"type": "text",
+"id": "c2_pool_t",
+"x": 760,
+"y": 813,
+"width": 540,
+"height": 23,
+"text": "gộp 7 vector: [trung bình ; max] → 512",
+"originalText": "gộp 7 vector: [trung bình ; max] → 512",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#1e293b",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200041
+},
+{
+"type": "arrow",
+"id": "c2_a3",
+"x": 1030,
+"y": 855,
+"width": 0,
+"height": 24,
+"points": [
+[
+0,
+0
+],
+[
+0,
+24
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 200042
+},
+{
+"type": "rectangle",
+"id": "c2_mlp",
+"x": 760,
+"y": 881,
+"width": 540,
+"height": 56,
+"strokeColor": "#1e3a5f",
+"backgroundColor": "#60a5fa",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 200043
+},
+{
+"type": "text",
+"id": "c2_mlp_t",
+"x": 760,
+"y": 897,
+"width": 540,
+"height": 23,
+"text": "MLP 512 → 256 → 1 = logit",
+"originalText": "MLP 512 → 256 → 1 = logit",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#1e293b",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200044
+},
+{
+"type": "arrow",
+"id": "c2_a4",
+"x": 1030,
+"y": 939,
+"width": 0,
+"height": 24,
+"points": [
+[
+0,
+0
+],
+[
+0,
+24
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 200045
+},
+{
+"type": "ellipse",
+"id": "c2_o",
+"x": 870,
+"y": 965,
+"width": 320,
+"height": 80,
+"strokeColor": "#047857",
+"backgroundColor": "#a7f3d0",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"seed": 200046
+},
+{
+"type": "text",
+"id": "c2_o_t",
+"x": 870,
+"y": 993,
+"width": 320,
+"height": 23,
+"text": "p = sigmoid(logit)",
+"originalText": "p = sigmoid(logit)",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#374151",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200047
+},
+{
+"type": "text",
+"id": "c2_note",
+"x": 720,
+"y": 1060,
+"width": 640,
+"height": 20,
+"text": "âm vị nhìn được nhau → xét một phần thứ tự",
+"originalText": "âm vị nhìn được nhau → xét một phần thứ tự",
+"fontSize": 16,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#64748b",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200048
+},
+{
+"type": "text",
+"id": "c3_title",
+"x": 1420,
+"y": 528,
+"width": 680,
+"height": 30,
+"text": "③ Hou25 tái hiện — từ = audio TTS",
+"originalText": "③ Hou25 tái hiện — từ = audio TTS",
+"fontSize": 24,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#1e40af",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200060
+},
+{
+"type": "text",
+"id": "c3_sub",
+"x": 1420,
+"y": 562,
+"width": 680,
+"height": 20,
+"text": "1.95M tham số · 922 ms/câu · cần 21 GB feature TTS",
+"originalText": "1.95M tham số · 922 ms/câu · cần 21 GB feature TTS",
+"fontSize": 16,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#64748b",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200061
+},
+{
+"type": "rectangle",
+"id": "c3_tts",
+"x": 1480,
+"y": 595,
+"width": 560,
+"height": 66,
+"strokeColor": "#1e40af",
+"backgroundColor": "#dbeafe",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"strokeStyle": "dashed",
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 200062
+},
+{
+"type": "text",
+"id": "c3_tts_t",
+"x": 1480,
+"y": 605,
+"width": 560,
+"height": 45,
+"text": "edge-tts đọc \"cabinet\" → Whisper encoder\n→ Tb × 1280 (Tb ≈ 40 frame)",
+"originalText": "edge-tts đọc \"cabinet\" → Whisper encoder\n→ Tb × 1280 (Tb ≈ 40 frame)",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#374151",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200063
+},
+{
+"type": "arrow",
+"id": "c3_a1",
+"x": 1760,
+"y": 663,
+"width": 0,
+"height": 24,
+"points": [
+[
+0,
+0
+],
+[
+0,
+24
+]
+],
+"strokeColor": "#6d28d9",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 200064
+},
+{
+"type": "rectangle",
+"id": "c3_ca",
+"x": 1480,
+"y": 689,
+"width": 560,
+"height": 70,
+"strokeColor": "#6d28d9",
+"backgroundColor": "#ddd6fe",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 200065
+},
+{
+"type": "text",
+"id": "c3_ca_t",
+"x": 1480,
+"y": 700,
+"width": 560,
+"height": 23,
+"text": "Linear 1280→368 cho cả H và TTS (A₃, B)\n+ cross-attention 2 chiều → A₃', B'",
+"originalText": "Linear 1280→368 cho cả H và TTS (A₃, B)\n+ cross-attention 2 chiều → A₃', B'",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#374151",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200066
+},
+{
+"type": "arrow",
+"id": "c3_a2",
+"x": 1760,
+"y": 761,
+"width": 0,
+"height": 24,
+"points": [
+[
+0,
+0
+],
+[
+0,
+24
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 200067
+},
+{
+"type": "rectangle",
+"id": "c3_cos",
+"x": 1480,
+"y": 787,
+"width": 560,
+"height": 70,
+"strokeColor": "#1e293b",
+"backgroundColor": "#1e293b",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 200068
+},
+{
+"type": "text",
+"id": "c3_cos_t",
+"x": 1480,
+"y": 799,
+"width": 560,
+"height": 45,
+"text": "4 ma trận cosine, mỗi cái T × Tb:\ncos(A₃,B) cos(A₃,B') cos(A₃',B) cos(A₃',B')",
+"originalText": "4 ma trận cosine, mỗi cái T × Tb:\ncos(A₃,B) cos(A₃,B') cos(A₃',B) cos(A₃',B')",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#22c55e",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200069
+},
+{
+"type": "arrow",
+"id": "c3_a3",
+"x": 1760,
+"y": 855,
+"width": 0,
+"height": 24,
+"points": [
+[
+0,
+0
+],
+[
+0,
+24
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 200070
+},
+{
+"type": "rectangle",
+"id": "c3_cnn",
+"x": 1480,
+"y": 881,
+"width": 560,
+"height": 56,
+"strokeColor": "#1e3a5f",
+"backgroundColor": "#60a5fa",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 200071
+},
+{
+"type": "text",
+"id": "c3_cnn_t",
+"x": 1480,
+"y": 897,
+"width": 560,
+"height": 23,
+"text": "CNN 4 lớp (32→64→128→256) → pool → logit",
+"originalText": "CNN 4 lớp (32→64→128→256) → pool → logit",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#1e293b",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200072
+},
+{
+"type": "arrow",
+"id": "c3_a4",
+"x": 1760,
+"y": 939,
+"width": 0,
+"height": 24,
+"points": [
+[
+0,
+0
+],
+[
+0,
+24
+]
+],
+"strokeColor": "#1e3a5f",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"endArrowhead": "arrow",
+"seed": 200073
+},
+{
+"type": "ellipse",
+"id": "c3_o",
+"x": 1600,
+"y": 965,
+"width": 320,
+"height": 80,
+"strokeColor": "#047857",
+"backgroundColor": "#a7f3d0",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"seed": 200074
+},
+{
+"type": "text",
+"id": "c3_o_t",
+"x": 1600,
+"y": 993,
+"width": 320,
+"height": 23,
+"text": "p = sigmoid(logit)",
+"originalText": "p = sigmoid(logit)",
+"fontSize": 18,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#374151",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200075
+},
+{
+"type": "text",
+"id": "c3_note",
+"x": 1420,
+"y": 1060,
+"width": 680,
+"height": 20,
+"text": "CNN thấy \"đường chéo\" trên ma trận → thứ tự âm",
+"originalText": "CNN thấy \"đường chéo\" trên ma trận → thứ tự âm",
+"fontSize": 16,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#64748b",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 200076
+},
+{
+"type": "line",
+"id": "div",
+"x": 20,
+"y": 1105,
+"width": 2080,
+"height": 0,
+"points": [
+[
+0,
+0
+],
+[
+2080,
+0
+]
+],
+"strokeColor": "#64748b",
+"strokeWidth": 1,
+"strokeStyle": "dashed",
+"roughness": 0,
+"opacity": 100,
+"seed": 300001
+},
+{
+"type": "text",
+"id": "res_title",
+"x": 20,
+"y": 1118,
+"width": 1500,
+"height": 25,
+"text": "Kết quả test-other, list 2000 từ:   Recall_B#50 ↑  ·  @99 (từ/câu) ↓  ·  H#50 ↓",
+"originalText": "Kết quả test-other, list 2000 từ:   Recall_B#50 ↑  ·  @99 (từ/câu) ↓  ·  H#50 ↓",
+"fontSize": 20,
+"fontFamily": 3,
+"textAlign": "left",
+"verticalAlign": "top",
+"strokeColor": "#1e40af",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 300002
+},
+{
+"type": "rectangle",
+"id": "r1",
+"x": 20,
+"y": 1160,
+"width": 640,
+"height": 80,
+"strokeColor": "#1e293b",
+"backgroundColor": "#1e293b",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 300003
+},
+{
+"type": "text",
+"id": "r1_t",
+"x": 20,
+"y": 1176,
+"width": 640,
+"height": 50,
+"text": "train 100 h:  98.4 · 100 · 25.5\ntrain 960 h:  98.8 ·  54 · 24.9",
+"originalText": "train 100 h:  98.4 · 100 · 25.5\ntrain 960 h:  98.8 ·  54 · 24.9",
+"fontSize": 20,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#22c55e",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 300004
+},
+{
+"type": "rectangle",
+"id": "r2",
+"x": 720,
+"y": 1160,
+"width": 640,
+"height": 80,
+"strokeColor": "#1e293b",
+"backgroundColor": "#1e293b",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 300005
+},
+{
+"type": "text",
+"id": "r2_t",
+"x": 720,
+"y": 1176,
+"width": 640,
+"height": 50,
+"text": "train 100 h:  97.7 · 107 · 21.6\ntrain 960 h:  98.6 ·  64 · 21.5",
+"originalText": "train 100 h:  97.7 · 107 · 21.6\ntrain 960 h:  98.6 ·  64 · 21.5",
+"fontSize": 20,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#22c55e",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 300006
+},
+{
+"type": "rectangle",
+"id": "r3",
+"x": 1420,
+"y": 1160,
+"width": 680,
+"height": 80,
+"strokeColor": "#1e293b",
+"backgroundColor": "#1e293b",
+"fillStyle": "solid",
+"strokeWidth": 2,
+"roughness": 0,
+"opacity": 100,
+"roundness": {
+"type": 3
+},
+"seed": 300007
+},
+{
+"type": "text",
+"id": "r3_t",
+"x": 1420,
+"y": 1176,
+"width": 680,
+"height": 50,
+"text": "train 100 h:  95.4 · 181 · 17.6\nPTC (paper):  99.3 · 16.9 · 22.0",
+"originalText": "train 100 h:  95.4 · 181 · 17.6\nPTC (paper):  99.3 · 16.9 · 22.0",
+"fontSize": 20,
+"fontFamily": 3,
+"textAlign": "center",
+"verticalAlign": "top",
+"strokeColor": "#22c55e",
+"lineHeight": 1.25,
+"roughness": 0,
+"opacity": 100,
+"seed": 300008
+}
+]
+}

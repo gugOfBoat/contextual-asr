@@ -1,6 +1,8 @@
 """Bước 1 — dựng dữ liệu train/dev (Hou25 §2.2, §3.1).
 
   python -m data.build_train --libri /data/LibriSpeech
+  # thêm tập train lớn (không ghi đè train.jsonl / dev.jsonl; near.json, vocab.txt được bổ sung từ mới):
+  python -m data.build_train --libri ... --splits train-clean-100 train-clean-360 train-other-500 --name train960
 
 Đầu ra work/:
   train.jsonl / dev.jsonl   {"uid", "path", "words": mọi từ của câu, "pos": từ hiếm của câu}
@@ -20,6 +22,8 @@ from common import IS21, WORK
 ap = argparse.ArgumentParser()
 ap.add_argument("--libri", required=True)
 ap.add_argument("--n_near", type=int, default=20)
+ap.add_argument("--splits", nargs="+", help="các split train gộp lại (mặc định: train-clean-100 + dev-clean như cũ)")
+ap.add_argument("--name", default="train")
 a = ap.parse_args()
 
 common = set(open(IS21 / "common_words_5k.txt", encoding="utf-8").read().split())
@@ -45,19 +49,23 @@ def near(w):
 
 if __name__ == "__main__":
     pos = set()
-    for split, name in [("train-clean-100", "train"), ("dev-clean", "dev")]:
-        items = read_split(split)
+    jobs = [(a.splits, a.name)] if a.splits else [(["train-clean-100"], "train"), (["dev-clean"], "dev")]
+    for splits, name in jobs:
+        items = [it for s in splits for it in read_split(s)]
         with open(WORK / f"{name}.jsonl", "w", encoding="utf-8") as f:
             for it in items:
                 f.write(json.dumps(it) + "\n")
         pos |= {w for it in items for w in it["pos"]}
         print(f"{name}: {len(items)} câu, {sum(len(it['pos']) > 0 for it in items)} câu có từ hiếm")
 
+    old = json.load(open(WORK / "near.json", encoding="utf-8")) if a.splits else {}
     with Pool() as p:
-        nb = dict(p.map(near, sorted(pos), chunksize=64))
+        nb = old | dict(p.map(near, sorted(pos - set(old)), chunksize=64))
     json.dump(nb, open(WORK / "near.json", "w", encoding="utf-8"))
 
     vocab = set(rare) | pos
+    if a.splits:
+        vocab |= set(open(WORK / "vocab.txt", encoding="utf-8").read().split())
     for f in IS21.glob("*.biasing_*.tsv"):
         for line in open(f, encoding="utf-8"):
             _, _, r, b = line.rstrip("\n").split("\t")

@@ -2,7 +2,7 @@
 
 **Đầu vào:** audio 1 câu + bias list (vd 2000 từ của IS21). **Đầu ra:** cho mỗi từ một xác suất "từ này có được nói trong audio".
 Dùng để lọc list trước khi đưa vào prompt ASR (Qwen3-ASR / Whisper). Ý tưởng xuất phát từ Hou25 (Interspeech 2025, `../related-work/hou25-ranking-selection.md`).
-Kết quả: **`results.md`**. File của từng đợt chạy: **`runs/`**. Sơ đồ: **`docs/`**.
+Kết quả: **`results.md`**. Bản chất + kế hoạch tối ưu: **`DEEPDIVE.md`**. File của từng đợt chạy: **`runs/`**. Sơ đồ: **`docs/`**.
 Nhãn nguồn của mọi lựa chọn: [A] theo paper, [B] thông lệ, [C] nhóm tự thiết kế.
 
 ![kiến trúc](docs/scorer_arch.png)

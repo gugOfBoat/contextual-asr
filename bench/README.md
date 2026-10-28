@@ -39,7 +39,7 @@ Sanity đã chạy (test-clean): hyp=ref → 0/0/0; xoá hết từ hiếm → B
 | Baseline | Code | Ghi chú |
 |---|---|---|
 | Qwen3-ASR, no context / + list trong system prompt | `run_qwen3asr.py` | cần GPU |
-| PTC-Bias (arXiv 2609.28727) | ✅ github.com/aizhiqi-work/PTC-Bias | **đã báo Qwen3-ASR trên IS21**: N=2000, Qwen3-ASR+PTC-Bias B-WER 4.10/7.76, U-WER 1.17/2.68 |
+| PTC-Bias (arXiv 2609.28727) | ✅ github.com/aizhiqi-work/PTC-Bias | **đã báo Qwen3-ASR trên IS21**: N=2000, Qwen3-ASR-**0.6B**+PTC-Bias B-WER 4.10/7.76, U-WER 1.17/2.68 |
 | Hou25 scorer (Interspeech 2025) | ✗ không tìm thấy | tự implement: edge-tts + encoder Whisper-large-v3 + CNN, train clean-100 |
 | CTC-WS (NeMo) | ✅ NeMo | baseline keyword boosting |
 
@@ -53,6 +53,17 @@ python run_qwen3asr.py --split test-clean --ctx none oracle N100 N2000 missing_N
 python score_is21_official.py --refs protocol/test-clean/ref.tsv --hyps out/test-clean/qwen3asr_N100.tsv
 python eval_retrieval.py --ref protocol/test-clean/ref.tsv --cand <cand.json>
 ```
+
+Đánh giá scorer theo `../EVAL_PROTOCOL.md` (máy local chạy được, không cần GPU):
+```bash
+python build_lists.py --phones ../scorer/runs/2026-10-16/phones.tsv     # dev theo IS21 + list nhiễu nghe giống (~3 phút)
+python eval_retrieval.py --ref protocol/test-other/ref.tsv --scores <prob_N2000.json> --ctx protocol/test-other/ctx_N2000.json \
+    --near protocol/test-other/near_N2000.json --hyp out/test-other/qwen3asr_none.tsv --thr 0.5     # tầng (a)
+python score.py --ref ... --hyp <out.tsv> --whisper-norm --ctx <ctx đã đưa cho ASR>                 # tầng (b) + phân rã lỗi
+python compare.py --ref ... --whisper-norm --a <out A> --b <out B> --full out/<split>/qwen3asr_N2000.tsv --oracle out/<split>/qwen3asr_oracle.tsv
+python baseline_hypmatch.py --hyp out/<split>/qwen3asr_none.tsv --ctx protocol/<split>/ctx_N2000.json --phones ... --out <prob.json>
+```
+Dev (`protocol/dev-*`) do nhóm tự dựng theo quy tắc IS21 (seed 21): `audio.tsv` trỏ tới `datasets/original/LibriSpeech/dev-*` (cần tải audio dev từ openslr).
 
 ## 6. Việc còn mở
 1. Cần GPU để chạy `run_qwen3asr.py` (máy hiện tại không có GPU).

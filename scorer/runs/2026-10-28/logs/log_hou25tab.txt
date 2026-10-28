@@ -1,0 +1,530 @@
++ G='python /work/go.py'
++ L=/work/libri/LibriSpeech
++ S='test-clean test-other'
++ '[' -d /work/libri/LibriSpeech/test-other ']'
++ cd /work/code/scorer
++ python -m data.fetch_libri_hf --libri /work/libri/LibriSpeech --splits test-clean test-other
+Fetching 1 files:   0%|          | 0/1 [00:00<?, ?it/s]Fetching 1 files: 100%|██████████| 1/1 [02:23<00:00, 143.37s/it]Fetching 1 files: 100%|██████████| 1/1 [02:23<00:00, 143.37s/it]
+test-clean: 2620 câu
+Fetching 1 files:   0%|          | 0/1 [00:00<?, ?it/s]Fetching 1 files: 100%|██████████| 1/1 [06:23<00:00, 383.24s/it]Fetching 1 files: 100%|██████████| 1/1 [06:23<00:00, 383.24s/it]
+test-other: 2939 câu
++ cd /work/code/scorer
++ for s in $S
++ python /work/go.py -m inference.rank --ckpt work/ckpt/pmaxsim/best.pt --name pmaxsim --split test-clean --libri /work/libri/LibriSpeech --lists N100 N500 N1000 N2000
+W1028 03:55:42.371000 809 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 03:55:42.656000 809 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2620  tầng1 0ms/câu  tầng2 27ms/câu
+32/2620  tầng1 0ms/câu  tầng2 16ms/câu
+48/2620  tầng1 0ms/câu  tầng2 13ms/câu
+64/2620  tầng1 0ms/câu  tầng2 11ms/câu
+80/2620  tầng1 0ms/câu  tầng2 10ms/câu
+96/2620  tầng1 0ms/câu  tầng2 9ms/câu
+112/2620  tầng1 0ms/câu  tầng2 9ms/câu
+128/2620  tầng1 0ms/câu  tầng2 8ms/câu
+144/2620  tầng1 0ms/câu  tầng2 8ms/câu
+160/2620  tầng1 0ms/câu  tầng2 8ms/câu
+176/2620  tầng1 0ms/câu  tầng2 8ms/câu
+192/2620  tầng1 0ms/câu  tầng2 7ms/câu
+208/2620  tầng1 0ms/câu  tầng2 7ms/câu
+224/2620  tầng1 0ms/câu  tầng2 7ms/câu
+240/2620  tầng1 0ms/câu  tầng2 7ms/câu
+256/2620  tầng1 0ms/câu  tầng2 7ms/câu
+272/2620  tầng1 0ms/câu  tầng2 7ms/câu
+288/2620  tầng1 0ms/câu  tầng2 7ms/câu
+304/2620  tầng1 0ms/câu  tầng2 7ms/câu
+320/2620  tầng1 0ms/câu  tầng2 7ms/câu
+336/2620  tầng1 0ms/câu  tầng2 7ms/câu
+352/2620  tầng1 0ms/câu  tầng2 7ms/câu
+368/2620  tầng1 0ms/câu  tầng2 7ms/câu
+384/2620  tầng1 0ms/câu  tầng2 7ms/câu
+400/2620  tầng1 0ms/câu  tầng2 7ms/câu
+416/2620  tầng1 0ms/câu  tầng2 7ms/câu
+432/2620  tầng1 0ms/câu  tầng2 6ms/câu
+448/2620  tầng1 0ms/câu  tầng2 6ms/câu
+464/2620  tầng1 0ms/câu  tầng2 6ms/câu
+480/2620  tầng1 0ms/câu  tầng2 6ms/câu
+496/2620  tầng1 0ms/câu  tầng2 6ms/câu
+512/2620  tầng1 0ms/câu  tầng2 6ms/câu
+528/2620  tầng1 0ms/câu  tầng2 6ms/câu
+544/2620  tầng1 0ms/câu  tầng2 6ms/câu
+560/2620  tầng1 0ms/câu  tầng2 6ms/câu
+576/2620  tầng1 0ms/câu  tầng2 6ms/câu
+592/2620  tầng1 0ms/câu  tầng2 6ms/câu
+608/2620  tầng1 0ms/câu  tầng2 6ms/câu
+624/2620  tầng1 0ms/câu  tầng2 6ms/câu
+640/2620  tầng1 0ms/câu  tầng2 6ms/câu
+656/2620  tầng1 0ms/câu  tầng2 6ms/câu
+672/2620  tầng1 0ms/câu  tầng2 6ms/câu
+688/2620  tầng1 0ms/câu  tầng2 6ms/câu
+704/2620  tầng1 0ms/câu  tầng2 6ms/câu
+720/2620  tầng1 0ms/câu  tầng2 6ms/câu
+736/2620  tầng1 0ms/câu  tầng2 6ms/câu
+752/2620  tầng1 0ms/câu  tầng2 6ms/câu
+768/2620  tầng1 0ms/câu  tầng2 6ms/câu
+784/2620  tầng1 0ms/câu  tầng2 6ms/câu
+800/2620  tầng1 0ms/câu  tầng2 6ms/câu
+816/2620  tầng1 0ms/câu  tầng2 6ms/câu
+832/2620  tầng1 0ms/câu  tầng2 6ms/câu
+848/2620  tầng1 0ms/câu  tầng2 6ms/câu
+864/2620  tầng1 0ms/câu  tầng2 6ms/câu
+880/2620  tầng1 0ms/câu  tầng2 6ms/câu
+896/2620  tầng1 0ms/câu  tầng2 6ms/câu
+912/2620  tầng1 0ms/câu  tầng2 6ms/câu
+928/2620  tầng1 0ms/câu  tầng2 6ms/câu
+944/2620  tầng1 0ms/câu  tầng2 6ms/câu
+960/2620  tầng1 0ms/câu  tầng2 6ms/câu
+976/2620  tầng1 0ms/câu  tầng2 6ms/câu
+992/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1008/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1024/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1040/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1056/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1072/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1088/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1104/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1120/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1136/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1152/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1168/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1184/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1200/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1216/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1232/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1248/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1264/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1280/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1296/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1312/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1328/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1344/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1360/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1376/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1392/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1408/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1424/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1440/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1456/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1472/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1488/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1504/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1520/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1536/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1552/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1568/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1584/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1600/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1616/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1632/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1648/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1664/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1680/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1696/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1712/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1728/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1744/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1760/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1776/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1792/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1808/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1824/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1840/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1856/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1872/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1888/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1904/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1920/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1936/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1952/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1968/2620  tầng1 0ms/câu  tầng2 6ms/câu
+1984/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2000/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2016/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2032/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2048/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2064/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2080/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2096/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2112/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2128/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2144/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2160/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2176/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2192/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2208/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2224/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2240/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2256/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2272/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2288/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2304/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2320/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2336/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2352/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2368/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2384/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2400/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2416/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2432/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2448/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2464/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2480/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2496/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2512/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2528/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2544/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2560/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2576/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2592/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2608/2620  tầng1 0ms/câu  tầng2 6ms/câu
+2620/2620  tầng1 0ms/câu  tầng2 6ms/câu
+N100 p≥0.5: trung bình 2.1 từ/câu, 660 câu rỗng
+N500 p≥0.5: trung bình 2.2 từ/câu, 640 câu rỗng
+N1000 p≥0.5: trung bình 2.4 từ/câu, 602 câu rỗng
+N2000 p≥0.5: trung bình 2.6 từ/câu, 546 câu rỗng
+xong test-clean: 2620 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ for s in $S
++ python /work/go.py -m inference.rank --ckpt work/ckpt/pmaxsim/best.pt --name pmaxsim --split test-other --libri /work/libri/LibriSpeech --lists N100 N500 N1000 N2000
+W1028 03:59:05.158000 991 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 03:59:05.205000 991 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2939  tầng1 0ms/câu  tầng2 13ms/câu
+32/2939  tầng1 0ms/câu  tầng2 9ms/câu
+48/2939  tầng1 0ms/câu  tầng2 8ms/câu
+64/2939  tầng1 0ms/câu  tầng2 7ms/câu
+80/2939  tầng1 0ms/câu  tầng2 7ms/câu
+96/2939  tầng1 0ms/câu  tầng2 7ms/câu
+112/2939  tầng1 0ms/câu  tầng2 7ms/câu
+128/2939  tầng1 0ms/câu  tầng2 6ms/câu
+144/2939  tầng1 0ms/câu  tầng2 6ms/câu
+160/2939  tầng1 0ms/câu  tầng2 6ms/câu
+176/2939  tầng1 0ms/câu  tầng2 6ms/câu
+192/2939  tầng1 0ms/câu  tầng2 6ms/câu
+208/2939  tầng1 0ms/câu  tầng2 6ms/câu
+224/2939  tầng1 0ms/câu  tầng2 6ms/câu
+240/2939  tầng1 0ms/câu  tầng2 6ms/câu
+256/2939  tầng1 0ms/câu  tầng2 6ms/câu
+272/2939  tầng1 0ms/câu  tầng2 6ms/câu
+288/2939  tầng1 0ms/câu  tầng2 6ms/câu
+304/2939  tầng1 0ms/câu  tầng2 6ms/câu
+320/2939  tầng1 0ms/câu  tầng2 6ms/câu
+336/2939  tầng1 0ms/câu  tầng2 6ms/câu
+352/2939  tầng1 0ms/câu  tầng2 6ms/câu
+368/2939  tầng1 0ms/câu  tầng2 5ms/câu
+384/2939  tầng1 0ms/câu  tầng2 5ms/câu
+400/2939  tầng1 0ms/câu  tầng2 5ms/câu
+416/2939  tầng1 0ms/câu  tầng2 5ms/câu
+432/2939  tầng1 0ms/câu  tầng2 5ms/câu
+448/2939  tầng1 0ms/câu  tầng2 5ms/câu
+464/2939  tầng1 0ms/câu  tầng2 5ms/câu
+480/2939  tầng1 0ms/câu  tầng2 5ms/câu
+496/2939  tầng1 0ms/câu  tầng2 5ms/câu
+512/2939  tầng1 0ms/câu  tầng2 5ms/câu
+528/2939  tầng1 0ms/câu  tầng2 5ms/câu
+544/2939  tầng1 0ms/câu  tầng2 5ms/câu
+560/2939  tầng1 0ms/câu  tầng2 5ms/câu
+576/2939  tầng1 0ms/câu  tầng2 5ms/câu
+592/2939  tầng1 0ms/câu  tầng2 5ms/câu
+608/2939  tầng1 0ms/câu  tầng2 5ms/câu
+624/2939  tầng1 0ms/câu  tầng2 5ms/câu
+640/2939  tầng1 0ms/câu  tầng2 5ms/câu
+656/2939  tầng1 0ms/câu  tầng2 5ms/câu
+672/2939  tầng1 0ms/câu  tầng2 5ms/câu
+688/2939  tầng1 0ms/câu  tầng2 5ms/câu
+704/2939  tầng1 0ms/câu  tầng2 5ms/câu
+720/2939  tầng1 0ms/câu  tầng2 5ms/câu
+736/2939  tầng1 0ms/câu  tầng2 4ms/câu
+752/2939  tầng1 0ms/câu  tầng2 4ms/câu
+768/2939  tầng1 0ms/câu  tầng2 4ms/câu
+784/2939  tầng1 0ms/câu  tầng2 4ms/câu
+800/2939  tầng1 0ms/câu  tầng2 4ms/câu
+816/2939  tầng1 0ms/câu  tầng2 4ms/câu
+832/2939  tầng1 0ms/câu  tầng2 4ms/câu
+848/2939  tầng1 0ms/câu  tầng2 4ms/câu
+864/2939  tầng1 0ms/câu  tầng2 4ms/câu
+880/2939  tầng1 0ms/câu  tầng2 4ms/câu
+896/2939  tầng1 0ms/câu  tầng2 4ms/câu
+912/2939  tầng1 0ms/câu  tầng2 4ms/câu
+928/2939  tầng1 0ms/câu  tầng2 4ms/câu
+944/2939  tầng1 0ms/câu  tầng2 4ms/câu
+960/2939  tầng1 0ms/câu  tầng2 4ms/câu
+976/2939  tầng1 0ms/câu  tầng2 4ms/câu
+992/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1008/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1024/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1040/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1056/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1072/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1088/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1104/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1120/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1136/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1152/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1168/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1184/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1200/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1216/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1232/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1248/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1264/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1280/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1296/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1312/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1328/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1344/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1360/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1376/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1392/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1408/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1424/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1440/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1456/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1472/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1488/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1504/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1520/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1536/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1552/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1568/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1584/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1600/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1616/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1632/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1648/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1664/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1680/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1696/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1712/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1728/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1744/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1760/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1776/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1792/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1808/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1824/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1840/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1856/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1872/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1888/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1904/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1920/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1936/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1952/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1968/2939  tầng1 0ms/câu  tầng2 4ms/câu
+1984/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2000/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2016/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2032/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2048/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2064/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2080/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2096/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2112/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2128/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2144/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2160/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2176/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2192/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2208/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2224/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2240/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2256/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2272/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2288/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2304/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2320/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2336/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2352/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2368/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2384/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2400/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2416/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2432/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2448/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2464/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2480/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2496/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2512/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2528/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2544/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2560/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2576/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2592/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2608/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2624/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2640/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2656/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2672/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2688/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2704/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2720/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2736/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2752/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2768/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2784/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2800/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2816/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2832/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2848/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2864/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2880/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2896/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2912/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2928/2939  tầng1 0ms/câu  tầng2 4ms/câu
+2939/2939  tầng1 0ms/câu  tầng2 4ms/câu
+N100 p≥0.5: trung bình 1.7 từ/câu, 861 câu rỗng
+N500 p≥0.5: trung bình 1.8 từ/câu, 801 câu rỗng
+N1000 p≥0.5: trung bình 2.0 từ/câu, 730 câu rỗng
+N2000 p≥0.5: trung bình 2.3 từ/câu, 631 câu rỗng
+xong test-other: 2939 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ cd /work/code/bench
++ w --ctx pxattn_N100 pxattn_N100_p0.5 pxattn_N2000 pxattn_N2000_p0.5
++ for s in $S
++ python /work/go.py run_whisper.py --split test-clean --ctx pxattn_N100 pxattn_N100_p0.5 pxattn_N2000 pxattn_N2000_p0.5
+W1028 04:02:07.666000 1111 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 04:02:08.056000 1111 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong pxattn_N100: 2620 câu, 562s
+xong pxattn_N100_p0.5: 2620 câu, 714s
+xong pxattn_N2000: 2620 câu, 829s
+xong pxattn_N2000_p0.5: 2620 câu, 814s
++ for s in $S
++ python /work/go.py run_whisper.py --split test-other --ctx pxattn_N100 pxattn_N100_p0.5 pxattn_N2000 pxattn_N2000_p0.5
+W1028 05:11:16.249000 1552 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 05:11:16.450000 1552 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong pxattn_N100: 2939 câu, 547s
+xong pxattn_N100_p0.5: 2939 câu, 554s
+xong pxattn_N2000: 2939 câu, 536s
+xong pxattn_N2000_p0.5: 2939 câu, 516s
++ w --ctx pxattn_N500 pxattn_N500_p0.5 pxattn_N1000 pxattn_N1000_p0.5
++ for s in $S
++ python /work/go.py run_whisper.py --split test-clean --ctx pxattn_N500 pxattn_N500_p0.5 pxattn_N1000 pxattn_N1000_p0.5
+W1028 05:47:25.361000 1760 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 05:47:25.524000 1760 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong pxattn_N500: 2620 câu, 499s
+xong pxattn_N500_p0.5: 2620 câu, 525s
+xong pxattn_N1000: 2620 câu, 516s
+xong pxattn_N1000_p0.5: 2620 câu, 546s
++ for s in $S
++ python /work/go.py run_whisper.py --split test-other --ctx pxattn_N500 pxattn_N500_p0.5 pxattn_N1000 pxattn_N1000_p0.5
+W1028 06:22:28.797000 1941 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 06:22:29.129000 1941 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong pxattn_N500: 2939 câu, 538s
+xong pxattn_N500_p0.5: 2939 câu, 540s
+xong pxattn_N1000: 2939 câu, 542s
+xong pxattn_N1000_p0.5: 2939 câu, 542s
++ w --ctx N500 N1000
++ for s in $S
++ python /work/go.py run_whisper.py --split test-clean --ctx N500 N1000
+W1028 06:58:44.933000 2161 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 06:58:45.125000 2161 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong N500: 2620 câu, 735s
+xong N1000: 2620 câu, 960s
++ for s in $S
++ python /work/go.py run_whisper.py --split test-other --ctx N500 N1000
+W1028 07:27:14.668000 2353 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 07:27:14.851000 2353 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong N500: 2939 câu, 785s
+xong N1000: 2939 câu, 1064s
++ w --ctx oracle
++ for s in $S
++ python /work/go.py run_whisper.py --split test-clean --ctx oracle
+W1028 07:58:19.556000 2558 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 07:58:19.923000 2558 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong oracle: 2620 câu, 527s
++ for s in $S
++ python /work/go.py run_whisper.py --split test-other --ctx oracle
+W1028 08:07:21.360000 2879 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 08:07:21.560000 2879 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong oracle: 2939 câu, 528s
++ w --ctx N100 pxattn_N100_p0.5 --prompt spoken --tag _spoken
++ for s in $S
++ python /work/go.py run_whisper.py --split test-clean --ctx N100 pxattn_N100_p0.5 --prompt spoken --tag _spoken
+W1028 08:16:22.883000 3043 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 08:16:23.089000 3043 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong N100: 2620 câu, 712s
+xong pxattn_N100_p0.5: 2620 câu, 807s
++ for s in $S
++ python /work/go.py run_whisper.py --split test-other --ctx N100 pxattn_N100_p0.5 --prompt spoken --tag _spoken
+W1028 08:41:58.082000 3234 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 08:41:58.388000 3234 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong N100: 2939 câu, 922s
+xong pxattn_N100_p0.5: 2939 câu, 858s
++ w --ctx pmaxsim_N100 pmaxsim_N100_p0.5 pmaxsim_N2000 pmaxsim_N2000_p0.5
++ for s in $S
++ python /work/go.py run_whisper.py --split test-clean --ctx pmaxsim_N100 pmaxsim_N100_p0.5 pmaxsim_N2000 pmaxsim_N2000_p0.5
+W1028 09:11:53.478000 3438 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 09:11:53.901000 3438 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong pmaxsim_N100: 2620 câu, 788s
+xong pmaxsim_N100_p0.5: 2620 câu, 569s
+xong pmaxsim_N2000: 2620 câu, 497s
+xong pmaxsim_N2000_p0.5: 2620 câu, 496s
++ for s in $S
++ python /work/go.py run_whisper.py --split test-other --ctx pmaxsim_N100 pmaxsim_N100_p0.5 pmaxsim_N2000 pmaxsim_N2000_p0.5
+W1028 09:51:17.438000 3666 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 09:51:17.640000 3666 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong pmaxsim_N100: 2939 câu, 625s
+xong pmaxsim_N100_p0.5: 2939 câu, 683s
+xong pmaxsim_N2000: 2939 câu, 875s
+xong pmaxsim_N2000_p0.5: 2939 câu, 918s
++ w --ctx pmaxsim_N500 pmaxsim_N500_p0.5 pmaxsim_N1000 pmaxsim_N1000_p0.5
++ for s in $S
++ python /work/go.py run_whisper.py --split test-clean --ctx pmaxsim_N500 pmaxsim_N500_p0.5 pmaxsim_N1000 pmaxsim_N1000_p0.5
+W1028 10:43:11.100000 3860 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 10:43:11.318000 3860 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong pmaxsim_N500: 2620 câu, 815s
+xong pmaxsim_N500_p0.5: 2620 câu, 824s
+xong pmaxsim_N1000: 2620 câu, 831s
+xong pmaxsim_N1000_p0.5: 2620 câu, 846s
++ for s in $S
++ python /work/go.py run_whisper.py --split test-other --ctx pmaxsim_N500 pmaxsim_N500_p0.5 pmaxsim_N1000 pmaxsim_N1000_p0.5
+W1028 11:38:41.670000 3994 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 11:38:41.866000 3994 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong pmaxsim_N500: 2939 câu, 834s
+xong pmaxsim_N500_p0.5: 2939 câu, 876s
+xong pmaxsim_N1000: 2939 câu, 870s
+xong pmaxsim_N1000_p0.5: 2939 câu, 855s
++ w --ctx pmaxsim_N100_p0.5 --prompt spoken --tag _spoken
++ for s in $S
++ python /work/go.py run_whisper.py --split test-clean --ctx pmaxsim_N100_p0.5 --prompt spoken --tag _spoken
+W1028 12:36:10.919000 4128 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 12:36:11.159000 4128 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong pmaxsim_N100_p0.5: 2620 câu, 752s
++ for s in $S
++ python /work/go.py run_whisper.py --split test-other --ctx pmaxsim_N100_p0.5 --prompt spoken --tag _spoken
+W1028 12:48:56.990000 4262 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 12:48:57.180000 4262 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+xong pmaxsim_N100_p0.5: 2939 câu, 861s
++ echo ALL_DONE
+ALL_DONE

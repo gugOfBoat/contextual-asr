@@ -1,0 +1,258 @@
+## test-other pmaxsim N2000 — Recall#10
+all                       95.43  (n=5248)
+phone_len / 4-5           95.01  (n=1765)
+phone_len / 6-8           96.90  (n=2287)
+phone_len / ≤3            87.16  (n=475)
+phone_len / ≥9            97.23  (n=721)
+qwen_pass1 / sai          81.86  (n=871)
+qwen_pass1 / đúng         98.13  (n=4377)
+utt_len / 11-30           96.22  (n=2671)
+utt_len / >30             93.82  (n=1764)
+utt_len / ≤10             96.31  (n=813)
+từ sai trong top-10: 1990
+  khác                                           48.6%
+  từ đúng khác (list không có / chiếm chỗ)       35.4%
+  giống cụm 1-3 từ thường trong câu (d ≤ 1/3)     8.0%
+  khớp 1 đoạn âm bất kỳ của câu, lệch ranh giới từ (d ≤ 1/3)   4.5%
+  giống từ đúng (d ≤ 1/3)                         3.4%
+{'miss': 240, 'miss_trong_top50': 158, 'miss_điểm<0.3': 184, 'từ_hạng10_điểm≥0.3': 141, 'miss_vì_nhiều_hơn_K_từ_đúng': 6}
+
+533-131562-0001
+  REF the keys of your cabinet desk drawers and whatever else you possess said he rising and holding out his hand
+  HYP the keys of your cabinet desk drawer and whatever else you possess said he rising and holding out his hand
+  rớt ['drawers']
+  top [('cabinet', 0.9), ('keers', 0.74), ('arising', 0.62), ('drysalter', 0.44), ('dummerar', 0.41), ('disarmer', 0.38)]
+
+367-130732-0026
+  REF take thirty crawfish from which remove the gut containing the gall in the following manner take firm hold of the crawfish with the left hand so as to avoid being pinched by its claws with the thumb and forefinger of the right hand pinch the extreme end of the central fin of the tail and with a sudden jerk the gut will be withdrawn
+  HYP take thirty crawfish from which remove the gut containing the gall in the following manner take firm hold of the crawfish with the left hand so as to avoid being pinched by its claws with the thumb and forefinger of the right hand pinch the extreme end of the central fin of the tail and with a sudden jerk the gut will be withdrawn
+  rớt ['jerk']
+  top [('crawfish', 0.93), ('withdrawn', 0.84), ('gall', 0.84), ('pinch', 0.82), ('pinched', 0.81), ('forefinger', 0.81)]
+
+2609-157645-0007
+  REF one sunday says mister ditchfield he had an extra pipe and joshua the clerk told him that the people were getting impatient
+  HYP one sunday says mister ditchfield he had a natcher pipe and joshua the clerk told him that the people were getting impatient
+  rớt ['joshua']
+  top [('ditchfield', 0.7), ('aedh', 0.6), ('jostle', 0.59), ('bitte', 0.49), ('degenfeld', 0.49), ('pipal', 0.48)]
+
+7975-280076-0002
+  REF this raid was accompanied by bloodshed judge mc lain the banker being shot though not fatally
+  HYP this raid was accompanied by bloodshed judge mclean the banker being shot though not fatally
+  rớt ['lain']
+  top [('fatally', 0.88), ('raid', 0.87), ('bloodshed', 0.87), ('banker', 0.77), ('rared', 0.38), ('retrograde', 0.35)]
+
+4294-14317-0014
+  REF i am willing to enter into competition with the ancients and feel able to surpass them for since those early days in which i made the medals of pope clement i have learned so much that i can now produce far better pieces of the kind i think i can also outdo the coins i struck for duke alessandro which are still held in high esteem in like manner i could make for you large pieces of gold and silver plate as i did so often for that noble monarch king francis of france thanks to the great conveniences he allowed me without ever losing time for the execution of colossal statues or other works of the sculptors craft
+  HYP i am willing to enter into competition with the ancients and feel able to surpass them for since those early days in which i made the medals of pope clement i have learned so much that i can now produce far better pieces of the kind i think i can also outdo the coins i struck for duke alessandro which are still held in high esteem in like manner i could make for you large pieces of gold and silver plate as i did so often for that noble monarch king francis of france thanks to the great conveniences he allowed me without ever losing time for the execution of colossal statues or other works of the sculptor's craft
+  rớt ['alessandro', 'colossal', 'sculptors', 'statues']
+  top [('clement', 0.91), ('competition', 0.9), ('surpass', 0.9), ('conveniences', 0.88), ('monarch', 0.84), ('ancients', 0.84)]
+
+1998-29455-0033
+  REF see that bloke just now said mister beale yuss said dickie
+  HYP see that bloke just now said mister beale yes said diggy
+  rớt ['yuss']
+  top [('beale', 0.89), ('bloke', 0.84), ('dickie', 0.84), ('snowed', 0.46), ('ci', 0.44), ('beville', 0.35)]
+
+8461-278226-0001
+  REF she meant to be scrupulously conscientious in the administration of her talents and sometimes at church on a sunday when the sermon was particularly awakening she mentally debated the serious question as to whether new bonnets and a pair of jouvin's gloves daily were not sinful but i think she decided that the new bonnets and gloves were on the whole a pardonable weakness as being good for trade
+  HYP she meant to be scrupulously conscientious in the administration of her talents and sometimes at church on a sunday when the sermon was particularly awakening she mentally debated the serious question as to whether new bonnets and a pair of joubane's gloves daily were not sinful but i think she decided that the new bonnets and gloves were on the whole a pardonable weakness as being good for trade
+  rớt ['pardonable']
+  top [('mentally', 0.89), ('scrupulously', 0.88), ('conscientious', 0.86), ('awakening', 0.85), ('debated', 0.84), ('sermon', 0.83)]
+
+8280-266249-0039
+  REF that fellow nick ward is a noted blackleg and ruffian had his nose broken in a fight and is sensitive on the subject was cheating of course
+  HYP that fellow nick ward is a noted blackleg and ruffian had his nose broken in a fight and is sensitive on the subject was cheating of course
+  rớt ['blackleg']
+  top [('ruffian', 0.93), ('ward', 0.92), ('cheating', 0.85), ('knick', 0.78), ('nick', 0.78), ("wall'd", 0.57)]
+
+5484-24318-0037
+  REF honour to myrtilus and his art but he trusted this noble festal assemblage would pardon the unintentional deception and aid his prayer for recovery
+  HYP honour to myrtalus and his art but he trusted the noble feastal assemblage would pardon the unintentional deception and aid his prayer for recovery
+  rớt ['festal']
+  top [('assemblage', 0.95), ('myrtilus', 0.91), ('unintentional', 0.9), ('deception', 0.88), ('recovery', 0.76), ('harned', 0.47)]
+
+533-131556-0003
+  REF i sometimes think i ought to give him credit for the good feeling he simulates so well and then again i think it is my duty to suspect him under the peculiar circumstances in which i am placed
+  HYP i sometimes think i ought to give him credit for the good feeling he simulates so well and then again i think it is my duty to suspect him under the peculiar circumstances in which i am placed
+  rớt ['simulates']
+  top [('arithmeticians', 0.39), ('smelting', 0.34), ('samoyed', 0.33), ('procurer', 0.32), ('systematization', 0.32), ('creddle', 0.28)]
+
+2609-156975-0036
+  REF the wilderness with its lurking foes and the ever present dread of hunger and thirst deepened his sense of need and of dependence upon a power able to guide the destinies of men
+  HYP the wilderness with its lurking foes and the ever present dread of hunger and thirst deepens his sense of need and of dependence upon a power able to guide the desperate men
+  rớt ['destinies']
+  top [('dependence', 0.92), ('foes', 0.82), ('lurking', 0.81), ('deepened', 0.73), ('rudiments', 0.61), ('stroking', 0.56)]
+
+5484-24318-0029
+  REF his heart contracted painfully and his solicitude about his uncle's fate increased when philippus informed him that the conspirators had been arrested at the banquet and headed by amyntas the rhodian chrysippus and proclus had perished by the executioner's sword at sunrise
+  HYP his heart contracted painfully and his solicitude about his uncle's fate increased when philippus informed him that the conspirators had been arrested at the banquet and headed by amyntas the rhodian chrysippus and proclus had perished by the executioner's sword at sunrise
+  rớt ['amyntas', 'perished', 'solicitude', 'sunrise']
+  top [('chrysippus', 0.94), ('rhodian', 0.92), ("executioner's", 0.89), ('proclus', 0.89), ("uncle's", 0.89), ('banquet', 0.88)]
+## test-other pxattn N2000 — Recall#10
+all                       92.99  (n=5248)
+phone_len / 4-5           92.80  (n=1765)
+phone_len / 6-8           93.57  (n=2287)
+phone_len / ≤3            87.37  (n=475)
+phone_len / ≥9            95.28  (n=721)
+qwen_pass1 / sai          77.96  (n=871)
+qwen_pass1 / đúng         95.98  (n=4377)
+utt_len / 11-30           94.87  (n=2671)
+utt_len / >30             89.85  (n=1764)
+utt_len / ≤10             93.60  (n=813)
+từ sai trong top-10: 2910
+  khác                                           52.0%
+  từ đúng khác (list không có / chiếm chỗ)       30.4%
+  giống cụm 1-3 từ thường trong câu (d ≤ 1/3)     8.8%
+  khớp 1 đoạn âm bất kỳ của câu, lệch ranh giới từ (d ≤ 1/3)   7.2%
+  giống từ đúng (d ≤ 1/3)                         1.6%
+{'miss': 368, 'miss_trong_top50': 248, 'miss_điểm<0.3': 312, 'từ_hạng10_điểm≥0.3': 192, 'miss_vì_nhiều_hơn_K_từ_đúng': 3}
+
+533-131562-0001
+  REF the keys of your cabinet desk drawers and whatever else you possess said he rising and holding out his hand
+  HYP the keys of your cabinet desk drawer and whatever else you possess said he rising and holding out his hand
+  rớt ['drawers']
+  top [('arising', 0.97), ('cabinet', 0.96), ('iks', 0.91), ('outguess', 0.73), ('ux', 0.69), ('toussac', 0.64)]
+
+3528-168669-0085
+  REF no one doubts the right of the monastery to sepulture
+  HYP no one doubts the right of the monastery to sepulture
+  rớt ['sepulture']
+  top [('monastery', 0.98), ('sculptural', 0.54), ('cherte', 0.27), ('festally', 0.2), ('shapelier', 0.16), ('chercher', 0.15)]
+
+4198-12281-0009
+  REF to others again he unjointed the spondyles or knuckles of the neck disfigured their chaps gashed their faces made their cheeks hang flapping on their chin and so swinged and balammed them that they fell down before him like hay before a mower
+  HYP to others again he unjointed the spandles or knuckles of the neck disfigured their chaps gashed their faces made their cheeks hang flapping on their chin and so swungd and belamed them that they fell down before him like hay before a mower
+  rớt ['balammed', 'mower', 'spondyles']
+  top [('swinged', 0.97), ('flapping', 0.97), ('unjointed', 0.96), ('knuckles', 0.94), ('disfigured', 0.93), ("chap's", 0.9)]
+
+4198-12281-0008
+  REF hark you my masters you that love the wine cop's body follow me for sanct anthony burn me as freely as a faggot if they get leave to taste one drop of the liquor that will not now come and fight for relief of the vine
+  HYP hark you my masters you that love the wine cop's body follow me for saint anthony burn me as freely as a faggot if they get leave to taste one drop of the liquor that will not now come and fight for relief of the vine
+  rớt ['sanct']
+  top [('anthony', 0.98), ('hark', 0.94), ('faggot', 0.92), ('sene', 0.92), ('vine', 0.85), ('liquor', 0.81)]
+
+6128-63241-0001
+  REF the women he had hitherto known had been mainly of his own soft clime and it was not often they exhibited the tendency he detected and cursorily deplored in missus luna's sister
+  HYP the women he had hitherto known had been mainly of his own soft clime and it was not often they exhibited the tendency he detected and cursorily deplored in missus luna's sister
+  rớt ["luna's"]
+  top [('deplored', 0.97), ('cursorily', 0.94), ('clime', 0.93), ('mainly', 0.93), ('mesurier', 0.86), ('detected', 0.84)]
+
+2414-128292-0008
+  REF also methinketh that after all it hath longer legs than mine
+  HYP also methink it that after all it hath longer legs than mine
+  rớt ['methinketh']
+  top [('mete', 0.81), ('wein', 0.8), ('unique', 0.78), ('imien', 0.66), ('hether', 0.54), ('mem', 0.51)]
+
+6128-63244-0010
+  REF olive chancellor wondered how missus farrinder would treat that branch of the question
+  HYP oliver chancellor wondered how missus farinder would treat that branch of the question
+  rớt ['farrinder']
+  top [('chancellor', 0.95), ('unworded', 0.87), ('cancelliere', 0.84), ('olive', 0.77), ('altimeter', 0.4), ('sojourned', 0.38)]
+
+8188-269288-0050
+  REF certainly said leslie
+  HYP certainly said leslie
+  rớt ['leslie']
+  top [('lieues', 0.68), ('zitidars', 0.68), ('socially', 0.49), ('dayes', 0.47), ('strengthening', 0.46), ('ayes', 0.35)]
+
+2033-164914-0021
+  REF we will do thee no upright o my son nor wrong thee in aught but our object is that thou bend thy gracious steps with me to my mistress to receive her answer and return in weal and safety and thou shalt have a handsome present as one who bringeth good news
+  HYP we will do thee no upright o my son nor wrong thee in aught but our object is that thou bend thy gracious steps with me to my mistress to receive her answer and return in weal and safety and thou shalt have a handsome present as one who bringeth good news
+  rớt ['bringeth']
+  top [('weal', 0.92), ("step's", 0.85), ('receve', 0.74), ('reiterate', 0.4), ("right'", 0.33), ('hedwige', 0.25)]
+
+1688-142285-0074
+  REF i'll go to bed it's best place but catching at margaret's gown yo'll come again i know yo will but just say it
+  HYP i'll go to bed it's best place but catching at margaret's gown you'll come again i know you will but just say it
+  rớt ["yo'll"]
+  top [("margaret's", 0.92), ('caching', 0.89), ('arl', 0.64), ('sayne', 0.45), ('es', 0.43), ('enow', 0.2)]
+
+6128-63241-0000
+  REF poor ransom announced this fact to himself as if he had made a great discovery but in reality he had never been so boeotian as at that moment
+  HYP poor ransom announced this fact to himself as if he had made a great discovery but in reality he had never been so boishin as at that moment
+  rớt ['boeotian']
+  top [('ransom', 0.96), ('himselve', 0.6), ('coached', 0.22), ("mahmud's", 0.08), ("somep'm", 0.07), ('mommsen', 0.06)]
+
+6432-63722-0037
+  REF and a close observer might have observed that he did not touch his bare fingers to the timepiece but poked it about and touched it here and there with the end of a leadpencil
+  HYP and a close observer might have observed that he did not touch his bare fingers to the timepiece but poked it about and touched it here and there with the end of a lead pencil
+  rớt ['leadpencil']
+  top [('timepiece', 0.97), ('poked', 0.93), ('observer', 0.92), ('lel', 0.74), ("en't", 0.26), ("l'", 0.22)]
+## test-clean pmaxsim N2000 — Recall#10
+all                       97.26  (n=5692)
+phone_len / 4-5           97.29  (n=1736)
+phone_len / 6-8           98.08  (n=2602)
+phone_len / ≤3            90.65  (n=321)
+phone_len / ≥9            97.19  (n=1033)
+qwen_pass1 / sai          83.15  (n=451)
+qwen_pass1 / đúng         98.47  (n=5241)
+utt_len / 11-30           98.46  (n=2656)
+utt_len / >30             95.75  (n=2497)
+utt_len / ≤10             98.33  (n=539)
+từ sai trong top-10: 1100
+  từ đúng khác (list không có / chiếm chỗ)       55.4%
+  khác                                           31.5%
+  giống cụm 1-3 từ thường trong câu (d ≤ 1/3)     5.2%
+  giống từ đúng (d ≤ 1/3)                         4.5%
+  khớp 1 đoạn âm bất kỳ của câu, lệch ranh giới từ (d ≤ 1/3)   3.5%
+{'miss': 156, 'miss_trong_top50': 128, 'miss_điểm<0.3': 75, 'từ_hạng10_điểm≥0.3': 115, 'miss_vì_nhiều_hơn_K_từ_đúng': 22}
+
+1320-122617-0018
+  REF it was silent and gloomy being tenanted solely by the captive and lighted by the dying embers of a fire which had been used for the purposed of cookery
+  HYP it was silent and gloomy being tenanted solely by the captive and lighted by the dying embers of a fire which had been used for the purpose of cookery
+  rớt ['purposed']
+  top [('tenanted', 0.93), ('cookery', 0.9), ('captive', 0.86), ('solely', 0.82), ('embers', 0.8), ('gleamy', 0.79)]
+
+1188-133604-0002
+  REF by being studious of color they are studious of division and while the chiaroscurist devotes himself to the representation of degrees of force in one thing unseparated light the colorists have for their function the attainment of beauty by arrangement of the divisions of light
+  HYP by being studious of color they are studious of division and while the chiaroscuroist devotes himself to the representation of degrees of force in one thing unseparated light the colorists have for their function the attainment of beauty by arrangement of the divisions of light
+  rớt ['chiaroscurist']
+  top [('studious', 0.93), ('unseparated', 0.9), ('attainment', 0.9), ('colorists', 0.89), ('function', 0.86), ('representation', 0.86)]
+
+1995-1836-0004
+  REF as she awaited her guests she surveyed the table with both satisfaction and disquietude for her social functions were few tonight there were she checked them off on her fingers sir james creighton the rich english manufacturer and lady creighton mister and missus vanderpool mister harry cresswell and his sister john taylor and his sister and mister charles smith whom the evening papers mentioned as likely to be united states senator from new jersey a selection of guests that had been determined unknown to the hostess by the meeting of cotton interests earlier in the day
+  HYP as she awaited her guests she surveyed the table with both satisfaction and disquietude for her social functions were few tonight there were she checked them off on her fingers sir james crichton the rich english manufacturer and lady crichton mister and missus vanderpool mister harry cresswell and his sister john taylor and his sister and mister charles smith whom the evening papers mentioned as likely to be united states senator from new jersey a selection of guests that had been determined unknown to the hostess by the meeting of cotton interests earlier in the day
+  rớt ['disquietude', 'hostess']
+  top [('cresswell', 0.94), ('vanderpool', 0.92), ('functions', 0.88), ('surveyed', 0.85), ('selection', 0.84), ('jersey', 0.84)]
+
+8555-284449-0003
+  REF when the blueskins saw ghip ghisizzle they raised another great shout for he was the favorite of the soldiers and very popular with all the people
+  HYP when the blueskins saw gitka sizzle they raised another great shout for he was the favorite of the soldiers and very popular with all the people
+  rớt ['ghisizzle']
+  top [('ghip', 0.59), ('blackened', 0.39), ('blueskins', 0.37), ('geebung', 0.24), ('zuchin', 0.23), ("beacon's", 0.23)]
+
+1284-134647-0005
+  REF they asserted with confidence and almost with exultation that the apostolical succession was interrupted that all the bishops of europe and asia were infected by the contagion of guilt and schism and that the prerogatives of the catholic church were confined to the chosen portion of the african believers who alone had preserved inviolate the integrity of their faith and discipline
+  HYP they asserted with confidence and almost with exultation that the apostolical succession was interrupted that all the bishops of europe and asia were infected by the contagion of guilt and schism and that the prerogatives of the catholic church were confined to the chosen portion of the african believers who alone had preserved inviolate the integrity of their faith and discipline
+  rớt ['apostolical', 'prerogatives']
+  top [('inviolate', 0.95), ('infected', 0.92), ('schism', 0.92), ('integrity', 0.92), ('exultation', 0.84), ('contagion', 0.83)]
+
+3570-5696-0003
+  REF a reconciliation between the two conflicting requirements is effected by a resort to make believe many and intricate polite observances and social duties of a ceremonial nature are developed many organizations are founded with some specious object of amelioration embodied in their official style and title there is much coming and going and a deal of talk to the end that the talkers may not have occasion to reflect on what is the effectual economic value of their traffic
+  HYP a reconciliation between the two conflicting requirements is effected by resort to make believe many an intricate polite observances and social duties of a ceremonial nature are developed many organizations are founded with some specious object of amelioration embodied in their official style and title there is much coming and going and a deal of talk to the end that the talkers may not have occasion to reflect on what is the effectual economic value of their traffic
+  rớt ['ceremonial', 'conflicting', 'organizations', 'requirements', 'talkers']
+  top [('observances', 0.94), ('intricate', 0.93), ('traffic', 0.9), ('effectual', 0.89), ('embodied', 0.88), ('resort', 0.88)]
+
+8555-292519-0009
+  REF ho ye sails that seem to wander in dream filled meadows say is the shore where i stand the only field of struggle or are ye hit and battered out there by waves and wind gusts as ye tack over a clashing sea of watery echoes
+  HYP ho ye sails that seem to wander in dream filled meadows say is the shore where i stand the only field of struggle or are ye hit and battered out there by waves and wind gusts as ye tack over a clashing sea of watery echoes
+  rớt ['wander']
+  top [('ho', 0.92), ('watery', 0.91), ('clashing', 0.82), ('gusts', 0.81), ('echoes', 0.8), ('battered', 0.72)]
+
+8555-284449-0018
+  REF so ghip ghisizzle ordered the captain to take a file of soldiers and escort the raving beauties to their new home
+  HYP so gipkasisl ordered the captain to take a file of soldiers and escort the raving beauties to their new home
+  rớt ['ghisizzle']
+  top [('escort', 0.92), ('beauties', 0.87), ("beauty's", 0.87), ('raving', 0.85), ('file', 0.81), ('ghip', 0.53)]
+
+121-123859-0002
+  REF but reckoning time whose million'd accidents creep in twixt vows and change decrees of kings tan sacred beauty blunt the sharp'st intents divert strong minds to the course of altering things alas why fearing of time's tyranny might i not then say now i love you best when i was certain o'er incertainty crowning the present doubting of the rest
+  HYP but reckoning time whose million accidents creep in twixt vows and change decrees of kings tans sacred beauty blunt the sharpest intents diverts strong minds to the course of altering things alas why fearing of time's tyranny might i not then say now i love you best when i was certain or in certainty crowning the present doubting of the rest
+  rớt ['decrees', 'divert', 'doubting', "sharp'st", 'tan', "time's", 'vows']
+  top [('accidents', 0.94), ('crowning', 0.92), ('incertainty', 0.92), ('twixt', 0.91), ('reckoning', 0.88), ('altering', 0.88)]
+
+1089-134691-0025
+  REF a moment before the ghost of the ancient kingdom of the danes had looked forth through the vesture of the hazewrapped city
+  HYP a moment before the ghost of the ancient kingdom of the danes had looked forth through the vesture of the haze wrapped city
+  rớt ['vesture']
+  top [('danes', 0.73), ('hazewrapped', 0.42), ('vivier', 0.29), ('hoys', 0.28), ('headset', 0.24), ("bain's", 0.22)]

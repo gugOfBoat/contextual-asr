@@ -1,6 +1,7 @@
 # Bước tiếp theo: setup thực nghiệm chuẩn để so scorer với Hou25
 
 > Mục đích: biết **scorer của nhóm tốt/kém hơn Hou25 ở đâu** trên **đúng setup của Hou25**, rồi mới quyết hướng cải thiện.
+> **Protocol đánh giá thống nhất (dữ liệu, metric, cách đọc số): `EVAL_PROTOCOL.md`.**
 > Hiện mới so trên Qwen3-ASR, chưa so trên Whisper (ASR Hou25 dùng), và **bản Hou25 tái hiện chưa train** → chưa có so sánh công bằng.
 
 ## 1. Vì sao số hiện tại chưa đủ để kết luận
@@ -35,7 +36,7 @@ Whisper  cả list
 Whisper  hou25 top-50      (paper: 5.4/10.0 · 5.4/10.7 · 5.6/11.3 · 5.8/11.7)
 Whisper  hou25 tái hiện
 Whisper  pxattn top-50 | pxattn ngưỡng
-Qwen     (các hàng tương tự) + PTC-Bias (paper N2000: 4.10/7.76)
+Qwen     (các hàng tương tự) + PTC-Bias (paper N2000, Qwen3-ASR-0.6B: 4.10/7.76)
 ```
 Whisper đã có sẵn 3 hàng nền (`bench/results.md` mục 2): không prompt 9.43/18.92, N100 8.04/13.98, N2000 9.15/18.69 (plain).
 

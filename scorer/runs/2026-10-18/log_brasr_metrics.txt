@@ -1,0 +1,22 @@
+# 18/10 — eval_retrieval.py --phones (Recall_H theo BR-ASR: từ trong list N2000 có Levenshtein âm vị ≤ 2 với từ đúng)
+# scorer: rank_N2000.json đầy đủ (server, chỉ thứ hạng, không điểm → không tính được Recall_B@99); hypmatch: prob top-50 (local)
+### test-other pxattn N2000
+Recall_B#10 92.99 | Recall_B#50 97.71 | K99 132 | N_H 20955 | Recall_H#10 6.14 | Recall_H#50 21.58
+### test-other pmaxsim N2000
+Recall_B#10 95.43 | Recall_B#50 98.44 | K99 147 | N_H 20955 | Recall_H#10 8.55 | Recall_H#50 25.52
+### test-other pcascade N2000
+Recall_B#10 93.90 | Recall_B#50 98.57 | K99 111 | N_H 20955 | Recall_H#10 7.16 | Recall_H#50 25.90
+### test-other hx N2000
+Recall_B#10 24.03 | Recall_B#50 48.95 | K99 n/a | N_H 20955 | Recall_H#10 2.73 | Recall_H#50 11.79
+### test-clean pxattn N2000
+Recall_B#10 96.19 | Recall_B#50 99.17 | K99 37 | N_H 17374 | Recall_H#10 5.81 | Recall_H#50 22.29
+### test-clean pmaxsim N2000
+Recall_B#10 97.26 | Recall_B#50 99.51 | K99 21 | N_H 17374 | Recall_H#10 8.66 | Recall_H#50 26.35
+### test-clean pcascade N2000
+Recall_B#10 96.82 | Recall_B#50 99.56 | K99 21 | N_H 17374 | Recall_H#10 7.08 | Recall_H#50 26.62
+### test-clean hx N2000
+Recall_B#10 26.58 | Recall_B#50 54.15 | K99 n/a | N_H 17374 | Recall_H#10 2.71 | Recall_H#50 11.09
+### test-other hypmatch N2000
+Recall_B#10 92.17 | Recall_B#50 95.41 | N_H 20955 | Recall_H#10 9.35 | Recall_H#50 35.70
+### test-clean hypmatch N2000
+Recall_B#10 95.61 | Recall_B#50 98.23 | N_H 17374 | Recall_H#10 8.87 | Recall_H#50 37.68

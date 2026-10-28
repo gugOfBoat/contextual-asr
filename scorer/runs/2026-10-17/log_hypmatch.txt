@@ -1,0 +1,54 @@
+2620 câu → ../scorer/runs/2026-10-17/out/hypmatch/test-clean/prob_N100.json; 0 lượt từ trong list không có âm vị (bỏ qua)
+### test-clean hypmatch N100
+Recall_B#10 97.94 | Recall_B#50 99.58 | K99 15 | Recall_B@99 11.5 | N_H 36 | Recall_H#10 88.89 | Recall_H#50 100.00
+từ khó: Recall_B#10 80.15 | Recall_B#50 94.36
+@0.8: P 97.1 | R 95.6 | từ/câu 2.14 | rỗng 24.9% | R từ khó 43.9
+@0.9: P 98.8 | R 94.2 | từ/câu 2.07 | rỗng 26.1% | R từ khó 25.0
+@1.0: P 98.8 | R 94.1 | từ/câu 2.07 | rỗng 26.1% | R từ khó 24.3
+2620 câu → ../scorer/runs/2026-10-17/out/hypmatch/test-clean/prob_N2000.json; 0 lượt từ trong list không có âm vị (bỏ qua)
+### test-clean hypmatch N2000
+Recall_B#10 95.61 | Recall_B#50 98.23 | K99 n/a | Recall_B@99 n/a (không đạt 99% trong top đã lưu) | N_H 812 | Recall_H#10 56.16 | Recall_H#50 94.58
+từ khó: Recall_B#10 57.11 | Recall_B#50 75.98
+@0.8: P 63.5 | R 95.6 | từ/câu 3.27 | rỗng 13.2% | R từ khó 43.9
+@0.9: P 81.6 | R 94.2 | từ/câu 2.51 | rỗng 18.7% | R từ khó 25.0
+@1.0: P 81.7 | R 94.1 | từ/câu 2.50 | rỗng 18.8% | R từ khó 24.3
+2620 câu → ../scorer/runs/2026-10-17/out/hypmatch/test-clean/prob_missing_N2000.json; 0 lượt từ trong list không có âm vị (bỏ qua)
+### test-clean hypmatch missing_N2000
+N_H 812 | Recall_H#10 73.15 | Recall_H#50 95.57
+@0.8: P 0.0 | R nan | từ/câu 1.19 | rỗng 37.6%
+@0.9: P 0.0 | R nan | từ/câu 0.46 | rỗng 65.0%
+@1.0: P 0.0 | R nan | từ/câu 0.46 | rỗng 65.3%
+2620 câu → ../scorer/runs/2026-10-17/out/hypmatch/test-clean/prob_hard_N2000.json; 0 lượt từ trong list không có âm vị (bỏ qua)
+### test-clean hypmatch hard_N2000
+Recall_B#10 94.17 | Recall_B#50 97.28 | K99 n/a | Recall_B@99 n/a (không đạt 99% trong top đã lưu) | N_H 85100 | Recall_H#10 13.05 | Recall_H#50 64.23
+từ khó: Recall_B#10 41.18 | Recall_B#50 64.46
+@0.8: P 15.7 | R 95.6 | từ/câu 13.25 | rỗng 13.1% | R từ khó 43.6
+@0.9: P 73.0 | R 94.2 | từ/câu 2.80 | rỗng 18.4% | R từ khó 25.0
+@1.0: P 79.5 | R 94.1 | từ/câu 2.57 | rỗng 18.5% | R từ khó 24.3
+2939 câu → ../scorer/runs/2026-10-17/out/hypmatch/test-other/prob_N100.json; 0 lượt từ trong list không có âm vị (bỏ qua)
+### test-other hypmatch N100
+Recall_B#10 96.27 | Recall_B#50 99.18 | K99 47 | Recall_B@99 42.9 | N_H 38 | Recall_H#10 92.11 | Recall_H#50 97.37
+từ khó: Recall_B#10 78.94 | Recall_B#50 94.95
+@0.8: P 96.5 | R 89.5 | từ/câu 1.66 | rỗng 30.3% | R từ khó 36.1
+@0.9: P 98.3 | R 86.7 | từ/câu 1.58 | rỗng 32.1% | R từ khó 19.1
+@1.0: P 98.3 | R 86.6 | từ/câu 1.57 | rỗng 32.1% | R từ khó 18.7
+2939 câu → ../scorer/runs/2026-10-17/out/hypmatch/test-other/prob_N2000.json; 0 lượt từ trong list không có âm vị (bỏ qua)
+### test-other hypmatch N2000
+Recall_B#10 92.17 | Recall_B#50 95.41 | K99 n/a | Recall_B@99 n/a (không đạt 99% trong top đã lưu) | N_H 762 | Recall_H#10 61.68 | Recall_H#50 90.55
+từ khó: Recall_B#10 54.87 | Recall_B#50 71.84
+@0.8: P 59.2 | R 89.5 | từ/câu 2.70 | rỗng 16.8% | R từ khó 36.1
+@0.9: P 77.2 | R 86.7 | từ/câu 2.01 | rỗng 23.4% | R từ khó 19.1
+@1.0: P 77.3 | R 86.6 | từ/câu 2.00 | rỗng 23.4% | R từ khó 18.7
+2939 câu → ../scorer/runs/2026-10-17/out/hypmatch/test-other/prob_missing_N2000.json; 0 lượt từ trong list không có âm vị (bỏ qua)
+### test-other hypmatch missing_N2000
+N_H 762 | Recall_H#10 72.57 | Recall_H#50 90.55
+@0.8: P 0.0 | R nan | từ/câu 1.10 | rỗng 41.8%
+@0.9: P 0.0 | R nan | từ/câu 0.46 | rỗng 66.4%
+@1.0: P 0.0 | R nan | từ/câu 0.45 | rỗng 66.5%
+2939 câu → ../scorer/runs/2026-10-17/out/hypmatch/test-other/prob_hard_N2000.json; 0 lượt từ trong list không có âm vị (bỏ qua)
+### test-other hypmatch hard_N2000
+Recall_B#10 89.48 | Recall_B#50 93.75 | K99 n/a | Recall_B@99 n/a (không đạt 99% trong top đã lưu) | N_H 83216 | Recall_H#10 14.89 | Recall_H#50 66.32
+từ khó: Recall_B#10 39.35 | Recall_B#50 61.61
+@0.8: P 14.7 | R 89.5 | từ/câu 10.84 | rỗng 16.2% | R từ khó 36.0
+@0.9: P 69.5 | R 86.7 | từ/câu 2.23 | rỗng 22.6% | R từ khó 19.1
+@1.0: P 73.7 | R 86.6 | từ/câu 2.10 | rỗng 22.6% | R từ khó 18.7

@@ -22,8 +22,10 @@ ap.add_argument("--ctx", nargs="+", default=["none"])
 ap.add_argument("--model", default="openai/whisper-large-v3-turbo")
 ap.add_argument("--subset")
 ap.add_argument("--tag", default="")
+ap.add_argument("--prompt", default="naive", choices=["naive", "spoken"], help="kiểu prompt, Hou25 §2.1")
 ap.add_argument("--fw", action="store_true", help="dùng faster-whisper int8 (CPU, ít RAM) thay cho HF")
 a = ap.parse_args()
+fmt = {"naive": "{}", "spoken": "The topic of today's speech is, ah, {}. Okay, then I'll continue."}[a.prompt]
 
 proto = ROOT / "protocol" / a.split
 audio = [l.rstrip("\n").split("\t") for l in open(proto / "audio.tsv", encoding="utf-8")]
@@ -56,7 +58,7 @@ for c in a.ctx:
             if a.fw:  # greedy, không điều kiện câu trước — gần với generate() mặc định của HF
                 segs, _ = fw.transcribe(wav, language="en", beam_size=1, without_timestamps=True,
                                         condition_on_previous_text=False,
-                                        initial_prompt=", ".join(ctx[uid]) or None)
+                                        initial_prompt=fmt.format(", ".join(ctx[uid])) if ctx[uid] else None)
                 text = " ".join(s.text for s in segs)
                 f.write(f"{uid}\t{norm(text)}\n")
                 fr.write(f"{uid}\t{text.strip()}\n")
@@ -64,7 +66,7 @@ for c in a.ctx:
             feats = proc(wav, sampling_rate=sr, return_tensors="pt").input_features.to(dev, dtype)
             kw = dict(language="en", task="transcribe")
             if ctx[uid]:  # giống openai-whisper: chỉ giữ 223 token CUỐI của prompt
-                p = proc.get_prompt_ids(", ".join(ctx[uid]))
+                p = proc.get_prompt_ids(fmt.format(", ".join(ctx[uid])))
                 kw["prompt_ids"] = torch.tensor([p[0], *p[1:][-223:]]).to(dev)
             with torch.no_grad():
                 ids = model.generate(feats, **kw)[0].tolist()

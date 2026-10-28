@@ -32,7 +32,7 @@ wnorm: none 2.17/4.25, B 8.67/17.90 · N100 2.07/3.64, B 7.27/13.48 · N2000 2.3
 
 (Đủ 7 điều kiện × 2 tập, cập nhật 03/10. Test-other: B-WER tăng theo N, 11.61 → 14.88 → 15.92 → 16.45; N2000 và missing đều **tệ hơn** không context 16.08. Output + log server: `out/`, `logs_4090/`.)
 
-Tham chiếu PTC-Bias (arXiv 2609.28727), N=2000: Qwen3-ASR + CTC-Filter B-WER 4.81/9.45; Qwen3-ASR + PTC-Bias 4.10/7.76, U-WER 1.17/2.68.
+Tham chiếu PTC-Bias (arXiv 2609.28727), N=2000 (Bảng 1, **Qwen3-ASR-0.6B**, posterior WavLM): Qwen3-ASR + CTC-Filter B-WER 4.81/9.45; Qwen3-ASR + PTC-Bias 4.10/7.76, U-WER 1.17/2.68.
 
 ## 4. Nhận xét ban đầu
 1. Qwen3-ASR **dùng context tốt hơn Whisper**: oracle giảm B-WER khoảng 46% (clean) / 52% (other), U-WER gần như giữ nguyên.
@@ -50,4 +50,4 @@ wnorm, toàn bộ test-clean / test-other, list vào system prompt như mục 3.
 | hxattn lọc p ≥ 0.5 | 1.57 / 3.23 | 0.94 / 1.95 | 6.58 / 14.07 |
 | missing_N2000 → pxattn p ≥ 0.5 | 1.65 / 3.42 | 0.92 / 1.91 | 7.39 / 16.18 |
 
-So với tham chiếu PTC-Bias cùng setting: ngang "Qwen3-ASR + CTC-Filter" (4.81 / 9.45), còn thua PTC-Bias (4.10 / 7.76).
+So với tham chiếu PTC-Bias (khác model: 0.6B): ngang "Qwen3-ASR + CTC-Filter" (4.81 / 9.45), còn thua PTC-Bias (4.10 / 7.76).
