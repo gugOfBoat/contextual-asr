@@ -228,3 +228,53 @@ Chấm `bench/score.py` **plain** (Hou25 không nêu normalizer); HF greedy, kh�
 - **Prompt rất ngắn làm Whisper lặp chữ** (oracle và p≥0.5 naive: WER 10–23%; ví dụ "…of god or god or god…"; 32/40 câu hỏng nặng nhất có prompt đúng 1 từ). Hou25 Bảng 2 cũng thấy WER tăng ở no distractor nhưng nhẹ hơn nhiều → có thể họ decode có fallback (chưa kiểm). Qwen3-ASR không bị (p≥0.5 là cấu hình tốt nhất ở §4).
 - **Bọc prompt spoken chữa được lặp**: p≥0.5 + spoken về WER bình thường (2.3 / 3.8), B-WER 5.0 / 9.6–10.0, vẫn kém top-50 naive.
 - Lát >1 từ hiếm: top-50 cải thiện đều như cả tập; thiệt hại của p≥0.5 naive tập trung ở câu ≤1 từ hiếm (prompt 0–1 từ).
+
+### 10b. Whisper dùng bias word thế nào (01/11, CPU, phân tích lại output §10)
+Script `runs/2026-10-28/prompt_use.py`. Mô phỏng đúng cách cắt prompt của `bench/run_whisper.py` (giữ 223 token cuối, tokenizer Whisper-large-v3-turbo). "Chép đúng" = từ hiếm của câu có nguyên văn trong hyp (xấp xỉ, không căn chỉnh). "Từ nhiễu bị chèn" = từ trong prompt không có trong câu đúng mà xuất hiện trong hyp.
+
+| clean / other | từ đúng còn trong prompt | chép đúng khi có trong prompt | cùng từ đó, không prompt | từ nhiễu bị chèn |
+|---|---|---|---|---|
+| nguyên list N100 | 57.2 / 55.7% | 94.7 / 89.1% | 90.0 / 80.6% | 2 / 1 |
+| nguyên list N1000 | 4.9 / 5.6% | 92.5 / 80.1% | 88.6 / 70.9% | 2 / 1 |
+| nguyên list N2000 | 2.2 / 2.7% | 89.4 / 71.6% | 86.2 / 59.6% | 1 / 3 |
+| pxattn top-50 N100 | 100 / 99.9% | 95.5 / 91.2% | 90.7 / 81.3% | 1 / 7 |
+| pxattn top-50 N2000 | 99.2 / 97.7% | 95.4 / 91.7% | 91.2 / 82.6% | 13 / 51 |
+| oracle | 100 / 100% | 95.3 / 91.0% | 90.7 / 81.2% | 0 / 0 |
+
+Đọc:
+- **Nguyên list N ≥ 1000 gần như không prompt chủ yếu vì bị cắt**: chỉ 2–6% từ đúng còn trong 223 token cuối (N100: ~56%). Không phải chỉ do "loãng". Hou25 không nói list có bị cắt không (ta diễn giải: Whisper/openai-whisper cũng giới hạn 223 token).
+- **Từ có trong prompt thì được chép đúng nhiều hơn** so với chính từ đó khi không prompt: +4–5 điểm (clean), +8–12 điểm (other). → Whisper dùng prompt kiểu "chép lại từ đã thấy nếu nghe khớp".
+- **Hiếm khi chèn từ nhiễu** (≤ 7 lượt) với list ngẫu nhiên; tăng lên 51 lượt (other) khi top-50 của scorer chứa từ nghe giống → Whisper bị kéo khi từ nhiễu nghe giống.
+- Top-50 của pxattn đưa Whisper tới mức chép đúng ngang oracle (95.5 / 91.2 so với 95.3 / 91.0).
+
+## 11. Scorer có biết từ nằm ở đâu? Vị trí + "hai feature không cùng là âm vị" (02/11, CPU)
+Báo cáo đầy đủ: `runs/2026-11-02/REPORT.md` (code `position.py`, bảng `summary.md` / `extra.md`, hình `imgs/`).
+- **Dữ liệu:** 400 câu có từ hiếm mỗi tập; mốc thời gian lấy từ MFA (Lugosch, zenodo 2619474: từ + âm vị).
+- **Bản đồ được so:** hou25 S1 (cosine TTS × câu nói), pmaxsim cosine, pxattn attention lớp 1 / lớp 2, và cosine thô của pxattn (đối chứng âm).
+
+| Bản đồ | Định vị từ: trung vị \|err\| / trúng span, clean · other | Đỉnh âm vị trong đúng đoạn âm vị của nó (may rủi 1,2–1,4%) | Ma trận 39×39: hàng có đường chéo lớn nhất |
+|---|---|---|---|
+| hou25 S1 | 0,06 s / 98,9% · 0,06 / 96,7% | – | – |
+| pmaxsim cosine | 0,04 / 99,8 · 0,03 / 99,3 | 54 / 52% (dải dọc: 22–28% số từ chung 1 đỉnh) | 5% |
+| **pxattn attention lớp 1** | **0,03 / 99,5 · 0,03 / 99,2** | **67 / 65%** (bậc thang âm vị → frame) | **69%** |
+| pxattn attention lớp 2 | 0,45 / 49,9 · 0,38 / 50,6 | 15 / 16% | 5% |
+| pxattn cosine thô | 2,54 / 8,8 · 2,05 / 12,3 (ngẫu nhiên: 2,52 / 10,2) | 1–2% | 0% |
+
+**Probe âm vị tuyến tính trên frame** (chia người nói):
+
+| Feature | clean | other |
+|---|---|---|
+| Whisper thô | 79,7 | 71,3 |
+| pxattn / pmaxsim (256 chiều) | 66,7 / 67,8 | 58,6 / 59,9 |
+| chiếu ngẫu nhiên 256 chiều | 67,5–68,1 | 60,5–61,0 |
+| hou25 | 72,3 | 64,8 |
+| chiếu ngẫu nhiên 368 chiều | 71,4–71,6 | 64,1–64,4 |
+
+Đọc:
+- **Cosine chỉ cho vị trí khi chính nó là phép so mà model được train.** pmaxsim định vị cả từ; attention lớp 1 của pxattn định vị **từng âm vị**. Cosine giữa hai không gian không được train để so thì ngang ngẫu nhiên.
+- Scorer âm vị định vị **ngang hoặc hơn Hou25 dùng TTS** (0,03 so với 0,06 s) mà không cần TTS.
+- **Nhánh audio không bị "âm vị hoá":** probe ngang chiếu ngẫu nhiên. Phép ghép hai loại feature nằm ở q/k của attention.
+- Độ cao đỉnh theo thời gian không tách từ đúng / nhiễu tốt hơn xác suất của scorer (AUC ≤ xác suất). Trục thời gian cho *vị trí*, không cho *có / không*, khớp F14 của repo Hoàng.
+- Giới tính người nói (ước lượng từ F0): không thấy ảnh hưởng ở cả 3 scorer, kể cả hou25 dùng giọng TTS nữ (CI chứa 0; REPORT Q6).
+- **Lưu ý khi so với Hou25:** trong cùng pipeline của Hoàng, Hou25 tái hiện của Hoàng (3 epoch) đạt B-WER 4,4 / 8,7 (N100) và 4,9 / 9,2 (N2000), còn pxattn 4,6 / 9,0 và 5,1 / 10,1. Câu "thắng cả 8 ô" ở §10 chỉ đúng khi so với số trong paper. Kế hoạch xử lý: `PLAN-chot-scorer.md`.
+- Lưu ý kỹ thuật: torch 2.14a trong image NVIDIA trên CPU cho sai kết quả SDPA đa luồng → ép backend MATH (chi tiết trong REPORT §2).

@@ -1,6 +1,6 @@
 # STATE — hiện trạng nghiên cứu
 
-> Đọc file này ĐẦU mỗi phiên, cập nhật CUỐI mỗi phiên. Cập nhật lần cuối: 28/10/2026.
+> Đọc file này ĐẦU mỗi phiên, cập nhật CUỐI mỗi phiên. Cập nhật lần cuối: 04/11/2026. **Tiếp quản phiên mới: đọc `HANDOFF.md` trước.**
 
 ## 1. Mục tiêu
 - **Venue:** Interspeech 2027, hạn nộp **09/02/2027** (còn ~18 tuần tính từ 02/10/2026).
@@ -42,9 +42,20 @@ Output + log của các lượt chạy: `bench/out/`, `bench/logs_4090/`.
 - 18/10: **chốt thực nghiệm phần scorer** (`EVAL_PROTOCOL.md` §7: bảng chọn từ + ablation, chọn trên dev-other; phần ASR chưa bàn) và **phân tích bản chất scorer** (`scorer/DEEPDIVE.md`). Lỗi chính trên test-other là scorer nghe kém từ đúng (77–85% từ bị rớt có điểm < 0.3), từ gần đồng âm chỉ ~5%. Kế hoạch E0–E5.
 - 18/10 đêm (GPU 0 + 2): **Hou25 tái hiện** (TTS + CNN) test-other N2000: @99 180.8 / #50 95.39 / H#50 **17.59**; pmaxsim 99.8 / **98.44** / 25.52; PTC 16.9 / 99.3 / 22.0. Âm vị tìm từ đúng tốt hơn Hou25, Hou25 ít bị lừa bởi từ nghe giống hơn. E3 (loss theo list) tệ hơn → bỏ. @99 thua PTC xa do ~1% từ đúng không nghe ra (`scorer/results.md` §8). Container đã xoá, artifact còn trong `~/model_tmp`.
 - **Bước tiếp:** chạy scorer trên dev (chọn ckpt + θ) và list `hard_N2000` (cần GPU); tầng (c) với list oracle; đọc UGPCB / COALA / Contextual Earnings-22 → `NEXT_STEPS.md`.
-- 28/10 (GPU 0): **Bảng 1/2 kiểu Hou25 trên Whisper-turbo**: top-50 pxattn thắng Hou25 cả 8 ô B-WER (N100 4.57 / 8.92 vs 5.4 / 10.0; N2000 5.29 / 10.00 vs 5.8 / 11.7), pmaxsim 7/8. Prompt 0–1 từ làm Whisper lặp chữ → p≥0.5 hỏng trên Whisper (Qwen không bị), prompt spoken chữa được. Ablation câu >1 từ hiếm trong `scorer/results.md` §10.
+- 02/11 (CPU trên máy GPU, 4 card bận):
+  - **Scorer âm vị biết vị trí từ** (`scorer/runs/2026-11-02/REPORT.md`, `scorer/results.md` §11).
+    - Đo với 400 câu/tập, mốc thời gian MFA.
+    - Attention lớp 1 của pxattn: 0,03 s, 99% trúng, căn tới mức âm vị.
+    - Cosine pmaxsim: 0,03–0,04 s, chỉ biết vị trí cả từ.
+    - Mốc hou25 S1: 0,06 s.
+    - Cosine thô của pxattn ngang ngẫu nhiên.
+    - Nhánh audio không bị "âm vị hoá" (probe ≈ chiếu ngẫu nhiên).
+    - Nguồn thời gian cho hướng "vị trí" = attention lớp 1 của pxattn.
+  - Repo tái hiện Hou25 của Hoàng: `itshoang2024/hou25_interspeech` (F13–F16: thứ tự trong prompt, prompt hybrid theo thời gian).
+- 04/11: S1 phân rã lỗi + CI ghép cặp (pxattn so với pmaxsim không có ý nghĩa; so với nguyên list có ý nghĩa). So với Hou25 (Hoàng) chờ file. Báo cáo gặp thầy: `meetings/2026-11-04/brief.md` (lịch 14 tuần: chốt scorer → D0 mổ decode → D1 boost có cổng p × thời gian → D2 Qwen).
+- 28/10 (GPU 0): **Bảng 1/2 kiểu Hou25 trên Whisper-turbo**: top-50 pxattn thắng **số paper** Hou25 cả 8 ô B-WER, nhưng trong cùng pipeline với bản tái hiện của Hoàng thì kém 0,2–0,9 (N100 4.57 / 8.92 vs 5.4 / 10.0; N2000 5.29 / 10.00 vs 5.8 / 11.7), pmaxsim 7/8. Prompt 0–1 từ làm Whisper lặp chữ → p≥0.5 hỏng trên Whisper (Qwen không bị), prompt spoken chữa được. Ablation câu >1 từ hiếm trong `scorer/results.md` §10.
 
-## 5. Ba việc tiếp theo
-1. Ghi biên bản họp 03/10 (`meetings/2026-10-03.md`) theo quyết định của thầy.
-2. Feasibility 2 tuần (tới ~17/10): H1 (LLM sinh list → Recall@K, B-WER), H2 (log-prob lần 1 định vị từ hiếm sai), chạy code PTC-Bias, tải UserLibri và đo độ phủ.
-3. Đọc toàn văn: Huber & Waibel (2608.05759, có Qwen3-ASR), LOGIC (2601.15397), Novitasari (2604.12398).
+## 5. Việc tiếp theo (chi tiết: `HANDOFF.md` mục 2, 5)
+1. Ghi biên bản buổi gặp thầy (báo cáo: `meetings/2026-11-04/brief.md`, chờ thầy quyết 5 câu ở mục 8).
+2. Xong S1: xin Hoàng file `exp/`, chạy `bench/error_breakdown.py` + `compare.py`.
+3. S2–S4 (temporal NMS, decode lại, 3 seed) để chốt scorer; sau đó phase decode D0–D3. S2 trở đi chưa được user duyệt chạy.
