@@ -2,6 +2,7 @@
 
 > Viết cho người hoặc Claude mới tiếp quản, không có lịch sử chat cũ. Đọc file này trước, rồi tới `STATE.md`.
 > Số liệu đầy đủ không chép lại ở đây; mục 3 chỉ tới file gốc.
+> **Nhánh làm việc: `scorer-vi-tri-s1`.** Tên file ngắn trong bài nằm ở `bench/`, `scorer/` hoặc `scorer/runs/2026-11-02/`.
 
 ## 1. Đang làm gì, tới đâu
 
@@ -33,7 +34,8 @@ Sau đó   D0 mổ logit → D1 boost có cổng p × thời gian → D2 sang Qw
 
 | File | Là gì |
 |---|---|
-| `meetings/2026-11-04/brief.md` | **Tổng hợp mới nhất, đọc đầu tiên**: bảng số A–D, 11 thí nghiệm + insight, S1–S5, D0–D3, chọn SpeechLLM, lịch 14 tuần |
+| `meetings/2026-11-04/brief.md` | **Tổng hợp mới nhất, đọc đầu tiên**: bảng số A–E, 11 thí nghiệm + insight, S0–S5, D0–D3, chọn SpeechLLM, lịch 14 tuần |
+| `meetings/2026-11-04/hop-thay.tex`, `.pdf` | Slide 19 trang cùng nội dung brief; trang 9 là bằng chứng chọn âm vị, trang 15 là S0–S5 |
 | `scorer/PLAN-chot-scorer.md` | Vì sao kiến trúc như vậy, hơn/kém gì, đối chiếu biên bản 24/10 và 1/11, 5 cách áp vị trí |
 | `scorer/runs/2026-11-02/REPORT.md` | Báo cáo đầy đủ về vị trí và "hai phía không cùng là âm vị" (Q1–Q6) |
 | `scorer/runs/2026-11-02/s1_breakdown.md` | Bảng phân rã lỗi 7 hệ × 2 tập |
@@ -79,11 +81,7 @@ Lưu ý: `--md` là ghi nối thêm, chạy lại sẽ thêm bảng vào cuối 
 
 ## 6. Trạng thái máy (kiểm 04/11)
 
-**Local:** chưa commit gì từ commit `8193991`. Chưa có trên GitHub:
-- `STATE.md`, `scorer/results.md` (đã sửa);
-- `HANDOFF.md`, `bench/error_breakdown.py`, `log/2026-11-02.md`, `meetings/2026-11-04/`, `meetings/2026-11-chuan-bi/`, `scorer/PLAN-chot-scorer.md`, `scorer/runs/2026-10-28/prompt_use.py`, `scorer/runs/2026-11-02/` (mới).
-
-Chỉ commit khi user bảo. `scorer/runs/2026-11-02/out/` nặng khoảng 35 MB, nên cân nhắc trước khi đưa lên git.
+**Local và GitHub:** toàn bộ việc tới 04/11 đã commit và push lên nhánh `scorer-vi-tri-s1`. Nhánh **chưa gộp vào `main`**; `main` chưa có file này, cũng chưa có `STATE.md` bản mới. Làm tiếp trên nhánh đó; chỉ gộp, commit hay push khi user bảo. `AGENTS.local.md` không lên git, chỉ có trên máy này.
 
 **Máy GPU dùng chung** (đăng nhập, đường dẫn, container, dữ liệu còn lại: `AGENTS.local.md`, mục "Trạng thái 04/11"):
 - Container làm việc đang chạy bản chỉ CPU; dữ liệu và checkpoint vẫn còn, chưa dọn. Chỉ dọn khi user bảo và hỏi trước khi xoá data quan trọng.
@@ -97,6 +95,8 @@ Chỉ commit khi user bảo. `scorer/runs/2026-11-02/out/` nặng khoảng 35 MB
 - **Trong container không có torchaudio** → F0 tự tính bằng numpy.
 - **Không có `gh` CLI** → repo private của Hoàng dùng `git clone`. Bản clone cũ nằm ở scratchpad của account cũ, cần clone lại.
 - **Prompt 0–1 từ làm Whisper lặp chữ**: lọc p ≥ θ với prompt naive sẽ hỏng trên Whisper; trên Whisper dùng top-50 hoặc bọc spoken. Qwen không bị.
+- **Biên dịch slide bằng MiKTeX từ Git Bash trong app này:** phải bỏ mục `claude.exe` khỏi `PATH`, nếu không `pdflatex` báo lỗi thư mục rồi thoát. Dùng `pdflatex`, không dùng xelatex (template T5).
+- **Lệnh Bash trong app này gộp `\\` thành `\`:** sửa file `.tex` bằng tool Edit hoặc script viết bằng tool Write, đừng dùng sed/heredoc có hai dấu gạch chéo.
 - `error_breakdown.py` phải đếm cả lượt chèn từ hiếm thì mới khớp `score.py`.
 
 ## 8. Cách user muốn làm việc
