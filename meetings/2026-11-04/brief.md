@@ -12,7 +12,7 @@
 > Whisper = Whisper-large-v3-turbo, chuẩn hoá plain. Qwen = Qwen3-ASR-1.7B, chuẩn hoá wnorm.
 > Số viết dạng clean / other.
 
-Mạch nói (khoảng 15 phút): **1** đang làm gì (1 phút) → **2** scorer: số chính (3 phút) → **3** các thí nghiệm và insight (5 phút) → **4** chốt scorer: còn thiếu gì (2 phút) → **5** bước tiếp: dùng vị trí (2 phút) → **6** chọn SpeechLLM (1 phút) → **7** lịch tới 09/02 (1 phút) → **8** câu cần thầy quyết.
+Mạch nói (khoảng 15 phút): **1** đang làm gì (1 phút) → **2** scorer: số chính (3 phút) → **3** các thí nghiệm và insight (5 phút) → **4** để chốt scorer còn thiếu gì, nhất là S0 (2 phút) → **5** bước tiếp: dùng vị trí (2 phút) → **6** chọn SpeechLLM (1 phút) → **7** lịch tới 09/02 (1 phút) → **8** câu cần thầy quyết.
 
 ---
 
@@ -88,6 +88,20 @@ audio ─┬──────────────────────�
 | pxattn N2000 − pmaxsim N2000 | −0,17 [−0,53; +0,17] | −0,37 [−0,89; +0,14] |
 | pxattn − Hou25 (Hoàng) | **chưa có**: cần file hyp từng câu của Hoàng | |
 
+**Bảng E. Vì sao âm vị: chưa chứng minh được là tốt nhất (test-other N2000, 1 seed).**
+
+| Cách | R_B#50 ↑ | R_B@99 ↓ | R_H#50 ↓ | Nguồn |
+|---|---|---|---|---|
+| TTS ↔ vector (Hou25, Hoàng) | 97,43 | 256,4 | **17,26** | chạy thật |
+| âm vị ↔ vector (pxattn) | 97,71 | 106,7 | 21,58 | chạy thật |
+| âm vị ↔ vector (pmaxsim) | 98,44 | 99,8 | 25,52 | chạy thật |
+| âm vị ↔ chữ Qwen đổi sang âm vị (hypmatch) | 95,41 | – | 35,70 | chạy thật |
+| âm vị ↔ âm vị từ audio (PTC-Bias) | **99,30** | **16,9** | 22,00 | **chỉ số paper** |
+
+- Âm vị ↔ âm vị thật **chưa chạy**. hypmatch không có model nhận dạng âm vị, nên không dùng để kết luận được. PTC khác dữ liệu train và paper không ghi cách dựng tập từ nghe giống, nên chưa so công bằng.
+- pxattn được chọn vì không cần TTS, nhanh hơn, và chỉ đổi một biến so với Hou25 (loại [C]); **không phải vì đã thắng mọi cách**.
+- Chưa có ablation: 2 lớp cross-attention, lớp Transformer phía audio, pool mean+max, 256 chiều.
+
 **Câu nói về kết quả (đã sửa so với buổi trước):**
 - Buổi trước nói "thắng Hou25 cả 8 ô". Câu đó **chỉ đúng khi so với số trong paper**.
 - Trong cùng pipeline với bản tái hiện của Hoàng, pxattn **kém 0,2–0,9 B-WER** (1 seed, chưa có CI).
@@ -116,7 +130,7 @@ audio ─┬──────────────────────�
 | E11 | hxattn: cho scorer nhìn thêm hyp lần 1 của Qwen | 6,58 / 14,07, kém hẳn | Nghi model học tắt theo hyp thay vì nghe audio → bỏ. |
 
 **Một câu tổng kết phần scorer:**
-> Chọn từ gần chạm trần: 97,7% từ đúng đã có trong prompt, Whisper chép ngang oracle. Lỗi còn lại nằm ở **mô hình ASR viết sai dù từ đã có trong prompt**, và ở một phần từ đúng rớt khỏi prompt khi N lớn (0,54 / 1,68 điểm ở N2000). Muốn đẩy xác suất mà không chèn sai thì cần biết **có không** và **ở đâu**, và scorer đã có cả hai.
+> Với pxattn, 97,7% từ đúng đã có trong prompt và Whisper chép ngang oracle; phần scorer còn sửa được chỉ khoảng 2/10 điểm lỗi (test-other N2000). Lỗi còn lại nằm ở **mô hình ASR viết sai dù từ đã có trong prompt**, và ở một phần từ đúng rớt khỏi prompt khi N lớn (0,54 / 1,68 điểm ở N2000). Muốn đẩy xác suất mà không chèn sai thì cần biết **có không** và **ở đâu**, và scorer đã có cả hai.
 
 ---
 
@@ -124,10 +138,11 @@ audio ─┬──────────────────────�
 
 | # | Việc | Trả lời câu nào | Chi phí | Tiêu chí xong | Trạng thái |
 |---|---|---|---|---|---|
+| **S0** | **Âm vị–âm vị thật:** head CTC âm vị trên encoder Whisper đóng băng, chấm bằng căn chỉnh; thêm arm pxattn 1 lớp | Âm vị–âm vị có hơn pxattn không; lớp 2 có cần không | 1–2 ngày code, GPU ~10 h (ước lượng) | Thay pxattn nếu R_B#50 ≥ pxattn, R_H#50 không tệ hơn và sai số vị trí ≤ 0,05 s; nếu không thì giữ pxattn | mới, chưa code |
 | S1 | So ghép cặp với Hou25 (Hoàng) + phân rã lỗi | Khoảng 0,2–0,9 có thật không, do đâu | CPU, nửa ngày | có CI; biết phần chênh đến từ đâu | công cụ xong (`bench/error_breakdown.py`, `compare.py`); **chờ Hoàng gửi file** |
 | S2 | **Temporal NMS**: hai ứng viên chiếm cùng một khoảng thời gian thì chỉ giữ ứng viên p cao hơn | Vị trí có sửa được điểm yếu từ nghe giống không | GPU khoảng 2 h | R_H#50 giảm ≥ 3 điểm, R_B#50 giảm ≤ 0,1 | chưa |
 | S3 | Decode Whisper với top-50 sau NMS + prompt hybrid theo thời gian của pxattn | Có đóng được khoảng cách với Hou25 không | GPU khoảng 3 h | B-WER ≤ Hou25 (Hoàng) trong CI | chưa |
-| S4 | 3 seed pxattn + bản 1 lớp | Phương sai do train; kiến trúc gọn hơn có đủ không | GPU 4 × khoảng 5 h | — | chưa |
+| S4 | 3 seed kiến trúc được chọn | Phương sai do train | GPU 3 × khoảng 5 h | — | chưa |
 | S5 | (chỉ khi S2 không đủ) negative khó theo khoảng cách âm vị | Sửa từ nghe giống bằng train | GPU khoảng 5 h | như S2 | dự phòng |
 
 File cần xin Hoàng (thư mục `exp/` không có trong git):
@@ -135,7 +150,7 @@ File cần xin Hoàng (thư mục `exp/` không có trong git):
 - `exp/scorer/is21/scores/<subset>.json`
 - `exp/localize/is21/*.json`
 
-Sau S1–S4: **chốt scorer = pxattn**, dùng pmaxsim làm tầng lọc rẻ, đầu ra có vị trí. Không mở thêm biến thể kiến trúc nào nữa.
+**Chưa chốt pxattn.** Chạy S0 trước, S2–S4 làm trên kiến trúc thắng S0, rồi mới chốt. Đầu ra phải có vị trí; pmaxsim giữ làm tầng lọc rẻ.
 
 ---
 
@@ -143,7 +158,7 @@ Sau S1–S4: **chốt scorer = pxattn**, dùng pmaxsim làm tầng lọc rẻ, �
 
 Đi từ rẻ đến đắt:
 
-1. **Đầu ra có thời gian** (chỉ thêm phần đọc ra, không train lại): `(từ, p, t_đầu, t_cuối, [thời điểm từng âm vị])`, lấy từ attention lớp 1.
+1. **Đầu ra có thời gian** (chỉ thêm phần đọc ra, không train lại): `(từ, p, t_đầu, t_cuối, [thời điểm từng âm vị])`. Với pxattn, lấy từ attention lớp 1; hiện `rank.py` chỉ xuất từ + điểm, model tính attention rồi bỏ đi.
 2. **D0 — mổ quá trình decode** (biên bản 24/10). Với các lỗi "nghe giống" còn lại, ghi logit tại bước sinh từ đó:
    - token đúng đứng hạng mấy;
    - cách token được chọn bao xa.
@@ -186,7 +201,7 @@ Tiêu chí:
 
 | Tuần | Đến khoảng | Việc | Kết quả mong đợi |
 |---|---|---|---|
-| 1–2 | 17/11 | S1–S4: chốt scorer | Bảng A–D đủ CI, có NMS; chương "scorer" viết xong bản nháp |
+| 1–2 | 17/11 | S0 rồi S1–S4: chọn kiến trúc, chốt scorer | Bảng A–D đủ CI, có NMS; chương "scorer" viết xong bản nháp |
 | 3–4 | 01/12 | D0 trên Whisper + Qwen; D3 đọc tài liệu | Biết token đúng ở hạng mấy, cần boost bao nhiêu; chốt thiết kế D1 |
 | 5–7 | 22/12 | D1 trên Whisper: 4 arm × N100/N2000 × `missing_N2000` | Bảng chính của paper: B-WER giảm mà số lần chèn không tăng |
 | 8–9 | 05/01 | D2: Qwen3-ASR (+ model thứ 3 nếu kịp) | Cùng bảng trên SpeechLLM |
@@ -197,13 +212,14 @@ Rủi ro:
 - (1) D1 không thắng prompt hybrid → paper dừng ở scorer + NMS + prompt; vẫn đủ một bài tập trung vào scorer.
 - (2) GPU dùng chung, hiện 4 card đều bận → cần xin lịch card cố định.
 - (3) Hoàng chưa gửi file → S1 trễ, nhưng không chặn S2–S4.
+- (4) S0 thắng → phải làm lại Bảng A, B, nên tuần 1–2 có thể trễ.
 
 ---
 
 ## 8. Câu cần thầy quyết
 
 1. Đồng ý **định vị đóng góp** là "gần bằng Hou25 nhưng không cần TTS, có ngưỡng, có vị trí", thay cho "thắng Hou25"?
-2. Đồng ý **dừng mở rộng kiến trúc scorer** sau S1–S4 và chuyển sang phase decode (D0–D2)?
+2. Đồng ý **chạy S0 (âm vị–âm vị) trước khi chốt**, rồi mới chuyển sang phase decode (D0–D2)?
 3. Paper chính là **scorer + cổng thời gian lúc decode**, hay chỉ scorer (an toàn hơn, ít mới hơn)?
 4. Model thứ 3: cần không, và nếu cần thì ưu tiên model nào?
-5. Lịch GPU: xin card cố định cho tuần 1–2 (khoảng 25 h GPU, chủ yếu cho 4 lượt train của S4).
+5. Lịch GPU: xin card cố định cho tuần 1–2 (khoảng 30 h GPU, ước lượng, chủ yếu để train S0 và S4).

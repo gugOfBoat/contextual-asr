@@ -58,4 +58,4 @@ Output + log của các lượt chạy: `bench/out/`, `bench/logs_4090/`.
 ## 5. Việc tiếp theo (chi tiết: `HANDOFF.md` mục 2, 5)
 1. Ghi biên bản buổi gặp thầy (báo cáo: `meetings/2026-11-04/brief.md`, chờ thầy quyết 5 câu ở mục 8).
 2. Xong S1: xin Hoàng file `exp/`, chạy `bench/error_breakdown.py` + `compare.py`.
-3. S2–S4 (temporal NMS, decode lại, 3 seed) để chốt scorer; sau đó phase decode D0–D3. S2 trở đi chưa được user duyệt chạy.
+3. S0 (âm vị–âm vị thật, thêm 04/11): **chưa chốt pxattn** cho tới khi có kết quả. Sau đó S2–S4 và phase decode D0–D3. S0 và S2 trở đi chưa có lệnh chạy.

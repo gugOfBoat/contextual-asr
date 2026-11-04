@@ -25,7 +25,7 @@
 \setbeamerfont{date in head/foot}{size=\scriptsize,series=\bfseries}
 \setbeamerfont{frametitle}{series=\bfseries}
 \setbeamerfont{title}{series=\bfseries}
-\newcommand{\decklabel}{Contextual ASR -- Chốt scorer}
+\newcommand{\decklabel}{Contextual ASR -- Scorer}
 \setbeamertemplate{itemize item}{\color{Secondary}$\blacktriangleright$}
 \setbeamertemplate{itemize subitem}{\color{Accent}$\bullet$}
 \setbeamertemplate{headline}{\leavevmode\begin{beamercolorbox}[wd=\paperwidth,ht=2.7ex,dp=1.1ex,leftskip=.35cm,rightskip=.35cm]{section in head/foot}\insertsectionnavigationhorizontal{\dimexpr\paperwidth-.70cm\relax}{}{}\end{beamercolorbox}}
@@ -38,7 +38,7 @@
 \newcommand{\ra}{$\rightarrow$}
 \newcommand{\nbox}[2][block body]{\begin{beamercolorbox}[sep=0.45em,rounded=true]{#1}\footnotesize #2\end{beamercolorbox}}
 
-\title{Chốt scorer: số liệu, thí nghiệm, và cách dùng vị trí của từ}
+\title{Scorer: số liệu, thí nghiệm, và cách dùng vị trí của từ}
 \subtitle{Kết quả hiện tại \ra{} việc còn lại \ra{} chọn SpeechLLM \ra{} kế hoạch tới Interspeech 2027}
 \author{Nhóm Contextual ASR}
 \institute{}
@@ -51,11 +51,11 @@
 % ------------------------------------------------------------------
 \section{Tóm tắt}
 \begin{frame}{Buổi này em báo cáo 3 ý}
-\nbox{\textbf{\textcircled{\scriptsize 1} Scorer:} chọn từ đã gần trần: 97.7\% từ đúng vào được prompt (test-other, N2000). \bad{Đính chính buổi trước:} ``thắng Hou25 8/8 ô'' chỉ đúng khi so với \textbf{số trong paper}; cùng pipeline với bản tái hiện của Hoàng thì pxattn \bad{kém 0.2--0.9} B-WER.}
+\nbox{\textbf{\textcircled{\scriptsize 1} Scorer:} dùng được (97.7\% từ đúng vào prompt, test-other N2000) nhưng \bad{chưa chứng minh là kiến trúc tốt nhất}: chưa chạy âm vị--âm vị thật. \bad{Đính chính buổi trước:} ``thắng Hou25 8/8 ô'' chỉ đúng khi so với \textbf{số trong paper}; cùng pipeline với bản tái hiện của Hoàng thì pxattn \bad{kém 0.2--0.9} B-WER.}
 \vspace{0.12cm}
 \nbox{\textbf{\textcircled{\scriptsize 2} Vị trí:} scorer \good{tự biết từ nằm ở đâu} mà không cần giám sát: attention lớp 1 sai số 0.03 s, căn tới mức âm vị. Không cần TTS.}
 \vspace{0.12cm}
-\nbox[block body alerted]{\textbf{\textcircled{\scriptsize 3} Đi tiếp:} lỗi lớn nhất còn lại là \hi{nghe giống}: ngay cả với list oracle vẫn còn 2.33 / 4.62 điểm, nên đổi list hay đổi prompt không chạm tới được. Đề xuất: chốt scorer trong 2 tuần, rồi \hi{can thiệp logit lúc decode, dùng p và thời gian làm cổng} để không chèn từ sai.}
+\nbox[block body alerted]{\textbf{\textcircled{\scriptsize 3} Đi tiếp:} lỗi lớn nhất còn lại là \hi{nghe giống}: ngay cả với list oracle vẫn còn 2.33 / 4.62 điểm, nên đổi list hay đổi prompt không chạm tới được. Đề xuất: chạy \hi{S0 (âm vị--âm vị)} rồi mới chốt scorer, sau đó \hi{can thiệp logit lúc decode, dùng p và thời gian làm cổng} để không chèn từ sai (\bad{ý tưởng, chưa chạy}). }
 \vspace{0.12cm}
 {\footnotesize Mỗi ô số: test-clean / test-other. B-WER = lỗi trên từ hiếm, thấp là tốt. Whisper dùng chuẩn hoá plain, Qwen dùng wnorm.}
 \end{frame}
@@ -91,7 +91,7 @@
 \centering\scriptsize\setlength{\tabcolsep}{4pt}
 \begin{tabular}{L{1.8cm}L{3.5cm}L{3.5cm}L{5.1cm}}
 \toprule
- & Hou25 \src{paper §2.2} & pxattn (nhóm) & Lý do chọn \\
+ & Hou25 \src{paper §2.2} & pxattn (nhóm) & Lý do thiết kế \\
 \midrule
 Biểu diễn từ & audio TTS qua encoder Whisper & \hi{âm vị g2p} + 2 lớp Transformer & không cần TTS; từ mới chấm được ngay; phía từ không có ``giọng'' \\
 Phía audio & Whisper đóng băng + Linear & Whisper đóng băng + Linear + 1 lớp Transformer & giữ nguyên encoder để chỉ đổi cách biểu diễn từ \\
@@ -204,7 +204,47 @@ pxattn $-$ Hou25 (Hoàng) & \bad{chưa có} & \bad{chưa có}\\
 \bottomrule
 \end{tabular}\par
 \vspace{0.3cm}\raggedright
-\nbox{\textbf{Đọc:} scorer hơn nguyên list là \good{có ý nghĩa thống kê} ở cả 4 ô. pxattn và pmaxsim \textbf{chưa phân biệt được} về B-WER (mọi khoảng đều chứa 0). Vì vậy chọn pxattn là vì \textbf{vị trí tới mức âm vị} và ít chèn nhiễu, không phải vì B-WER tốt hơn.}
+\nbox{\textbf{Đọc:} scorer hơn nguyên list là \good{có ý nghĩa thống kê} ở cả 4 ô. pxattn và pmaxsim \textbf{chưa phân biệt được} về B-WER (mọi khoảng đều chứa 0). Hiện ưu tiên pxattn vì \textbf{vị trí tới mức âm vị} và ít chèn nhiễu, không phải vì B-WER tốt hơn.}
+\end{frame}
+
+\begin{frame}{Vì sao âm vị? Chưa chứng minh được là tốt nhất}
+\begin{columns}[T]
+\begin{column}{0.60\textwidth}
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcccc}
+\toprule
+test-other N2000, 1 seed & \#50 $\uparrow$ & @99 $\downarrow$ & H\#50 $\downarrow$ & chạy\\
+\midrule
+TTS $\leftrightarrow$ vector (Hou25, Hoàng) & 97.43 & 256.4 & \good{17.26} & thật\\
+âm vị $\leftrightarrow$ vector (pxattn) & 97.71 & 106.7 & 21.58 & thật\\
+âm vị $\leftrightarrow$ vector (pmaxsim) & 98.44 & 99.8 & 25.52 & thật\\
+âm vị $\leftrightarrow$ chữ Qwen (hypmatch) & 95.41 & -- & 35.70 & thật\\
+\textbf{âm vị $\leftrightarrow$ âm vị từ audio} (PTC) & \good{99.30} & \good{16.9} & 22.00 & \bad{số paper}\\
+\bottomrule
+\end{tabular}\par
+\vspace{0.1cm}\raggedright
+{\scriptsize\color{TextGray} PTC khác dữ liệu train; paper không ghi cách dựng tập từ nghe giống, nên chưa so công bằng.}\par
+\vspace{0.15cm}
+\nbox[block body alerted]{\textbf{Nói thẳng:} âm vị $\leftrightarrow$ âm vị thật \bad{chưa chạy}: hàng ``chữ Qwen'' không có model nhận dạng âm vị. Lý do đã chọn pxattn là không cần TTS, nhanh, chỉ đổi một biến so với Hou25; không phải đã thắng mọi cách.}
+\end{column}
+\begin{column}{0.36\textwidth}
+\centering\scriptsize\setlength{\tabcolsep}{2pt}
+\begin{tabular}{lc}
+\toprule
+Lựa chọn & đã kiểm?\\
+\midrule
+âm vị / TTS & có: đánh đổi\\
+attention / max & có: ngang\\
+hxattn, loss list & có: kém\\
+2 lớp cross-attn & \bad{chưa}\\
+lớp TF phía audio & \bad{chưa}\\
+pool, 256 chiều & \bad{chưa}\\
+\bottomrule
+\end{tabular}\par
+\vspace{0.2cm}\raggedright
+\nbox{\ra{} \hi{Chưa chốt pxattn.} Chạy \textbf{S0} trước, xem trang kế hoạch.}
+\end{column}
+\end{columns}
 \end{frame}
 
 % ------------------------------------------------------------------
@@ -325,21 +365,22 @@ Câu nhiều từ hiếm \src{biên bản 24/10} & pxattn N100, câu $>$1 từ: 
 \bottomrule
 \end{tabular}\par
 \vspace{0.1cm}\raggedright
-\nbox[block body alerted]{\textbf{Tổng kết:} chọn từ gần chạm trần. Lỗi còn lại chủ yếu nằm ở \hi{ASR viết sai dù từ đã có trong prompt}. Muốn đẩy xác suất mà không chèn sai thì cần biết \hi{có không} và \hi{ở đâu}, và scorer đã có cả hai.}
+\nbox[block body alerted]{\textbf{Tổng kết:} với pxattn, phần scorer còn sửa được chỉ khoảng 2/10 điểm lỗi (test-other N2000). Lỗi lớn nhất là \hi{ASR viết sai dù từ đã có trong prompt}. Muốn đẩy xác suất mà không chèn sai thì cần biết \hi{có không} và \hi{ở đâu}.}
 \end{frame}
 
 % ------------------------------------------------------------------
 \section{Chốt scorer}
-\begin{frame}{Để dứt điểm scorer: còn 4 việc (khoảng 2 tuần)}
+\begin{frame}{Để dứt điểm scorer: còn 5 việc, S0 làm trước}
 \centering\scriptsize\setlength{\tabcolsep}{4pt}
 \begin{tabular}{cL{5.3cm}L{2.0cm}L{3.7cm}L{1.7cm}}
 \toprule
 \# & Việc & Chi phí & Tiêu chí xong & Trạng thái\\
 \midrule
+\textbf{S0} & \textbf{Âm vị--âm vị thật:} head CTC trên Whisper + căn chỉnh; thêm pxattn 1 lớp & GPU $\sim$10 h \src{ước lượng} & \#50 $\geq$ pxattn, H\#50 không tệ hơn, vị trí $\leq$0.05 s & \bad{mới}\\
 S1 & So ghép cặp với Hou25 (Hoàng); phân rã lỗi của cả hai & CPU, nửa ngày & có CI; biết phần chênh từ đâu & \bad{chờ Hoàng}\\
 S2 & \textbf{Temporal NMS}: hai ứng viên chồng thời gian thì giữ từ $p$ cao hơn & GPU $\sim$2 h & R\_H\#50 giảm $\geq$3; R\_B\#50 giảm $\leq$0.1 & chưa\\
 S3 & Decode Whisper: top-50 sau NMS; prompt hybrid theo thời gian của pxattn & GPU $\sim$3 h & B-WER $\leq$ Hou25 trong CI & chưa\\
-S4 & 3 seed pxattn + bản 1 lớp & GPU 4 $\times$ $\sim$5 h & biết phương sai & chưa\\
+S4 & 3 seed kiến trúc được chọn & GPU 3 $\times$ $\sim$5 h & biết phương sai & chưa\\
 \midrule
 S5 & (chỉ khi S2 không đủ) negative khó theo khoảng cách âm vị & GPU $\sim$5 h & như S2 & dự phòng\\
 \bottomrule
@@ -347,10 +388,10 @@ S5 & (chỉ khi S2 không đủ) negative khó theo khoảng cách âm vị & GP
 \vspace{0.25cm}\raggedright
 \begin{columns}[T]
 \begin{column}{0.48\textwidth}
-\nbox{\textbf{Sau đó chốt:} scorer = pxattn, pmaxsim làm tầng lọc rẻ, đầu ra có vị trí. Không mở thêm biến thể kiến trúc.}
+\nbox{\textbf{Chốt sau S0:} đạt tiêu chí thì đổi, không đạt thì giữ pxattn. S2--S4 làm trên kiến trúc được chọn.}
 \end{column}
 \begin{column}{0.48\textwidth}
-\nbox[block body alerted]{\textbf{Kỳ vọng thực tế:} theo TN2, NMS có thể giảm R\_H\#50, nhưng lợi B-WER trực tiếp nhỏ (phần thay = nhiễu chỉ 0.14 / 0.34). Có thể không đóng hết khoảng cách với Hou25.}
+\nbox[block body alerted]{\textbf{Kỳ vọng:} theo TN2, NMS có thể giảm R\_H\#50, nhưng lợi B-WER trực tiếp nhỏ (thay = nhiễu chỉ 0.14 / 0.34).}
 \end{column}
 \end{columns}
 \end{frame}
@@ -361,7 +402,7 @@ S5 & (chỉ khi S2 không đủ) negative khó theo khoảng cách âm vị & GP
 \begin{column}{0.55\textwidth}
 \footnotesize
 \begin{itemize}\setlength{\itemsep}{3pt}
-\item \textbf{Đầu ra mới} (không train lại): (từ, $p$, $t_{\text{đầu}}$, $t_{\text{cuối}}$, thời điểm từng âm vị), đọc từ attention lớp 1.
+\item \textbf{Đầu ra mới} (không train lại): (từ, $p$, $t_{\text{đầu}}$, $t_{\text{cuối}}$, thời điểm từng âm vị). Với pxattn: đọc từ attention lớp 1, hiện model tính rồi bỏ đi.
 \item \textbf{D0 -- mổ decode} \src{biên bản 24/10}: tại mỗi lỗi nghe giống, token đúng đứng hạng mấy, cách token được chọn bao xa \ra{} \hi{cần đẩy mạnh cỡ nào}.
 \item \textbf{D1 -- boost có cổng} (Whisper): cộng điểm token của bias word \textbf{chỉ khi} $p\geq\tau$ \textbf{và} decoder đang nhìn vào $[t_{\text{đầu}}-\delta,\ t_{\text{cuối}}+\delta]$.
 \item \textbf{D2 -- sang model khác}: nếu không đọc được ``đang ở frame nào'' thì dùng 2 lượt: hyp lần 1 có timestamp, chỉ boost trong cửa sổ.
@@ -413,7 +454,7 @@ CTC / transducer (tuỳ chọn) & ứng viên: NeMo Parakeet & cổng khi không
 \toprule
 Tuần & Đến & Việc & Kết quả\\
 \midrule
-1--2 & 17/11 & S1--S4: chốt scorer & bảng A--D đủ CI; nháp chương scorer\\
+1--2 & 17/11 & S0 rồi S1--S4: chọn kiến trúc, chốt scorer & bảng A--D đủ CI; nháp chương scorer\\
 3--4 & 01/12 & D0 trên Whisper + Qwen; đọc tài liệu logit & biết cần boost bao nhiêu; chốt thiết kế D1\\
 5--7 & 22/12 & D1 trên Whisper: 4 arm, N100/N2000, \texttt{missing} & bảng chính: B-WER giảm, chèn sai không tăng\\
 8--9 & 05/01 & D2: Qwen3-ASR (+ model 3 nếu kịp) & cùng bảng trên SpeechLLM\\
@@ -422,16 +463,16 @@ Tuần & Đến & Việc & Kết quả\\
 \bottomrule
 \end{tabular}\par
 \vspace{0.3cm}\raggedright
-\nbox[block body alerted]{\textbf{Rủi ro:} (1) D1 không thắng prompt hybrid \ra{} paper dừng ở scorer + NMS + prompt. (2) GPU dùng chung, lần gần nhất cả 4 card đều bận \ra{} cần lịch card. (3) Chưa có file Hoàng \ra{} S1 trễ, nhưng không chặn S2--S4.}
+\nbox[block body alerted]{\textbf{Rủi ro:} (1) D1 không thắng prompt hybrid \ra{} paper dừng ở scorer + NMS + prompt. (2) GPU dùng chung, lần gần nhất cả 4 card đều bận \ra{} cần lịch card. (3) Chưa có file Hoàng \ra{} S1 trễ, nhưng không chặn S2--S4. (4) S0 thắng \ra{} phải làm lại Bảng A, B, nên tuần 1--2 có thể trễ.}
 \end{frame}
 
 \begin{frame}{Cần thầy quyết}
 \begin{enumerate}\setlength{\itemsep}{7pt}
 \item \textbf{Định vị đóng góp:} ``gần bằng Hou25 nhưng không cần TTS, có ngưỡng, có vị trí'', thay cho ``thắng Hou25''?
-\item \textbf{Dừng mở rộng kiến trúc scorer} sau S1--S4 và chuyển sang decode (D0--D2)?
+\item \textbf{Chạy S0 (âm vị--âm vị) trước khi chốt}, rồi mới chuyển sang decode (D0--D2)?
 \item \textbf{Paper chính} là scorer + cổng thời gian lúc decode, hay chỉ scorer (an toàn hơn, ít mới hơn)?
 \item \textbf{Model thứ 3:} có cần không, ưu tiên model nào?
-\item \textbf{GPU:} xin card cố định cho tuần 1--2 (khoảng 25 h, chủ yếu cho 4 lượt train của S4).
+\item \textbf{GPU:} xin card cố định cho tuần 1--2 (khoảng 30 h \src{ước lượng}, chủ yếu để train S0 và S4).
 \end{enumerate}
 \end{frame}
 

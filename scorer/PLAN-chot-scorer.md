@@ -114,13 +114,14 @@ Thứ tự từ rẻ đến đắt. Bước a, b, c **không cần train lại**
 
 | # | Việc | Trả lời câu hỏi | Chi phí | Tiêu chí dừng |
 |---|---|---|---|---|
+| **S0** | **Âm vị–âm vị thật** (thêm 04/11): head CTC âm vị trên encoder Whisper đóng băng, nhãn từ g2p của transcript, chấm từng từ bằng căn chỉnh có thứ tự; thêm arm pxattn 1 lớp. Cùng bảng R_B#50, R_B@99, R_H#50, sai số vị trí, train-clean-100 | Âm vị–âm vị có hơn pxattn không; lớp 2 có cần không. Hiện chỉ có số paper của PTC và hypmatch (không có model nhận dạng âm vị) | 1–2 ngày code, GPU ~10 h (ước lượng) | Thay pxattn nếu R_B#50 ≥ pxattn, R_H#50 không tệ hơn và sai số vị trí ≤ 0,05 s; nếu không thì giữ pxattn |
 | S1 | So **ghép cặp** pxattn với Hou25 (Hoàng) trong cùng pipeline: CI bootstrap theo câu cho B-WER; đếm số lần chèn từ nhiễu và số lỗi từ nghe giống của từng hệ | Khoảng 0,2–0,9 điểm có thật không, có phải do từ nghe giống không | CPU, ~½ ngày (cần file hyp của Hoàng) | Có CI; biết phần chênh đến từ đâu |
 | S2 | **Temporal NMS** (5b) trên ranking N100 / N2000, đo R_B#50, R_H#50 | Vị trí có sửa được điểm yếu từ nghe giống không | Cần rank đầy đủ kèm thời gian: GPU ~2 h (hoặc CPU trên tập con) | H#50 giảm ≥ 3 điểm, #50 giảm ≤ 0,1 |
 | S3 | Decode Whisper: top-50 sau NMS; hybrid theo thời gian của pxattn (5c) | Chênh lệch với Hou25 có đóng lại không | GPU ~3 h | B-WER ≤ Hou25 (Hoàng) trong CI |
-| S4 | 3 seed pxattn (+ biến thể 1 lớp) | Phương sai do train; kiến trúc gọn hơn có đủ không | GPU 4 × ~5 h | — |
+| S4 | 3 seed kiến trúc được chọn | Phương sai do train | GPU 3 × ~5 h | — |
 | S5 | (nếu S2 không đủ) negative khó theo **khoảng cách âm vị** thay vì chính tả | Sửa H#50 bằng train | GPU ~5 h | như S2 |
 
-Sau S1–S4: **chốt** scorer = pxattn (+ pmaxsim làm tầng rẻ), với đầu ra có vị trí. Viết chương "scorer":
+**Chưa chốt pxattn** (sửa 04/11): việc chọn âm vị và các chi tiết kiến trúc chưa được chứng minh là tốt nhất. S2–S4 làm trên kiến trúc thắng S0, sau đó mới **chốt**, với pmaxsim làm tầng rẻ và đầu ra có vị trí. Viết chương "scorer":
 - Hou25 tái hiện (Hoàng)
 - scorer âm vị
 - chọn từ + B-WER trên Whisper và Qwen
