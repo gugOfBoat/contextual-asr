@@ -50,7 +50,7 @@ Sau đó   D0 mổ logit → D1 boost có cổng p × thời gian → D2 sang Qw
 - **G (% khoảng trống lấp được) của `compare.py` vô nghĩa trên Whisper**: oracle bị lặp chữ, nên test-other có oracle 26,24 tệ hơn cả list. Đừng báo G cho Whisper.
 - **Chuẩn hoá:** bảng Whisper dùng plain (để so với Hou25), bảng Qwen dùng wnorm. Không so chéo.
 - **PTC-Bias là số trên Qwen3-ASR-0.6B**, nhóm chạy 1.7B. Chỉ là tham chiếu.
-- **Giả thuyết chưa kiểm trực tiếp:** khoảng cách với Hou25 là do từ nghe giống (R_H#50 21–26 so với 17). Mới có bằng chứng gián tiếp: pmaxsim để lọt nhiều từ nghe giống hơn và chèn nhiễu nhiều hơn pxattn.
+- **Giả thuyết chưa kiểm trực tiếp:** khoảng cách với Hou25 là do từ nghe giống (R_H#50 21–26 so với 17). Bằng chứng còn yếu: pmaxsim để lọt nhiều từ nghe giống và chèn nhiễu nhiều hơn pxattn, nhưng từ nhiễu viết đè lên từ đúng chỉ tốn 0,14 / 0,34 điểm (pxattn N2000). Vì vậy NMS (S2) có thể giảm R_H#50 mà B-WER giảm ít.
 - **Giới tính:** ước từ F0 với ngưỡng 150 Hz, không phải nhãn thật của từng câu; đọc kèm `gender.md`.
 - **Chưa kiểm:** tài liệu điều chỉnh logit (mới biết tên paper); cách lấy "đang ở frame nào" trên Qwen; ứng viên model thứ 3 (license, bộ nhớ, cách đưa context).
 

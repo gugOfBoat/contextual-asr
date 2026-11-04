@@ -108,7 +108,7 @@ audio ─┬──────────────────────�
 | E3 | Qwen + lọc ngưỡng | p ≥ 0,5: 4,78 / 9,71, gần oracle 4,01 / 7,73 | Sigmoid/BCE cho p dùng được làm ngưỡng → list được phép rỗng. Trên `missing_N2000`, scorer đưa Qwen về đúng mức không context (7,39 so với 7,40): không bị list nhiễu kéo. |
 | E4 | Bảng C: chọn từ | R_B#50 ≥ Hou25; R_H#50 21–26 so với 17 | Âm vị **tìm từ đúng** tốt hơn, nhưng **dễ bị lừa hơn bởi từ nghe giống**. Đây là điểm yếu duy nhất rõ ràng. |
 | E5 | Cùng pipeline với Hoàng | pxattn kém 0,2–0,9 | Rất có thể do E4. Đã kiểm gián tiếp ở E6; kiểm trực tiếp cần file của Hoàng. |
-| E6 | **S1: lỗi từ hiếm đến từ đâu** (`s1_breakdown.md`) | Lỗi "nghe giống" (cách ≤ 2 âm vị) chiếm phần lớn: none 4,96 / 10,24 điểm. Ở N2000, pxattn: từ đúng bị rớt khỏi prompt 1,68 điểm (other); từ nhiễu xuất hiện trong hyp 13 / 54 lần, pmaxsim 70 / 106 lần; số từ nhiễu nghe giống trong mỗi prompt là 1,47–1,53 với pxattn, 1,74–1,81 với pmaxsim | Lỗi còn lại không do thiếu từ trong prompt (97,7% từ đúng đã có ở other) mà do **ASR viết chính tả quen hơn**, cộng với **từ nhiễu nghe giống kéo sai**. Scorer càng để lọt từ nghe giống thì Whisper càng chèn nhiễu. Khớp giả thuyết ở E4. |
+| E6 | **S1: lỗi từ hiếm đến từ đâu** (`s1_breakdown.md`) | Lỗi "nghe giống" (cách ≤ 2 âm vị) chiếm phần lớn: none 4,96 / 10,24 điểm. Ở N2000, pxattn: từ đúng bị rớt khỏi prompt 1,68 điểm (other); từ nhiễu xuất hiện trong hyp 13 / 54 lần, pmaxsim 70 / 106 lần; số từ nhiễu nghe giống trong mỗi prompt là 1,47–1,53 với pxattn, 1,74–1,81 với pmaxsim | Lỗi còn lại chủ yếu do **ASR viết chính tả quen hơn dù từ đã có trong prompt**: nghe giống ở pxattn N100 ngang oracle (4,69 so với 4,62; clean 2,60 so với 2,33), nên tầng prompt đã hết việc ở nhóm lỗi này. Từ nhiễu viết đè lên từ đúng chỉ tốn **0,14 / 0,34 điểm** ở pxattn N2000, nên từ nghe giống trong prompt **chưa đủ giải thích** khoảng cách với Hou25, và NMS khó giảm nhiều B-WER trực tiếp. |
 | E7 | **Scorer có biết từ ở đâu không** (REPORT 02/11; mốc MFA; 400 câu/tập) | attention lớp 1 của pxattn: sai số 0,03 s, 99% trúng span, 65–67% âm vị có đỉnh đúng đoạn của mình; pmaxsim 0,03–0,04 s (chỉ cả từ); Hou25 S1 0,06 s; cosine thô ngang ngẫu nhiên | Vị trí **tự xuất hiện** dù không giám sát. "Cosine matrix" chỉ mang vị trí khi đó chính là phép so mà model được train. Hai phía khác loại (vector audio / id âm vị) gặp nhau trong phép chiếu q/k của attention; nhánh audio **không** bị "âm vị hoá" (probe ≈ chiếu ngẫu nhiên). |
 | E8 | Đỉnh theo thời gian có tách đúng/nhiễu tốt hơn p không | AUC của p 0,995–1,000; của đỉnh 0,97 | Thời gian cho biết **ở đâu**, không thêm thông tin **có hay không**. |
 | E9 | Giới tính giọng (biên bản 24/10) | 44 nữ / 29 nam (ước từ F0); mọi CI chứa 0, kể cả Hou25 dùng giọng TTS nữ | Không thấy ảnh hưởng. Scorer âm vị miễn nhiễm theo thiết kế vì phía từ không có "giọng". |
@@ -116,7 +116,7 @@ audio ─┬──────────────────────�
 | E11 | hxattn: cho scorer nhìn thêm hyp lần 1 của Qwen | 6,58 / 14,07, kém hẳn | Nghi model học tắt theo hyp thay vì nghe audio → bỏ. |
 
 **Một câu tổng kết phần scorer:**
-> Chọn từ gần chạm trần: 97,7% từ đúng đã có trong prompt, Whisper chép ngang oracle. Lỗi còn lại nằm ở **mô hình ASR viết sai dù từ đã có trong prompt**, và ở **từ nhiễu nghe giống**. Cả hai đều cần thông tin **vị trí**, và scorer đã có sẵn thông tin đó.
+> Chọn từ gần chạm trần: 97,7% từ đúng đã có trong prompt, Whisper chép ngang oracle. Lỗi còn lại nằm ở **mô hình ASR viết sai dù từ đã có trong prompt**, và ở một phần từ đúng rớt khỏi prompt khi N lớn (0,54 / 1,68 điểm ở N2000). Muốn đẩy xác suất mà không chèn sai thì cần biết **có không** và **ở đâu**, và scorer đã có cả hai.
 
 ---
 
@@ -206,4 +206,4 @@ Rủi ro:
 2. Đồng ý **dừng mở rộng kiến trúc scorer** sau S1–S4 và chuyển sang phase decode (D0–D2)?
 3. Paper chính là **scorer + cổng thời gian lúc decode**, hay chỉ scorer (an toàn hơn, ít mới hơn)?
 4. Model thứ 3: cần không, và nếu cần thì ưu tiên model nào?
-5. Lịch GPU: xin card cố định cho tuần 1–2 (khoảng 15 h GPU).
+5. Lịch GPU: xin card cố định cho tuần 1–2 (khoảng 25 h GPU, chủ yếu cho 4 lượt train của S4).
