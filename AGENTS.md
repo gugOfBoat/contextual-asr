@@ -5,8 +5,8 @@ Dự án: **contextual ASR cho mô hình ASR dựa trên LLM (SpeechLLM) khi bia
 
 ## 0. Quy trình phiên
 - Trả lời bằng **tiếng Việt**, ngắn gọn, đi thẳng vào việc. Người dùng mới làm nghiên cứu → giải thích bằng ví dụ/sơ đồ, tránh thuật ngữ trần.
-- **Đầu phiên:** đọc `STATE.md` (và biên bản họp mới nhất trong `meetings/`).
-- **Cuối phiên:** cập nhật `STATE.md` (mục 3–5) và ghi `log/YYYY-MM-DD.md`.
+- **Đầu phiên:** đọc `GOAL.md`. Không đọc `archive/` hay `log/`, `meetings/` cũ trừ khi user bảo; số liệu tra trong `bench/results.md`, `scorer/results.md`.
+- **Cuối phiên:** cập nhật `GOAL.md` mục 6 nếu việc tiếp theo đổi, và ghi `log/YYYY-MM-DD.md`.
 - Method **chưa chốt** → không tự ý code method khi người dùng chưa duyệt; đề xuất kế hoạch trước.
 
 ## 1. Quy tắc nghiên cứu

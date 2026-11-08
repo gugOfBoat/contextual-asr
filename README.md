@@ -1,7 +1,7 @@
 # Contextual biasing cho Qwen3-ASR (frozen) — target Interspeech 2027
 
 Hạn nộp Interspeech 2027: 09/02/2027.
-Trạng thái chi tiết, cập nhật mỗi phiên: **`STATE.md`** · Bước tiếp theo: **`NEXT_STEPS.md`** · Nhật ký: `log/`.
+**Mục tiêu paper, gap, việc tiếp theo: `GOAL.md` (đọc trước).** Nhật ký: `log/`. Phần dưới đây là lịch sử tới 17/10, giữ để tra.
 
 ## Bài toán
 ASR hay chép sai **từ hiếm** (tên riêng, thuật ngữ): nói *"missus **neverbend**"*, Qwen3-ASR chép *"missus **never been**"*.
@@ -34,7 +34,7 @@ Protocol đánh giá scorer thống nhất: **`EVAL_PROTOCOL.md`**.
 Báo cáo họp 17/10 (10 slide + kịch bản): `meetings/2026-10-17/`.
 
 ## Bước tiếp theo
-Dựng **setup chuẩn của Hou25** (Whisper-turbo + Qwen, N = 100…2000, top-50 và lọc ngưỡng, tái hiện scorer Hou25, thêm PTC-Bias) để biết scorer của nhóm hơn/kém ở đâu → **`NEXT_STEPS.md`**.
+Xem **`GOAL.md`** mục 6.
 
 ## Cấu trúc
 | Thư mục | Nội dung |
@@ -43,11 +43,10 @@ Dựng **setup chuẩn của Hou25** (Whisper-turbo + Qwen, N = 100…2000, top-
 | `scorer/` | Scorer chấm bias word theo audio: `data/ → training/ → inference/`, `results.md`, `runs/` (checkpoint, log), `docs/` (sơ đồ) |
 | `related-work/` | Note từng paper (Hou25, PTC-Bias, …), bản đồ gap |
 | `meetings/` | Slide + biên bản từng buổi họp |
-| `method/` | Các bản đề xuất method (chưa chốt) |
-| `kb-contextual-asr/` | Kiến thức nền |
 | `log/` | Nhật ký theo ngày |
 | `paper/` | Outline paper |
-| `STATE.md`, `NEXT_STEPS.md` | Hiện trạng; kế hoạch tiếp |
+| `GOAL.md` | Mục tiêu paper, gap so với Hou25, việc tiếp theo |
+| `archive/2026-11-huong-cu/` | md hướng cũ tới 06/11 (`STATE`, `HANDOFF`, `NEXT_STEPS`, `method/`, `kb-contextual-asr/`, kế hoạch scorer cũ); vẫn trong git, không dùng làm căn cứ |
 | `AGENTS.md` (`CLAUDE.md`) | Quy ước làm việc cho agent / người (nguồn số liệu, nhãn [A]/[B]/[C], môi trường) |
 
 ## Không có trong git (tải / tạo lại)
@@ -59,7 +58,7 @@ Dựng **setup chuẩn của Hou25** (Whisper-turbo + Qwen, N = 100…2000, top-
 | PTC-Bias code + model | `bench/third_party/README.md` |
 | Feature TTS 21 GB, mp3 TTS | **đã mất** — dựng lại bằng `scorer/data/tts.py` + `encode_bias.py` |
 | File xếp hạng đầy đủ `rank_*.json` (691 MB), `last.pt` | không kéo về; tạo lại từ checkpoint |
-| `archive/` (hướng cũ 07–09/2026) | chỉ giữ ở máy cá nhân |
+| `archive/` (hướng cũ 07–09/2026), trừ `archive/2026-11-huong-cu/` | chỉ giữ ở máy cá nhân |
 
 ## Môi trường
 - Python ≥ 3.10, PyTorch, `transformers` 4.57, `qwen-asr`, `soundfile`, `librosa`, `g2p_en`, `rapidfuzz`, `edge-tts` (bản TTS).
