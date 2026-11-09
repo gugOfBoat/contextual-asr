@@ -51,3 +51,34 @@ wnorm, toàn bộ test-clean / test-other, list vào system prompt như mục 3.
 | missing_N2000 → pxattn p ≥ 0.5 | 1.65 / 3.42 | 0.92 / 1.91 | 7.39 / 16.18 |
 
 So với tham chiếu PTC-Bias (khác model: 0.6B): ngang "Qwen3-ASR + CTC-Filter" (4.81 / 9.45), còn thua PTC-Bias (4.10 / 7.76).
+
+## 6. E1: boost có gate theo vị trí trên Whisper (08–09/11, GPU 4090 card 3)
+- Model: whisper-large-v3-turbo, greedy, `gate_boost.py`. wnorm, `e1_table.py`.
+- Boost: cộng λ vào log-prob token của bias word. Gate: chỉ boost khi giây mà decoder đang nghe (đọc từ alignment heads) nằm trong span của từ ± margin.
+- λ = 5, margin = 0.1 s, chọn trên dev-other sub400 (ctx oracle, span từ wav2vec2). Không chỉnh trên test. Bảng quét: `out/dev-other/`.
+- Span: "MFA" = căn chỉnh MFA (Lugosch et al. 2019). "S1" = vị trí đoán bằng vệt chéo S1 của checkpoint Hou25 của nhóm (2 epoch), `scorer/analysis/a1_s1.py`.
+- top-50 = 50 từ đầu theo Hou25 của nhóm (`ctx_a1mean_N2000`, gần như trùng `ctx_hou25_N2000`).
+- "Chèn sai" = từ trong list N2000 xuất hiện trong hyp nhiều hơn trong ref. "Câu lặp" = hyp dài hơn 1.5 × ref + 3 từ.
+
+**Test-other (2939 câu), list IS21 N2000**
+
+| Hệ | WER | U-WER | B-WER | Chèn sai | Câu lặp |
+|---|---|---|---|---|---|
+| không context | 4.25 | 2.63 | 17.92 | 13 | 0 |
+| oracle → prompt | 14.29 | 13.70 | 19.31 | 593 | – |
+| top-50 → prompt (Hou25) | 3.41 | 2.65 | 9.84 | 40 | 0 |
+| (ctx_hou25_N2000 → prompt) | 3.39 | 2.65 | 9.69 | 39 | 0 |
+| oracle, boost không gate | 7.14 | 5.36 | 22.26 | 922 | 14 |
+| **oracle, gate span MFA** | **3.19** | **2.63** | **7.90** | 115 | 1 |
+| oracle, gate span S1 | 3.76 | 3.21 | 8.42 | 121 | 2 |
+| top-50, boost không gate | 55.25 | 57.65 | 34.94 | 1638 | 146 |
+| top-50, gate span S1 | 15.76 | 15.92 | 14.45 | 340 | 37 |
+
+Test-clean, chỉ các hệ nền: không context 2.16 / 1.34 / 8.64; oracle → prompt 12.06 / 12.83 / 6.05; Hou25 top-50 → prompt 1.87 / 1.45 / 5.13 (WER / U-WER / B-WER).
+
+**Rút ra**
+1. Ở mức trần (đúng từ, đúng vị trí), gate thắng prompt Hou25: B-WER 7.90 so với 9.69, U-WER giữ nguyên 2.63. Bỏ gate (boost luôn bật) thì hỏng: B-WER 22.26, 14 câu lặp → **vị trí là thứ làm boost dùng được**.
+2. Thay vị trí thật bằng vị trí đoán từ S1 vẫn hơn prompt (8.42), nhưng U-WER tăng 0.6.
+3. Với list thật (top-50) thì gate theo S1 **thua xa prompt** (WER 15.76, 37 câu lặp). S1 đoán vị trí cho mọi ứng viên, nên từ nhiễu cũng được boost ở đâu đó. Muốn đi tiếp cần một bước quyết định "từ này có thật trong câu không" trước khi boost (ngưỡng điểm, hoặc chỉ boost top-k nhỏ). Đây là giả thuyết, chưa đo.
+4. Đưa oracle vào prompt làm Whisper hỏng (WER 14.29), khớp với `whisper_oracle.tsv` cũ chạy bằng `run_whisper.py` (WER 20.18). Do đó không lấy "oracle → prompt" làm trần của prompt.
+5. Chưa chạy các điều kiện gate trên test-clean.
