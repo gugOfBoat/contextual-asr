@@ -1,0 +1,1453 @@
++ L=/work/libri/LibriSpeech
++ python -m training.train --arch pmaxsim --epochs 5 --lr 2e-4
++ wait
++ python -m training.train --arch pxattn --epochs 5 --lr 2e-4
++ for S in test-clean test-other
++ python -m inference.rank --ckpt work/ckpt/pxattn/best.pt --name pxattn --split test-clean --libri /work/libri/LibriSpeech --thr 0.3 0.5 0.7 0.9 --lists N100 N500 N1000 N2000 missing_N100 missing_N2000
+W1016 12:11:21.335000 5102 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1016 12:11:21.366000 5102 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2620  tầng1 0ms/câu  tầng2 497ms/câu
+32/2620  tầng1 0ms/câu  tầng2 483ms/câu
+48/2620  tầng1 0ms/câu  tầng2 467ms/câu
+64/2620  tầng1 0ms/câu  tầng2 472ms/câu
+80/2620  tầng1 0ms/câu  tầng2 459ms/câu
+96/2620  tầng1 0ms/câu  tầng2 489ms/câu
+112/2620  tầng1 0ms/câu  tầng2 489ms/câu
+128/2620  tầng1 0ms/câu  tầng2 490ms/câu
+144/2620  tầng1 0ms/câu  tầng2 506ms/câu
+160/2620  tầng1 0ms/câu  tầng2 523ms/câu
+176/2620  tầng1 0ms/câu  tầng2 512ms/câu
+192/2620  tầng1 0ms/câu  tầng2 512ms/câu
+208/2620  tầng1 0ms/câu  tầng2 509ms/câu
+224/2620  tầng1 0ms/câu  tầng2 511ms/câu
+240/2620  tầng1 0ms/câu  tầng2 523ms/câu
+256/2620  tầng1 0ms/câu  tầng2 522ms/câu
+272/2620  tầng1 0ms/câu  tầng2 522ms/câu
+288/2620  tầng1 0ms/câu  tầng2 520ms/câu
+304/2620  tầng1 0ms/câu  tầng2 519ms/câu
+320/2620  tầng1 0ms/câu  tầng2 518ms/câu
+336/2620  tầng1 0ms/câu  tầng2 518ms/câu
+352/2620  tầng1 0ms/câu  tầng2 516ms/câu
+368/2620  tầng1 0ms/câu  tầng2 522ms/câu
+384/2620  tầng1 0ms/câu  tầng2 529ms/câu
+400/2620  tầng1 0ms/câu  tầng2 527ms/câu
+416/2620  tầng1 0ms/câu  tầng2 523ms/câu
+432/2620  tầng1 0ms/câu  tầng2 525ms/câu
+448/2620  tầng1 0ms/câu  tầng2 524ms/câu
+464/2620  tầng1 0ms/câu  tầng2 528ms/câu
+480/2620  tầng1 0ms/câu  tầng2 529ms/câu
+496/2620  tầng1 0ms/câu  tầng2 536ms/câu
+512/2620  tầng1 0ms/câu  tầng2 541ms/câu
+528/2620  tầng1 0ms/câu  tầng2 546ms/câu
+544/2620  tầng1 0ms/câu  tầng2 549ms/câu
+560/2620  tầng1 0ms/câu  tầng2 549ms/câu
+576/2620  tầng1 0ms/câu  tầng2 545ms/câu
+592/2620  tầng1 0ms/câu  tầng2 549ms/câu
+608/2620  tầng1 0ms/câu  tầng2 554ms/câu
+624/2620  tầng1 0ms/câu  tầng2 557ms/câu
+640/2620  tầng1 0ms/câu  tầng2 555ms/câu
+656/2620  tầng1 0ms/câu  tầng2 556ms/câu
+672/2620  tầng1 0ms/câu  tầng2 556ms/câu
+688/2620  tầng1 0ms/câu  tầng2 557ms/câu
+704/2620  tầng1 0ms/câu  tầng2 558ms/câu
+720/2620  tầng1 0ms/câu  tầng2 558ms/câu
+736/2620  tầng1 0ms/câu  tầng2 559ms/câu
+752/2620  tầng1 0ms/câu  tầng2 558ms/câu
+768/2620  tầng1 0ms/câu  tầng2 559ms/câu
+784/2620  tầng1 0ms/câu  tầng2 561ms/câu
+800/2620  tầng1 0ms/câu  tầng2 562ms/câu
+816/2620  tầng1 0ms/câu  tầng2 559ms/câu
+832/2620  tầng1 0ms/câu  tầng2 556ms/câu
+848/2620  tầng1 0ms/câu  tầng2 555ms/câu
+864/2620  tầng1 0ms/câu  tầng2 557ms/câu
+880/2620  tầng1 0ms/câu  tầng2 559ms/câu
+896/2620  tầng1 0ms/câu  tầng2 558ms/câu
+912/2620  tầng1 0ms/câu  tầng2 555ms/câu
+928/2620  tầng1 0ms/câu  tầng2 556ms/câu
+944/2620  tầng1 0ms/câu  tầng2 555ms/câu
+960/2620  tầng1 0ms/câu  tầng2 553ms/câu
+976/2620  tầng1 0ms/câu  tầng2 554ms/câu
+992/2620  tầng1 0ms/câu  tầng2 554ms/câu
+1008/2620  tầng1 0ms/câu  tầng2 553ms/câu
+1024/2620  tầng1 0ms/câu  tầng2 552ms/câu
+1040/2620  tầng1 0ms/câu  tầng2 551ms/câu
+1056/2620  tầng1 0ms/câu  tầng2 551ms/câu
+1072/2620  tầng1 0ms/câu  tầng2 552ms/câu
+1088/2620  tầng1 0ms/câu  tầng2 549ms/câu
+1104/2620  tầng1 0ms/câu  tầng2 549ms/câu
+1120/2620  tầng1 0ms/câu  tầng2 547ms/câu
+1136/2620  tầng1 0ms/câu  tầng2 547ms/câu
+1152/2620  tầng1 0ms/câu  tầng2 546ms/câu
+1168/2620  tầng1 0ms/câu  tầng2 546ms/câu
+1184/2620  tầng1 0ms/câu  tầng2 549ms/câu
+1200/2620  tầng1 0ms/câu  tầng2 550ms/câu
+1216/2620  tầng1 0ms/câu  tầng2 548ms/câu
+1232/2620  tầng1 0ms/câu  tầng2 548ms/câu
+1248/2620  tầng1 0ms/câu  tầng2 550ms/câu
+1264/2620  tầng1 0ms/câu  tầng2 550ms/câu
+1280/2620  tầng1 0ms/câu  tầng2 550ms/câu
+1296/2620  tầng1 0ms/câu  tầng2 549ms/câu
+1312/2620  tầng1 0ms/câu  tầng2 550ms/câu
+1328/2620  tầng1 0ms/câu  tầng2 550ms/câu
+1344/2620  tầng1 0ms/câu  tầng2 551ms/câu
+1360/2620  tầng1 0ms/câu  tầng2 551ms/câu
+1376/2620  tầng1 0ms/câu  tầng2 551ms/câu
+1392/2620  tầng1 0ms/câu  tầng2 551ms/câu
+1408/2620  tầng1 0ms/câu  tầng2 552ms/câu
+1424/2620  tầng1 0ms/câu  tầng2 551ms/câu
+1440/2620  tầng1 0ms/câu  tầng2 553ms/câu
+1456/2620  tầng1 0ms/câu  tầng2 552ms/câu
+1472/2620  tầng1 0ms/câu  tầng2 553ms/câu
+1488/2620  tầng1 0ms/câu  tầng2 553ms/câu
+1504/2620  tầng1 0ms/câu  tầng2 554ms/câu
+1520/2620  tầng1 0ms/câu  tầng2 553ms/câu
+1536/2620  tầng1 0ms/câu  tầng2 554ms/câu
+1552/2620  tầng1 0ms/câu  tầng2 553ms/câu
+1568/2620  tầng1 0ms/câu  tầng2 553ms/câu
+1584/2620  tầng1 0ms/câu  tầng2 554ms/câu
+1600/2620  tầng1 0ms/câu  tầng2 554ms/câu
+1616/2620  tầng1 0ms/câu  tầng2 554ms/câu
+1632/2620  tầng1 0ms/câu  tầng2 553ms/câu
+1648/2620  tầng1 0ms/câu  tầng2 554ms/câu
+1664/2620  tầng1 0ms/câu  tầng2 555ms/câu
+1680/2620  tầng1 0ms/câu  tầng2 555ms/câu
+1696/2620  tầng1 0ms/câu  tầng2 556ms/câu
+1712/2620  tầng1 0ms/câu  tầng2 557ms/câu
+1728/2620  tầng1 0ms/câu  tầng2 557ms/câu
+1744/2620  tầng1 0ms/câu  tầng2 557ms/câu
+1760/2620  tầng1 0ms/câu  tầng2 558ms/câu
+1776/2620  tầng1 0ms/câu  tầng2 559ms/câu
+1792/2620  tầng1 0ms/câu  tầng2 558ms/câu
+1808/2620  tầng1 0ms/câu  tầng2 558ms/câu
+1824/2620  tầng1 0ms/câu  tầng2 557ms/câu
+1840/2620  tầng1 0ms/câu  tầng2 558ms/câu
+1856/2620  tầng1 0ms/câu  tầng2 557ms/câu
+1872/2620  tầng1 0ms/câu  tầng2 557ms/câu
+1888/2620  tầng1 0ms/câu  tầng2 558ms/câu
+1904/2620  tầng1 0ms/câu  tầng2 558ms/câu
+1920/2620  tầng1 0ms/câu  tầng2 559ms/câu
+1936/2620  tầng1 0ms/câu  tầng2 558ms/câu
+1952/2620  tầng1 0ms/câu  tầng2 557ms/câu
+1968/2620  tầng1 0ms/câu  tầng2 558ms/câu
+1984/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2000/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2016/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2032/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2048/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2064/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2080/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2096/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2112/2620  tầng1 0ms/câu  tầng2 557ms/câu
+2128/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2144/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2160/2620  tầng1 0ms/câu  tầng2 557ms/câu
+2176/2620  tầng1 0ms/câu  tầng2 557ms/câu
+2192/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2208/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2224/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2240/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2256/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2272/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2288/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2304/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2320/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2336/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2352/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2368/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2384/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2400/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2416/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2432/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2448/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2464/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2480/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2496/2620  tầng1 0ms/câu  tầng2 560ms/câu
+2512/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2528/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2544/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2560/2620  tầng1 0ms/câu  tầng2 558ms/câu
+2576/2620  tầng1 0ms/câu  tầng2 559ms/câu
+2592/2620  tầng1 0ms/câu  tầng2 560ms/câu
+2608/2620  tầng1 0ms/câu  tầng2 560ms/câu
+2620/2620  tầng1 0ms/câu  tầng2 560ms/câu
+N100 p≥0.3: trung bình 2.2 từ/câu, 620 câu rỗng
+N100 p≥0.5: trung bình 2.1 từ/câu, 644 câu rỗng
+N100 p≥0.7: trung bình 2.0 từ/câu, 671 câu rỗng
+N100 p≥0.9: trung bình 1.7 từ/câu, 826 câu rỗng
+N500 p≥0.3: trung bình 2.6 từ/câu, 513 câu rỗng
+N500 p≥0.5: trung bình 2.3 từ/câu, 577 câu rỗng
+N500 p≥0.7: trung bình 2.1 từ/câu, 643 câu rỗng
+N500 p≥0.9: trung bình 1.7 từ/câu, 819 câu rỗng
+N1000 p≥0.3: trung bình 3.0 từ/câu, 407 câu rỗng
+N1000 p≥0.5: trung bình 2.5 từ/câu, 510 câu rỗng
+N1000 p≥0.7: trung bình 2.2 từ/câu, 601 câu rỗng
+N1000 p≥0.9: trung bình 1.8 từ/câu, 804 câu rỗng
+N2000 p≥0.3: trung bình 3.9 từ/câu, 281 câu rỗng
+N2000 p≥0.5: trung bình 3.0 từ/câu, 393 câu rỗng
+N2000 p≥0.7: trung bình 2.5 từ/câu, 510 câu rỗng
+N2000 p≥0.9: trung bình 1.8 từ/câu, 782 câu rỗng
+missing_N100 p≥0.3: trung bình 0.1 từ/câu, 2390 câu rỗng
+missing_N100 p≥0.5: trung bình 0.1 từ/câu, 2488 câu rỗng
+missing_N100 p≥0.7: trung bình 0.0 từ/câu, 2548 câu rỗng
+missing_N100 p≥0.9: trung bình 0.0 từ/câu, 2605 câu rỗng
+missing_N2000 p≥0.3: trung bình 1.8 từ/câu, 799 câu rỗng
+missing_N2000 p≥0.5: trung bình 1.0 từ/câu, 1208 câu rỗng
+missing_N2000 p≥0.7: trung bình 0.5 từ/câu, 1666 câu rỗng
+missing_N2000 p≥0.9: trung bình 0.1 từ/câu, 2371 câu rỗng
+xong test-clean: 2620 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ python -m inference.rank --ckpt work/ckpt/pmaxsim/best.pt --name pmaxsim --split test-clean --libri /work/libri/LibriSpeech --thr 0.3 0.5 0.7 0.9 --lists N100 N2000 missing_N100 missing_N2000 all
+W1016 12:38:09.631000 5204 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1016 12:38:09.660000 5204 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2620  tầng1 0ms/câu  tầng2 82ms/câu
+32/2620  tầng1 0ms/câu  tầng2 75ms/câu
+48/2620  tầng1 0ms/câu  tầng2 73ms/câu
+64/2620  tầng1 0ms/câu  tầng2 72ms/câu
+80/2620  tầng1 0ms/câu  tầng2 72ms/câu
+96/2620  tầng1 0ms/câu  tầng2 72ms/câu
+112/2620  tầng1 0ms/câu  tầng2 71ms/câu
+128/2620  tầng1 0ms/câu  tầng2 71ms/câu
+144/2620  tầng1 0ms/câu  tầng2 71ms/câu
+160/2620  tầng1 0ms/câu  tầng2 71ms/câu
+176/2620  tầng1 0ms/câu  tầng2 71ms/câu
+192/2620  tầng1 0ms/câu  tầng2 71ms/câu
+208/2620  tầng1 0ms/câu  tầng2 71ms/câu
+224/2620  tầng1 0ms/câu  tầng2 72ms/câu
+240/2620  tầng1 0ms/câu  tầng2 72ms/câu
+256/2620  tầng1 0ms/câu  tầng2 72ms/câu
+272/2620  tầng1 0ms/câu  tầng2 72ms/câu
+288/2620  tầng1 0ms/câu  tầng2 72ms/câu
+304/2620  tầng1 0ms/câu  tầng2 72ms/câu
+320/2620  tầng1 0ms/câu  tầng2 72ms/câu
+336/2620  tầng1 0ms/câu  tầng2 72ms/câu
+352/2620  tầng1 0ms/câu  tầng2 72ms/câu
+368/2620  tầng1 0ms/câu  tầng2 72ms/câu
+384/2620  tầng1 0ms/câu  tầng2 72ms/câu
+400/2620  tầng1 0ms/câu  tầng2 71ms/câu
+416/2620  tầng1 0ms/câu  tầng2 71ms/câu
+432/2620  tầng1 0ms/câu  tầng2 71ms/câu
+448/2620  tầng1 0ms/câu  tầng2 71ms/câu
+464/2620  tầng1 0ms/câu  tầng2 71ms/câu
+480/2620  tầng1 0ms/câu  tầng2 71ms/câu
+496/2620  tầng1 0ms/câu  tầng2 71ms/câu
+512/2620  tầng1 0ms/câu  tầng2 71ms/câu
+528/2620  tầng1 0ms/câu  tầng2 72ms/câu
+544/2620  tầng1 0ms/câu  tầng2 72ms/câu
+560/2620  tầng1 0ms/câu  tầng2 72ms/câu
+576/2620  tầng1 0ms/câu  tầng2 72ms/câu
+592/2620  tầng1 0ms/câu  tầng2 71ms/câu
+608/2620  tầng1 0ms/câu  tầng2 72ms/câu
+624/2620  tầng1 0ms/câu  tầng2 72ms/câu
+640/2620  tầng1 0ms/câu  tầng2 72ms/câu
+656/2620  tầng1 0ms/câu  tầng2 72ms/câu
+672/2620  tầng1 0ms/câu  tầng2 73ms/câu
+688/2620  tầng1 0ms/câu  tầng2 73ms/câu
+704/2620  tầng1 0ms/câu  tầng2 73ms/câu
+720/2620  tầng1 0ms/câu  tầng2 74ms/câu
+736/2620  tầng1 0ms/câu  tầng2 74ms/câu
+752/2620  tầng1 0ms/câu  tầng2 74ms/câu
+768/2620  tầng1 0ms/câu  tầng2 75ms/câu
+784/2620  tầng1 0ms/câu  tầng2 75ms/câu
+800/2620  tầng1 0ms/câu  tầng2 75ms/câu
+816/2620  tầng1 0ms/câu  tầng2 75ms/câu
+832/2620  tầng1 0ms/câu  tầng2 75ms/câu
+848/2620  tầng1 0ms/câu  tầng2 75ms/câu
+864/2620  tầng1 0ms/câu  tầng2 75ms/câu
+880/2620  tầng1 0ms/câu  tầng2 75ms/câu
+896/2620  tầng1 0ms/câu  tầng2 74ms/câu
+912/2620  tầng1 0ms/câu  tầng2 74ms/câu
+928/2620  tầng1 0ms/câu  tầng2 74ms/câu
+944/2620  tầng1 0ms/câu  tầng2 74ms/câu
+960/2620  tầng1 0ms/câu  tầng2 74ms/câu
+976/2620  tầng1 0ms/câu  tầng2 74ms/câu
+992/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1008/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1024/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1040/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1056/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1072/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1088/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1104/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1120/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1136/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1152/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1168/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1184/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1200/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1216/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1232/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1248/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1264/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1280/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1296/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1312/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1328/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1344/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1360/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1376/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1392/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1408/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1424/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1440/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1456/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1472/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1488/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1504/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1520/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1536/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1552/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1568/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1584/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1600/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1616/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1632/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1648/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1664/2620  tầng1 0ms/câu  tầng2 74ms/câu
+1680/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1696/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1712/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1728/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1744/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1760/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1776/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1792/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1808/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1824/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1840/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1856/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1872/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1888/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1904/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1920/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1936/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1952/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1968/2620  tầng1 0ms/câu  tầng2 75ms/câu
+1984/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2000/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2016/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2032/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2048/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2064/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2080/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2096/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2112/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2128/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2144/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2160/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2176/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2192/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2208/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2224/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2240/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2256/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2272/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2288/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2304/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2320/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2336/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2352/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2368/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2384/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2400/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2416/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2432/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2448/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2464/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2480/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2496/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2512/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2528/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2544/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2560/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2576/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2592/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2608/2620  tầng1 0ms/câu  tầng2 75ms/câu
+2620/2620  tầng1 0ms/câu  tầng2 75ms/câu
+N100 p≥0.3: trung bình 2.3 từ/câu, 616 câu rỗng
+N100 p≥0.5: trung bình 2.1 từ/câu, 660 câu rỗng
+N100 p≥0.7: trung bình 1.9 từ/câu, 724 câu rỗng
+N100 p≥0.9: trung bình 0.5 từ/câu, 1724 câu rỗng
+N2000 p≥0.3: trung bình 5.0 từ/câu, 336 câu rỗng
+N2000 p≥0.5: trung bình 2.6 từ/câu, 546 câu rỗng
+N2000 p≥0.7: trung bình 2.0 từ/câu, 702 câu rỗng
+N2000 p≥0.9: trung bình 0.5 từ/câu, 1719 câu rỗng
+missing_N100 p≥0.3: trung bình 0.1 từ/câu, 2286 câu rỗng
+missing_N100 p≥0.5: trung bình 0.0 từ/câu, 2546 câu rỗng
+missing_N100 p≥0.7: trung bình 0.0 từ/câu, 2609 câu rỗng
+missing_N100 p≥0.9: trung bình 0.0 từ/câu, 2620 câu rỗng
+missing_N2000 p≥0.3: trung bình 2.8 từ/câu, 602 câu rỗng
+missing_N2000 p≥0.5: trung bình 0.5 từ/câu, 1701 câu rỗng
+missing_N2000 p≥0.7: trung bình 0.1 từ/câu, 2410 câu rỗng
+missing_N2000 p≥0.9: trung bình 0.0 từ/câu, 2612 câu rỗng
+all p≥0.3: trung bình 46.8 từ/câu, 27 câu rỗng
+all p≥0.5: trung bình 35.0 từ/câu, 67 câu rỗng
+all p≥0.7: trung bình 11.7 từ/câu, 234 câu rỗng
+all p≥0.9: trung bình 0.8 từ/câu, 1598 câu rỗng
+xong test-clean: 2620 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ python -m inference.rank --pre work/ckpt/pmaxsim/best.pt --pre_k 200 --ckpt work/ckpt/pxattn/best.pt --name pcascade --split test-clean --libri /work/libri/LibriSpeech --thr 0.3 0.5 0.7 0.9 --lists N2000 missing_N2000 all
+W1016 12:50:22.258000 5306 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1016 12:50:22.287000 5306 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2620  tầng1 99ms/câu  tầng2 66ms/câu
+32/2620  tầng1 83ms/câu  tầng2 58ms/câu
+48/2620  tầng1 84ms/câu  tầng2 59ms/câu
+64/2620  tầng1 83ms/câu  tầng2 59ms/câu
+80/2620  tầng1 80ms/câu  tầng2 57ms/câu
+96/2620  tầng1 79ms/câu  tầng2 56ms/câu
+112/2620  tầng1 79ms/câu  tầng2 55ms/câu
+128/2620  tầng1 78ms/câu  tầng2 55ms/câu
+144/2620  tầng1 77ms/câu  tầng2 54ms/câu
+160/2620  tầng1 76ms/câu  tầng2 54ms/câu
+176/2620  tầng1 76ms/câu  tầng2 54ms/câu
+192/2620  tầng1 76ms/câu  tầng2 55ms/câu
+208/2620  tầng1 76ms/câu  tầng2 55ms/câu
+224/2620  tầng1 76ms/câu  tầng2 54ms/câu
+240/2620  tầng1 76ms/câu  tầng2 55ms/câu
+256/2620  tầng1 76ms/câu  tầng2 55ms/câu
+272/2620  tầng1 77ms/câu  tầng2 56ms/câu
+288/2620  tầng1 77ms/câu  tầng2 56ms/câu
+304/2620  tầng1 77ms/câu  tầng2 56ms/câu
+320/2620  tầng1 77ms/câu  tầng2 56ms/câu
+336/2620  tầng1 77ms/câu  tầng2 56ms/câu
+352/2620  tầng1 77ms/câu  tầng2 56ms/câu
+368/2620  tầng1 77ms/câu  tầng2 56ms/câu
+384/2620  tầng1 77ms/câu  tầng2 56ms/câu
+400/2620  tầng1 76ms/câu  tầng2 56ms/câu
+416/2620  tầng1 76ms/câu  tầng2 55ms/câu
+432/2620  tầng1 76ms/câu  tầng2 56ms/câu
+448/2620  tầng1 76ms/câu  tầng2 55ms/câu
+464/2620  tầng1 76ms/câu  tầng2 56ms/câu
+480/2620  tầng1 76ms/câu  tầng2 56ms/câu
+496/2620  tầng1 77ms/câu  tầng2 56ms/câu
+512/2620  tầng1 76ms/câu  tầng2 56ms/câu
+528/2620  tầng1 76ms/câu  tầng2 56ms/câu
+544/2620  tầng1 76ms/câu  tầng2 56ms/câu
+560/2620  tầng1 76ms/câu  tầng2 56ms/câu
+576/2620  tầng1 76ms/câu  tầng2 56ms/câu
+592/2620  tầng1 77ms/câu  tầng2 56ms/câu
+608/2620  tầng1 77ms/câu  tầng2 56ms/câu
+624/2620  tầng1 76ms/câu  tầng2 56ms/câu
+640/2620  tầng1 76ms/câu  tầng2 56ms/câu
+656/2620  tầng1 76ms/câu  tầng2 56ms/câu
+672/2620  tầng1 76ms/câu  tầng2 56ms/câu
+688/2620  tầng1 76ms/câu  tầng2 56ms/câu
+704/2620  tầng1 76ms/câu  tầng2 56ms/câu
+720/2620  tầng1 76ms/câu  tầng2 56ms/câu
+736/2620  tầng1 76ms/câu  tầng2 56ms/câu
+752/2620  tầng1 77ms/câu  tầng2 56ms/câu
+768/2620  tầng1 77ms/câu  tầng2 56ms/câu
+784/2620  tầng1 77ms/câu  tầng2 56ms/câu
+800/2620  tầng1 78ms/câu  tầng2 57ms/câu
+816/2620  tầng1 77ms/câu  tầng2 57ms/câu
+832/2620  tầng1 77ms/câu  tầng2 57ms/câu
+848/2620  tầng1 77ms/câu  tầng2 57ms/câu
+864/2620  tầng1 77ms/câu  tầng2 57ms/câu
+880/2620  tầng1 77ms/câu  tầng2 57ms/câu
+896/2620  tầng1 77ms/câu  tầng2 57ms/câu
+912/2620  tầng1 77ms/câu  tầng2 57ms/câu
+928/2620  tầng1 77ms/câu  tầng2 57ms/câu
+944/2620  tầng1 77ms/câu  tầng2 57ms/câu
+960/2620  tầng1 77ms/câu  tầng2 58ms/câu
+976/2620  tầng1 78ms/câu  tầng2 58ms/câu
+992/2620  tầng1 77ms/câu  tầng2 58ms/câu
+1008/2620  tầng1 77ms/câu  tầng2 58ms/câu
+1024/2620  tầng1 77ms/câu  tầng2 58ms/câu
+1040/2620  tầng1 78ms/câu  tầng2 58ms/câu
+1056/2620  tầng1 78ms/câu  tầng2 58ms/câu
+1072/2620  tầng1 77ms/câu  tầng2 58ms/câu
+1088/2620  tầng1 78ms/câu  tầng2 58ms/câu
+1104/2620  tầng1 77ms/câu  tầng2 58ms/câu
+1120/2620  tầng1 78ms/câu  tầng2 58ms/câu
+1136/2620  tầng1 77ms/câu  tầng2 58ms/câu
+1152/2620  tầng1 78ms/câu  tầng2 58ms/câu
+1168/2620  tầng1 77ms/câu  tầng2 58ms/câu
+1184/2620  tầng1 78ms/câu  tầng2 59ms/câu
+1200/2620  tầng1 78ms/câu  tầng2 58ms/câu
+1216/2620  tầng1 78ms/câu  tầng2 59ms/câu
+1232/2620  tầng1 78ms/câu  tầng2 59ms/câu
+1248/2620  tầng1 78ms/câu  tầng2 59ms/câu
+1264/2620  tầng1 78ms/câu  tầng2 59ms/câu
+1280/2620  tầng1 78ms/câu  tầng2 59ms/câu
+1296/2620  tầng1 78ms/câu  tầng2 59ms/câu
+1312/2620  tầng1 78ms/câu  tầng2 59ms/câu
+1328/2620  tầng1 78ms/câu  tầng2 59ms/câu
+1344/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1360/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1376/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1392/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1408/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1424/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1440/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1456/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1472/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1488/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1504/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1520/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1536/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1552/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1568/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1584/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1600/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1616/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1632/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1648/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1664/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1680/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1696/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1712/2620  tầng1 78ms/câu  tầng2 61ms/câu
+1728/2620  tầng1 79ms/câu  tầng2 61ms/câu
+1744/2620  tầng1 79ms/câu  tầng2 61ms/câu
+1760/2620  tầng1 78ms/câu  tầng2 61ms/câu
+1776/2620  tầng1 78ms/câu  tầng2 61ms/câu
+1792/2620  tầng1 78ms/câu  tầng2 61ms/câu
+1808/2620  tầng1 78ms/câu  tầng2 61ms/câu
+1824/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1840/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1856/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1872/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1888/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1904/2620  tầng1 78ms/câu  tầng2 61ms/câu
+1920/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1936/2620  tầng1 78ms/câu  tầng2 60ms/câu
+1952/2620  tầng1 78ms/câu  tầng2 61ms/câu
+1968/2620  tầng1 78ms/câu  tầng2 61ms/câu
+1984/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2000/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2016/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2032/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2048/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2064/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2080/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2096/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2112/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2128/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2144/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2160/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2176/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2192/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2208/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2224/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2240/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2256/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2272/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2288/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2304/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2320/2620  tầng1 78ms/câu  tầng2 61ms/câu
+2336/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2352/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2368/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2384/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2400/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2416/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2432/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2448/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2464/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2480/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2496/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2512/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2528/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2544/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2560/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2576/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2592/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2608/2620  tầng1 77ms/câu  tầng2 61ms/câu
+2620/2620  tầng1 77ms/câu  tầng2 61ms/câu
+N2000 p≥0.3: trung bình 3.5 từ/câu, 315 câu rỗng
+N2000 p≥0.5: trung bình 2.9 từ/câu, 418 câu rỗng
+N2000 p≥0.7: trung bình 2.4 từ/câu, 522 câu rỗng
+N2000 p≥0.9: trung bình 1.8 từ/câu, 781 câu rỗng
+missing_N2000 p≥0.3: trung bình 1.4 từ/câu, 939 câu rỗng
+missing_N2000 p≥0.5: trung bình 0.8 từ/câu, 1325 câu rỗng
+missing_N2000 p≥0.7: trung bình 0.4 từ/câu, 1738 câu rỗng
+missing_N2000 p≥0.9: trung bình 0.1 từ/câu, 2379 câu rỗng
+all p≥0.3: trung bình 32.1 từ/câu, 5 câu rỗng
+all p≥0.5: trung bình 26.4 từ/câu, 11 câu rỗng
+all p≥0.7: trung bình 20.0 từ/câu, 30 câu rỗng
+all p≥0.9: trung bình 8.8 từ/câu, 186 câu rỗng
+xong test-clean: 2620 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ for S in test-clean test-other
++ python -m inference.rank --ckpt work/ckpt/pxattn/best.pt --name pxattn --split test-other --libri /work/libri/LibriSpeech --thr 0.3 0.5 0.7 0.9 --lists N100 N500 N1000 N2000 missing_N100 missing_N2000
+W1016 13:05:33.724000 5408 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1016 13:05:33.753000 5408 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2939  tầng1 0ms/câu  tầng2 519ms/câu
+32/2939  tầng1 0ms/câu  tầng2 543ms/câu
+48/2939  tầng1 0ms/câu  tầng2 521ms/câu
+64/2939  tầng1 0ms/câu  tầng2 518ms/câu
+80/2939  tầng1 0ms/câu  tầng2 533ms/câu
+96/2939  tầng1 0ms/câu  tầng2 523ms/câu
+112/2939  tầng1 0ms/câu  tầng2 523ms/câu
+128/2939  tầng1 0ms/câu  tầng2 543ms/câu
+144/2939  tầng1 0ms/câu  tầng2 537ms/câu
+160/2939  tầng1 0ms/câu  tầng2 545ms/câu
+176/2939  tầng1 0ms/câu  tầng2 543ms/câu
+192/2939  tầng1 0ms/câu  tầng2 552ms/câu
+208/2939  tầng1 0ms/câu  tầng2 552ms/câu
+224/2939  tầng1 0ms/câu  tầng2 541ms/câu
+240/2939  tầng1 0ms/câu  tầng2 538ms/câu
+256/2939  tầng1 0ms/câu  tầng2 543ms/câu
+272/2939  tầng1 0ms/câu  tầng2 545ms/câu
+288/2939  tầng1 0ms/câu  tầng2 543ms/câu
+304/2939  tầng1 0ms/câu  tầng2 542ms/câu
+320/2939  tầng1 0ms/câu  tầng2 541ms/câu
+336/2939  tầng1 0ms/câu  tầng2 542ms/câu
+352/2939  tầng1 0ms/câu  tầng2 543ms/câu
+368/2939  tầng1 0ms/câu  tầng2 542ms/câu
+384/2939  tầng1 0ms/câu  tầng2 547ms/câu
+400/2939  tầng1 0ms/câu  tầng2 545ms/câu
+416/2939  tầng1 0ms/câu  tầng2 542ms/câu
+432/2939  tầng1 0ms/câu  tầng2 545ms/câu
+448/2939  tầng1 0ms/câu  tầng2 547ms/câu
+464/2939  tầng1 0ms/câu  tầng2 552ms/câu
+480/2939  tầng1 0ms/câu  tầng2 558ms/câu
+496/2939  tầng1 0ms/câu  tầng2 556ms/câu
+512/2939  tầng1 0ms/câu  tầng2 556ms/câu
+528/2939  tầng1 0ms/câu  tầng2 554ms/câu
+544/2939  tầng1 0ms/câu  tầng2 558ms/câu
+560/2939  tầng1 0ms/câu  tầng2 561ms/câu
+576/2939  tầng1 0ms/câu  tầng2 563ms/câu
+592/2939  tầng1 0ms/câu  tầng2 564ms/câu
+608/2939  tầng1 0ms/câu  tầng2 568ms/câu
+624/2939  tầng1 0ms/câu  tầng2 568ms/câu
+640/2939  tầng1 0ms/câu  tầng2 565ms/câu
+656/2939  tầng1 0ms/câu  tầng2 564ms/câu
+672/2939  tầng1 0ms/câu  tầng2 567ms/câu
+688/2939  tầng1 0ms/câu  tầng2 569ms/câu
+704/2939  tầng1 0ms/câu  tầng2 569ms/câu
+720/2939  tầng1 0ms/câu  tầng2 566ms/câu
+736/2939  tầng1 0ms/câu  tầng2 565ms/câu
+752/2939  tầng1 0ms/câu  tầng2 569ms/câu
+768/2939  tầng1 0ms/câu  tầng2 568ms/câu
+784/2939  tầng1 0ms/câu  tầng2 567ms/câu
+800/2939  tầng1 0ms/câu  tầng2 565ms/câu
+816/2939  tầng1 0ms/câu  tầng2 566ms/câu
+832/2939  tầng1 0ms/câu  tầng2 568ms/câu
+848/2939  tầng1 0ms/câu  tầng2 565ms/câu
+864/2939  tầng1 0ms/câu  tầng2 568ms/câu
+880/2939  tầng1 0ms/câu  tầng2 572ms/câu
+896/2939  tầng1 0ms/câu  tầng2 574ms/câu
+912/2939  tầng1 0ms/câu  tầng2 576ms/câu
+928/2939  tầng1 0ms/câu  tầng2 578ms/câu
+944/2939  tầng1 0ms/câu  tầng2 578ms/câu
+960/2939  tầng1 0ms/câu  tầng2 576ms/câu
+976/2939  tầng1 0ms/câu  tầng2 575ms/câu
+992/2939  tầng1 0ms/câu  tầng2 575ms/câu
+1008/2939  tầng1 0ms/câu  tầng2 575ms/câu
+1024/2939  tầng1 0ms/câu  tầng2 577ms/câu
+1040/2939  tầng1 0ms/câu  tầng2 577ms/câu
+1056/2939  tầng1 0ms/câu  tầng2 576ms/câu
+1072/2939  tầng1 0ms/câu  tầng2 576ms/câu
+1088/2939  tầng1 0ms/câu  tầng2 575ms/câu
+1104/2939  tầng1 0ms/câu  tầng2 576ms/câu
+1120/2939  tầng1 0ms/câu  tầng2 575ms/câu
+1136/2939  tầng1 0ms/câu  tầng2 573ms/câu
+1152/2939  tầng1 0ms/câu  tầng2 575ms/câu
+1168/2939  tầng1 0ms/câu  tầng2 576ms/câu
+1184/2939  tầng1 0ms/câu  tầng2 574ms/câu
+1200/2939  tầng1 0ms/câu  tầng2 572ms/câu
+1216/2939  tầng1 0ms/câu  tầng2 570ms/câu
+1232/2939  tầng1 0ms/câu  tầng2 569ms/câu
+1248/2939  tầng1 0ms/câu  tầng2 569ms/câu
+1264/2939  tầng1 0ms/câu  tầng2 568ms/câu
+1280/2939  tầng1 0ms/câu  tầng2 567ms/câu
+1296/2939  tầng1 0ms/câu  tầng2 566ms/câu
+1312/2939  tầng1 0ms/câu  tầng2 567ms/câu
+1328/2939  tầng1 0ms/câu  tầng2 567ms/câu
+1344/2939  tầng1 0ms/câu  tầng2 565ms/câu
+1360/2939  tầng1 0ms/câu  tầng2 565ms/câu
+1376/2939  tầng1 0ms/câu  tầng2 565ms/câu
+1392/2939  tầng1 0ms/câu  tầng2 565ms/câu
+1408/2939  tầng1 0ms/câu  tầng2 565ms/câu
+1424/2939  tầng1 0ms/câu  tầng2 564ms/câu
+1440/2939  tầng1 0ms/câu  tầng2 563ms/câu
+1456/2939  tầng1 0ms/câu  tầng2 564ms/câu
+1472/2939  tầng1 0ms/câu  tầng2 564ms/câu
+1488/2939  tầng1 0ms/câu  tầng2 565ms/câu
+1504/2939  tầng1 0ms/câu  tầng2 565ms/câu
+1520/2939  tầng1 0ms/câu  tầng2 565ms/câu
+1536/2939  tầng1 0ms/câu  tầng2 566ms/câu
+1552/2939  tầng1 0ms/câu  tầng2 567ms/câu
+1568/2939  tầng1 0ms/câu  tầng2 568ms/câu
+1584/2939  tầng1 0ms/câu  tầng2 568ms/câu
+1600/2939  tầng1 0ms/câu  tầng2 569ms/câu
+1616/2939  tầng1 0ms/câu  tầng2 570ms/câu
+1632/2939  tầng1 0ms/câu  tầng2 569ms/câu
+1648/2939  tầng1 0ms/câu  tầng2 568ms/câu
+1664/2939  tầng1 0ms/câu  tầng2 567ms/câu
+1680/2939  tầng1 0ms/câu  tầng2 568ms/câu
+1696/2939  tầng1 0ms/câu  tầng2 566ms/câu
+1712/2939  tầng1 0ms/câu  tầng2 565ms/câu
+1728/2939  tầng1 0ms/câu  tầng2 565ms/câu
+1744/2939  tầng1 0ms/câu  tầng2 565ms/câu
+1760/2939  tầng1 0ms/câu  tầng2 567ms/câu
+1776/2939  tầng1 0ms/câu  tầng2 566ms/câu
+1792/2939  tầng1 0ms/câu  tầng2 566ms/câu
+1808/2939  tầng1 0ms/câu  tầng2 567ms/câu
+1824/2939  tầng1 0ms/câu  tầng2 568ms/câu
+1840/2939  tầng1 0ms/câu  tầng2 568ms/câu
+1856/2939  tầng1 0ms/câu  tầng2 567ms/câu
+1872/2939  tầng1 0ms/câu  tầng2 568ms/câu
+1888/2939  tầng1 0ms/câu  tầng2 568ms/câu
+1904/2939  tầng1 0ms/câu  tầng2 567ms/câu
+1920/2939  tầng1 0ms/câu  tầng2 568ms/câu
+1936/2939  tầng1 0ms/câu  tầng2 568ms/câu
+1952/2939  tầng1 0ms/câu  tầng2 567ms/câu
+1968/2939  tầng1 0ms/câu  tầng2 565ms/câu
+1984/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2000/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2016/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2032/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2048/2939  tầng1 0ms/câu  tầng2 564ms/câu
+2064/2939  tầng1 0ms/câu  tầng2 563ms/câu
+2080/2939  tầng1 0ms/câu  tầng2 564ms/câu
+2096/2939  tầng1 0ms/câu  tầng2 564ms/câu
+2112/2939  tầng1 0ms/câu  tầng2 564ms/câu
+2128/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2144/2939  tầng1 0ms/câu  tầng2 564ms/câu
+2160/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2176/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2192/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2208/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2224/2939  tầng1 0ms/câu  tầng2 567ms/câu
+2240/2939  tầng1 0ms/câu  tầng2 567ms/câu
+2256/2939  tầng1 0ms/câu  tầng2 567ms/câu
+2272/2939  tầng1 0ms/câu  tầng2 568ms/câu
+2288/2939  tầng1 0ms/câu  tầng2 567ms/câu
+2304/2939  tầng1 0ms/câu  tầng2 568ms/câu
+2320/2939  tầng1 0ms/câu  tầng2 568ms/câu
+2336/2939  tầng1 0ms/câu  tầng2 567ms/câu
+2352/2939  tầng1 0ms/câu  tầng2 567ms/câu
+2368/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2384/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2400/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2416/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2432/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2448/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2464/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2480/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2496/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2512/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2528/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2544/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2560/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2576/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2592/2939  tầng1 0ms/câu  tầng2 567ms/câu
+2608/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2624/2939  tầng1 0ms/câu  tầng2 567ms/câu
+2640/2939  tầng1 0ms/câu  tầng2 567ms/câu
+2656/2939  tầng1 0ms/câu  tầng2 567ms/câu
+2672/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2688/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2704/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2720/2939  tầng1 0ms/câu  tầng2 567ms/câu
+2736/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2752/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2768/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2784/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2800/2939  tầng1 0ms/câu  tầng2 567ms/câu
+2816/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2832/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2848/2939  tầng1 0ms/câu  tầng2 566ms/câu
+2864/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2880/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2896/2939  tầng1 0ms/câu  tầng2 565ms/câu
+2912/2939  tầng1 0ms/câu  tầng2 564ms/câu
+2928/2939  tầng1 0ms/câu  tầng2 564ms/câu
+2939/2939  tầng1 0ms/câu  tầng2 564ms/câu
+N100 p≥0.3: trung bình 1.8 từ/câu, 762 câu rỗng
+N100 p≥0.5: trung bình 1.7 từ/câu, 855 câu rỗng
+N100 p≥0.7: trung bình 1.5 từ/câu, 931 câu rỗng
+N100 p≥0.9: trung bình 1.1 từ/câu, 1210 câu rỗng
+N500 p≥0.3: trung bình 2.6 từ/câu, 547 câu rỗng
+N500 p≥0.5: trung bình 2.0 từ/câu, 703 câu rỗng
+N500 p≥0.7: trung bình 1.7 từ/câu, 852 câu rỗng
+N500 p≥0.9: trung bình 1.2 từ/câu, 1205 câu rỗng
+N1000 p≥0.3: trung bình 3.6 từ/câu, 356 câu rỗng
+N1000 p≥0.5: trung bình 2.5 từ/câu, 555 câu rỗng
+N1000 p≥0.7: trung bình 1.9 từ/câu, 762 câu rỗng
+N1000 p≥0.9: trung bình 1.2 từ/câu, 1184 câu rỗng
+N2000 p≥0.3: trung bình 5.4 từ/câu, 224 câu rỗng
+N2000 p≥0.5: trung bình 3.3 từ/câu, 390 câu rỗng
+N2000 p≥0.7: trung bình 2.2 từ/câu, 638 câu rỗng
+N2000 p≥0.9: trung bình 1.2 từ/câu, 1149 câu rỗng
+missing_N100 p≥0.3: trung bình 0.2 từ/câu, 2475 câu rỗng
+missing_N100 p≥0.5: trung bình 0.1 từ/câu, 2699 câu rỗng
+missing_N100 p≥0.7: trung bình 0.0 từ/câu, 2823 câu rỗng
+missing_N100 p≥0.9: trung bình 0.0 từ/câu, 2917 câu rỗng
+missing_N2000 p≥0.3: trung bình 3.7 từ/câu, 534 câu rỗng
+missing_N2000 p≥0.5: trung bình 1.7 từ/câu, 987 câu rỗng
+missing_N2000 p≥0.7: trung bình 0.7 từ/câu, 1633 câu rỗng
+missing_N2000 p≥0.9: trung bình 0.1 từ/câu, 2672 câu rỗng
+xong test-other: 2939 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ python -m inference.rank --ckpt work/ckpt/pmaxsim/best.pt --name pmaxsim --split test-other --libri /work/libri/LibriSpeech --thr 0.3 0.5 0.7 0.9 --lists N100 N2000 missing_N100 missing_N2000 all
+W1016 13:35:45.159000 5510 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1016 13:35:45.206000 5510 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2939  tầng1 0ms/câu  tầng2 105ms/câu
+32/2939  tầng1 0ms/câu  tầng2 88ms/câu
+48/2939  tầng1 0ms/câu  tầng2 82ms/câu
+64/2939  tầng1 0ms/câu  tầng2 79ms/câu
+80/2939  tầng1 0ms/câu  tầng2 77ms/câu
+96/2939  tầng1 0ms/câu  tầng2 79ms/câu
+112/2939  tầng1 0ms/câu  tầng2 77ms/câu
+128/2939  tầng1 0ms/câu  tầng2 79ms/câu
+144/2939  tầng1 0ms/câu  tầng2 80ms/câu
+160/2939  tầng1 0ms/câu  tầng2 81ms/câu
+176/2939  tầng1 0ms/câu  tầng2 82ms/câu
+192/2939  tầng1 0ms/câu  tầng2 83ms/câu
+208/2939  tầng1 0ms/câu  tầng2 82ms/câu
+224/2939  tầng1 0ms/câu  tầng2 81ms/câu
+240/2939  tầng1 0ms/câu  tầng2 81ms/câu
+256/2939  tầng1 0ms/câu  tầng2 81ms/câu
+272/2939  tầng1 0ms/câu  tầng2 80ms/câu
+288/2939  tầng1 0ms/câu  tầng2 79ms/câu
+304/2939  tầng1 0ms/câu  tầng2 80ms/câu
+320/2939  tầng1 0ms/câu  tầng2 80ms/câu
+336/2939  tầng1 0ms/câu  tầng2 80ms/câu
+352/2939  tầng1 0ms/câu  tầng2 80ms/câu
+368/2939  tầng1 0ms/câu  tầng2 79ms/câu
+384/2939  tầng1 0ms/câu  tầng2 79ms/câu
+400/2939  tầng1 0ms/câu  tầng2 79ms/câu
+416/2939  tầng1 0ms/câu  tầng2 78ms/câu
+432/2939  tầng1 0ms/câu  tầng2 78ms/câu
+448/2939  tầng1 0ms/câu  tầng2 78ms/câu
+464/2939  tầng1 0ms/câu  tầng2 78ms/câu
+480/2939  tầng1 0ms/câu  tầng2 78ms/câu
+496/2939  tầng1 0ms/câu  tầng2 78ms/câu
+512/2939  tầng1 0ms/câu  tầng2 78ms/câu
+528/2939  tầng1 0ms/câu  tầng2 77ms/câu
+544/2939  tầng1 0ms/câu  tầng2 77ms/câu
+560/2939  tầng1 0ms/câu  tầng2 77ms/câu
+576/2939  tầng1 0ms/câu  tầng2 77ms/câu
+592/2939  tầng1 0ms/câu  tầng2 77ms/câu
+608/2939  tầng1 0ms/câu  tầng2 77ms/câu
+624/2939  tầng1 0ms/câu  tầng2 77ms/câu
+640/2939  tầng1 0ms/câu  tầng2 77ms/câu
+656/2939  tầng1 0ms/câu  tầng2 77ms/câu
+672/2939  tầng1 0ms/câu  tầng2 77ms/câu
+688/2939  tầng1 0ms/câu  tầng2 77ms/câu
+704/2939  tầng1 0ms/câu  tầng2 77ms/câu
+720/2939  tầng1 0ms/câu  tầng2 77ms/câu
+736/2939  tầng1 0ms/câu  tầng2 77ms/câu
+752/2939  tầng1 0ms/câu  tầng2 77ms/câu
+768/2939  tầng1 0ms/câu  tầng2 77ms/câu
+784/2939  tầng1 0ms/câu  tầng2 77ms/câu
+800/2939  tầng1 0ms/câu  tầng2 77ms/câu
+816/2939  tầng1 0ms/câu  tầng2 77ms/câu
+832/2939  tầng1 0ms/câu  tầng2 77ms/câu
+848/2939  tầng1 0ms/câu  tầng2 77ms/câu
+864/2939  tầng1 0ms/câu  tầng2 77ms/câu
+880/2939  tầng1 0ms/câu  tầng2 77ms/câu
+896/2939  tầng1 0ms/câu  tầng2 77ms/câu
+912/2939  tầng1 0ms/câu  tầng2 77ms/câu
+928/2939  tầng1 0ms/câu  tầng2 77ms/câu
+944/2939  tầng1 0ms/câu  tầng2 76ms/câu
+960/2939  tầng1 0ms/câu  tầng2 76ms/câu
+976/2939  tầng1 0ms/câu  tầng2 76ms/câu
+992/2939  tầng1 0ms/câu  tầng2 76ms/câu
+1008/2939  tầng1 0ms/câu  tầng2 76ms/câu
+1024/2939  tầng1 0ms/câu  tầng2 76ms/câu
+1040/2939  tầng1 0ms/câu  tầng2 76ms/câu
+1056/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1072/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1088/2939  tầng1 0ms/câu  tầng2 76ms/câu
+1104/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1120/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1136/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1152/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1168/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1184/2939  tầng1 0ms/câu  tầng2 76ms/câu
+1200/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1216/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1232/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1248/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1264/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1280/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1296/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1312/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1328/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1344/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1360/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1376/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1392/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1408/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1424/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1440/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1456/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1472/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1488/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1504/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1520/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1536/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1552/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1568/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1584/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1600/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1616/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1632/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1648/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1664/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1680/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1696/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1712/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1728/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1744/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1760/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1776/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1792/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1808/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1824/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1840/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1856/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1872/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1888/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1904/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1920/2939  tầng1 0ms/câu  tầng2 78ms/câu
+1936/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1952/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1968/2939  tầng1 0ms/câu  tầng2 77ms/câu
+1984/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2000/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2016/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2032/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2048/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2064/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2080/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2096/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2112/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2128/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2144/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2160/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2176/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2192/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2208/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2224/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2240/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2256/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2272/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2288/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2304/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2320/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2336/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2352/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2368/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2384/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2400/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2416/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2432/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2448/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2464/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2480/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2496/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2512/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2528/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2544/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2560/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2576/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2592/2939  tầng1 0ms/câu  tầng2 77ms/câu
+2608/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2624/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2640/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2656/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2672/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2688/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2704/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2720/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2736/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2752/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2768/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2784/2939  tầng1 0ms/câu  tầng2 79ms/câu
+2800/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2816/2939  tầng1 0ms/câu  tầng2 79ms/câu
+2832/2939  tầng1 0ms/câu  tầng2 79ms/câu
+2848/2939  tầng1 0ms/câu  tầng2 79ms/câu
+2864/2939  tầng1 0ms/câu  tầng2 79ms/câu
+2880/2939  tầng1 0ms/câu  tầng2 79ms/câu
+2896/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2912/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2928/2939  tầng1 0ms/câu  tầng2 78ms/câu
+2939/2939  tầng1 0ms/câu  tầng2 78ms/câu
+N100 p≥0.3: trung bình 1.9 từ/câu, 754 câu rỗng
+N100 p≥0.5: trung bình 1.7 từ/câu, 861 câu rỗng
+N100 p≥0.7: trung bình 1.4 từ/câu, 1010 câu rỗng
+N100 p≥0.9: trung bình 0.3 từ/câu, 2289 câu rỗng
+N2000 p≥0.3: trung bình 5.4 từ/câu, 297 câu rỗng
+N2000 p≥0.5: trung bình 2.3 từ/câu, 631 câu rỗng
+N2000 p≥0.7: trung bình 1.5 từ/câu, 955 câu rỗng
+N2000 p≥0.9: trung bình 0.3 từ/câu, 2285 câu rỗng
+missing_N100 p≥0.3: trung bình 0.2 từ/câu, 2443 câu rỗng
+missing_N100 p≥0.5: trung bình 0.0 từ/câu, 2808 câu rỗng
+missing_N100 p≥0.7: trung bình 0.0 từ/câu, 2914 câu rỗng
+missing_N100 p≥0.9: trung bình 0.0 từ/câu, 2939 câu rỗng
+missing_N2000 p≥0.3: trung bình 3.7 từ/câu, 481 câu rỗng
+missing_N2000 p≥0.5: trung bình 0.7 từ/câu, 1660 câu rỗng
+missing_N2000 p≥0.7: trung bình 0.1 từ/câu, 2633 câu rỗng
+missing_N2000 p≥0.9: trung bình 0.0 từ/câu, 2930 câu rỗng
+all p≥0.3: trung bình 48.0 từ/câu, 23 câu rỗng
+all p≥0.5: trung bình 38.6 từ/câu, 57 câu rỗng
+all p≥0.7: trung bình 13.6 từ/câu, 222 câu rỗng
+all p≥0.9: trung bình 0.5 từ/câu, 2072 câu rỗng
+xong test-other: 2939 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ python -m inference.rank --pre work/ckpt/pmaxsim/best.pt --pre_k 200 --ckpt work/ckpt/pxattn/best.pt --name pcascade --split test-other --libri /work/libri/LibriSpeech --thr 0.3 0.5 0.7 0.9 --lists N2000 missing_N2000 all
+W1016 13:50:08.964000 5612 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1016 13:50:08.993000 5612 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2939  tầng1 99ms/câu  tầng2 65ms/câu
+32/2939  tầng1 94ms/câu  tầng2 64ms/câu
+48/2939  tầng1 93ms/câu  tầng2 64ms/câu
+64/2939  tầng1 87ms/câu  tầng2 60ms/câu
+80/2939  tầng1 84ms/câu  tầng2 58ms/câu
+96/2939  tầng1 82ms/câu  tầng2 57ms/câu
+112/2939  tầng1 80ms/câu  tầng2 56ms/câu
+128/2939  tầng1 81ms/câu  tầng2 57ms/câu
+144/2939  tầng1 79ms/câu  tầng2 56ms/câu
+160/2939  tầng1 78ms/câu  tầng2 56ms/câu
+176/2939  tầng1 77ms/câu  tầng2 55ms/câu
+192/2939  tầng1 78ms/câu  tầng2 56ms/câu
+208/2939  tầng1 79ms/câu  tầng2 57ms/câu
+224/2939  tầng1 80ms/câu  tầng2 57ms/câu
+240/2939  tầng1 79ms/câu  tầng2 57ms/câu
+256/2939  tầng1 78ms/câu  tầng2 56ms/câu
+272/2939  tầng1 78ms/câu  tầng2 56ms/câu
+288/2939  tầng1 77ms/câu  tầng2 56ms/câu
+304/2939  tầng1 77ms/câu  tầng2 56ms/câu
+320/2939  tầng1 76ms/câu  tầng2 55ms/câu
+336/2939  tầng1 76ms/câu  tầng2 55ms/câu
+352/2939  tầng1 76ms/câu  tầng2 55ms/câu
+368/2939  tầng1 76ms/câu  tầng2 55ms/câu
+384/2939  tầng1 75ms/câu  tầng2 54ms/câu
+400/2939  tầng1 76ms/câu  tầng2 55ms/câu
+416/2939  tầng1 75ms/câu  tầng2 55ms/câu
+432/2939  tầng1 75ms/câu  tầng2 55ms/câu
+448/2939  tầng1 76ms/câu  tầng2 55ms/câu
+464/2939  tầng1 75ms/câu  tầng2 55ms/câu
+480/2939  tầng1 75ms/câu  tầng2 55ms/câu
+496/2939  tầng1 75ms/câu  tầng2 55ms/câu
+512/2939  tầng1 75ms/câu  tầng2 55ms/câu
+528/2939  tầng1 75ms/câu  tầng2 55ms/câu
+544/2939  tầng1 75ms/câu  tầng2 55ms/câu
+560/2939  tầng1 75ms/câu  tầng2 54ms/câu
+576/2939  tầng1 75ms/câu  tầng2 54ms/câu
+592/2939  tầng1 75ms/câu  tầng2 55ms/câu
+608/2939  tầng1 75ms/câu  tầng2 55ms/câu
+624/2939  tầng1 75ms/câu  tầng2 55ms/câu
+640/2939  tầng1 75ms/câu  tầng2 55ms/câu
+656/2939  tầng1 75ms/câu  tầng2 55ms/câu
+672/2939  tầng1 75ms/câu  tầng2 55ms/câu
+688/2939  tầng1 75ms/câu  tầng2 55ms/câu
+704/2939  tầng1 75ms/câu  tầng2 55ms/câu
+720/2939  tầng1 75ms/câu  tầng2 55ms/câu
+736/2939  tầng1 75ms/câu  tầng2 55ms/câu
+752/2939  tầng1 75ms/câu  tầng2 55ms/câu
+768/2939  tầng1 75ms/câu  tầng2 55ms/câu
+784/2939  tầng1 75ms/câu  tầng2 55ms/câu
+800/2939  tầng1 75ms/câu  tầng2 55ms/câu
+816/2939  tầng1 75ms/câu  tầng2 55ms/câu
+832/2939  tầng1 75ms/câu  tầng2 55ms/câu
+848/2939  tầng1 75ms/câu  tầng2 55ms/câu
+864/2939  tầng1 75ms/câu  tầng2 55ms/câu
+880/2939  tầng1 75ms/câu  tầng2 55ms/câu
+896/2939  tầng1 75ms/câu  tầng2 55ms/câu
+912/2939  tầng1 75ms/câu  tầng2 55ms/câu
+928/2939  tầng1 75ms/câu  tầng2 55ms/câu
+944/2939  tầng1 76ms/câu  tầng2 56ms/câu
+960/2939  tầng1 76ms/câu  tầng2 56ms/câu
+976/2939  tầng1 76ms/câu  tầng2 56ms/câu
+992/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1008/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1024/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1040/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1056/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1072/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1088/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1104/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1120/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1136/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1152/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1168/2939  tầng1 76ms/câu  tầng2 57ms/câu
+1184/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1200/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1216/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1232/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1248/2939  tầng1 76ms/câu  tầng2 56ms/câu
+1264/2939  tầng1 76ms/câu  tầng2 57ms/câu
+1280/2939  tầng1 77ms/câu  tầng2 57ms/câu
+1296/2939  tầng1 77ms/câu  tầng2 57ms/câu
+1312/2939  tầng1 77ms/câu  tầng2 57ms/câu
+1328/2939  tầng1 77ms/câu  tầng2 57ms/câu
+1344/2939  tầng1 77ms/câu  tầng2 57ms/câu
+1360/2939  tầng1 78ms/câu  tầng2 57ms/câu
+1376/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1392/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1408/2939  tầng1 79ms/câu  tầng2 58ms/câu
+1424/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1440/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1456/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1472/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1488/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1504/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1520/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1536/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1552/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1568/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1584/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1600/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1616/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1632/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1648/2939  tầng1 78ms/câu  tầng2 58ms/câu
+1664/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1680/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1696/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1712/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1728/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1744/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1760/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1776/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1792/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1808/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1824/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1840/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1856/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1872/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1888/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1904/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1920/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1936/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1952/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1968/2939  tầng1 77ms/câu  tầng2 58ms/câu
+1984/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2000/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2016/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2032/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2048/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2064/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2080/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2096/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2112/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2128/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2144/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2160/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2176/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2192/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2208/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2224/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2240/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2256/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2272/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2288/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2304/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2320/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2336/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2352/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2368/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2384/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2400/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2416/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2432/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2448/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2464/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2480/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2496/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2512/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2528/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2544/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2560/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2576/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2592/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2608/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2624/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2640/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2656/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2672/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2688/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2704/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2720/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2736/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2752/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2768/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2784/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2800/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2816/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2832/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2848/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2864/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2880/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2896/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2912/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2928/2939  tầng1 77ms/câu  tầng2 58ms/câu
+2939/2939  tầng1 77ms/câu  tầng2 58ms/câu
+N2000 p≥0.3: trung bình 4.4 từ/câu, 259 câu rỗng
+N2000 p≥0.5: trung bình 3.0 từ/câu, 431 câu rỗng
+N2000 p≥0.7: trung bình 2.1 từ/câu, 658 câu rỗng
+N2000 p≥0.9: trung bình 1.2 từ/câu, 1152 câu rỗng
+missing_N2000 p≥0.3: trung bình 2.7 từ/câu, 671 câu rỗng
+missing_N2000 p≥0.5: trung bình 1.4 từ/câu, 1140 câu rỗng
+missing_N2000 p≥0.7: trung bình 0.6 từ/câu, 1728 câu rỗng
+missing_N2000 p≥0.9: trung bình 0.1 từ/câu, 2686 câu rỗng
+all p≥0.3: trung bình 38.5 từ/câu, 3 câu rỗng
+all p≥0.5: trung bình 32.3 từ/câu, 15 câu rỗng
+all p≥0.7: trung bình 23.8 từ/câu, 38 câu rỗng
+all p≥0.9: trung bình 7.7 từ/câu, 332 câu rỗng
+xong test-other: 2939 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ for S in test-clean test-other
++ for N in pxattn pmaxsim pcascade
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pxattn work/out/pxattn/test-clean/prob_N100.json'
+== test-clean pxattn work/out/pxattn/test-clean/prob_N100.json
++ python -m inference.eval_filter --prob work/out/pxattn/test-clean/prob_N100.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      95.67    95.85    2.18   23.7%
+   0.50      97.57    94.50    2.10   24.6%
+   0.70      98.64    91.85    2.02   25.6%
+   0.90      99.66    78.27    1.71   31.5%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pxattn work/out/pxattn/test-clean/prob_N1000.json'
+== test-clean pxattn work/out/pxattn/test-clean/prob_N1000.json
++ python -m inference.eval_filter --prob work/out/pxattn/test-clean/prob_N1000.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      69.50    95.85    3.00   15.5%
+   0.50      80.71    94.50    2.54   19.5%
+   0.70      88.75    91.85    2.25   22.9%
+   0.90      96.14    78.27    1.77   30.7%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pxattn work/out/pxattn/test-clean/prob_N2000.json'
+== test-clean pxattn work/out/pxattn/test-clean/prob_N2000.json
++ python -m inference.eval_filter --prob work/out/pxattn/test-clean/prob_N2000.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      53.35    95.85    3.90   10.7%
+   0.50      67.44    94.50    3.04   15.0%
+   0.70      79.83    91.85    2.50   19.5%
+   0.90      94.13    78.27    1.81   29.8%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pxattn work/out/pxattn/test-clean/prob_N500.json'
+== test-clean pxattn work/out/pxattn/test-clean/prob_N500.json
++ python -m inference.eval_filter --prob work/out/pxattn/test-clean/prob_N500.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      81.59    95.85    2.55   19.6%
+   0.50      88.89    94.50    2.31   22.0%
+   0.70      93.98    91.85    2.12   24.5%
+   0.90      98.19    78.27    1.73   31.3%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pxattn work/out/pxattn/test-clean/prob_missing_N100.json'
+== test-clean pxattn work/out/pxattn/test-clean/prob_missing_N100.json
++ python -m inference.eval_filter --prob work/out/pxattn/test-clean/prob_missing_N100.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       0.00     0.00    0.09   91.2%
+   0.50       0.00     0.00    0.05   95.0%
+   0.70       0.00     0.00    0.03   97.3%
+   0.90       0.00     0.00    0.01   99.4%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pxattn work/out/pxattn/test-clean/prob_missing_N2000.json'
+== test-clean pxattn work/out/pxattn/test-clean/prob_missing_N2000.json
++ python -m inference.eval_filter --prob work/out/pxattn/test-clean/prob_missing_N2000.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       0.00     0.00    1.82   30.5%
+   0.50       0.00     0.00    0.99   46.1%
+   0.70       0.00     0.00    0.50   63.6%
+   0.90       0.00     0.00    0.11   90.5%
++ for N in pxattn pmaxsim pcascade
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pmaxsim work/out/pmaxsim/test-clean/prob_N100.json'
+== test-clean pmaxsim work/out/pmaxsim/test-clean/prob_N100.json
++ python -m inference.eval_filter --prob work/out/pmaxsim/test-clean/prob_N100.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      93.59    98.26    2.28   23.5%
+   0.50      98.65    96.35    2.12   25.2%
+   0.70      99.78    89.07    1.94   27.6%
+   0.90     100.00    21.94    0.48   65.8%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pmaxsim work/out/pmaxsim/test-clean/prob_N2000.json'
+== test-clean pmaxsim work/out/pmaxsim/test-clean/prob_N2000.json
++ python -m inference.eval_filter --prob work/out/pmaxsim/test-clean/prob_N2000.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      42.98    98.26    4.97   12.8%
+   0.50      80.07    96.35    2.61   20.8%
+   0.70      95.70    89.07    2.02   26.8%
+   0.90      99.36    21.94    0.48   65.6%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pmaxsim work/out/pmaxsim/test-clean/prob_all.json'
+== test-clean pmaxsim work/out/pmaxsim/test-clean/prob_all.json
++ python -m inference.eval_filter --prob work/out/pmaxsim/test-clean/prob_all.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       4.30    92.66   46.76    1.0%
+   0.50       5.75    92.48   34.95    2.6%
+   0.70      16.31    87.68   11.68    8.9%
+   0.90      62.44    21.70    0.75   61.0%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pmaxsim work/out/pmaxsim/test-clean/prob_missing_N100.json'
+== test-clean pmaxsim work/out/pmaxsim/test-clean/prob_missing_N100.json
++ python -m inference.eval_filter --prob work/out/pmaxsim/test-clean/prob_missing_N100.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       0.00     0.00    0.15   87.3%
+   0.50       0.00     0.00    0.03   97.2%
+   0.70       0.00     0.00    0.00   99.6%
+   0.90       0.00     0.00    0.00  100.0%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pmaxsim work/out/pmaxsim/test-clean/prob_missing_N2000.json'
+== test-clean pmaxsim work/out/pmaxsim/test-clean/prob_missing_N2000.json
++ python -m inference.eval_filter --prob work/out/pmaxsim/test-clean/prob_missing_N2000.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       0.00     0.00    2.83   23.0%
+   0.50       0.00     0.00    0.52   64.9%
+   0.70       0.00     0.00    0.09   92.0%
+   0.90       0.00     0.00    0.00   99.7%
++ for N in pxattn pmaxsim pcascade
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pcascade work/out/pcascade/test-clean/prob_N2000.json'
+== test-clean pcascade work/out/pcascade/test-clean/prob_N2000.json
++ python -m inference.eval_filter --prob work/out/pcascade/test-clean/prob_N2000.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      59.77    95.84    3.48   12.0%
+   0.50      71.41    94.48    2.87   16.0%
+   0.70      81.71    91.83    2.44   19.9%
+   0.90      94.29    78.27    1.80   29.8%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pcascade work/out/pcascade/test-clean/prob_all.json'
+== test-clean pcascade work/out/pcascade/test-clean/prob_all.json
++ python -m inference.eval_filter --prob work/out/pcascade/test-clean/prob_all.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       6.26    92.55   32.10    0.2%
+   0.50       7.56    91.78   26.37    0.4%
+   0.70       9.73    89.76   20.04    1.1%
+   0.90      19.01    77.02    8.80    7.1%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-clean pcascade work/out/pcascade/test-clean/prob_missing_N2000.json'
+== test-clean pcascade work/out/pcascade/test-clean/prob_missing_N2000.json
++ python -m inference.eval_filter --prob work/out/pcascade/test-clean/prob_missing_N2000.json --ref ../bench/protocol/test-clean/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       0.00     0.00    1.41   35.8%
+   0.50       0.00     0.00    0.82   50.6%
+   0.70       0.00     0.00    0.45   66.3%
+   0.90       0.00     0.00    0.10   90.8%
++ for S in test-clean test-other
++ for N in pxattn pmaxsim pcascade
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pxattn work/out/pxattn/test-other/prob_N100.json'
+== test-other pxattn work/out/pxattn/test-other/prob_N100.json
++ python -m inference.eval_filter --prob work/out/pxattn/test-other/prob_N100.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      89.16    91.81    1.84   25.9%
+   0.50      94.62    88.80    1.68   29.1%
+   0.70      97.38    83.67    1.53   31.7%
+   0.90      99.34    63.45    1.14   41.2%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pxattn work/out/pxattn/test-other/prob_N1000.json'
+== test-other pxattn work/out/pxattn/test-other/prob_N1000.json
++ python -m inference.eval_filter --prob work/out/pxattn/test-other/prob_N1000.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      46.11    91.81    3.55   12.1%
+   0.50      64.34    88.80    2.46   18.9%
+   0.70      79.69    83.67    1.87   25.9%
+   0.90      95.33    63.45    1.19   40.3%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pxattn work/out/pxattn/test-other/prob_N2000.json'
+== test-other pxattn work/out/pxattn/test-other/prob_N2000.json
++ python -m inference.eval_filter --prob work/out/pxattn/test-other/prob_N2000.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      30.51    91.81    5.37    7.6%
+   0.50      48.06    88.80    3.30   13.3%
+   0.70      67.02    83.67    2.23   21.7%
+   0.90      92.04    63.45    1.23   39.1%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pxattn work/out/pxattn/test-other/prob_N500.json'
+== test-other pxattn work/out/pxattn/test-other/prob_N500.json
++ python -m inference.eval_filter --prob work/out/pxattn/test-other/prob_N500.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      63.73    91.81    2.57   18.6%
+   0.50      78.58    88.80    2.02   23.9%
+   0.70      88.94    83.67    1.68   29.0%
+   0.90      97.80    63.45    1.16   41.0%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pxattn work/out/pxattn/test-other/prob_missing_N100.json'
+== test-other pxattn work/out/pxattn/test-other/prob_missing_N100.json
++ python -m inference.eval_filter --prob work/out/pxattn/test-other/prob_missing_N100.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       0.00     0.00    0.20   84.2%
+   0.50       0.00     0.00    0.09   91.8%
+   0.70       0.00     0.00    0.04   96.1%
+   0.90       0.00     0.00    0.01   99.3%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pxattn work/out/pxattn/test-other/prob_missing_N2000.json'
+== test-other pxattn work/out/pxattn/test-other/prob_missing_N2000.json
++ python -m inference.eval_filter --prob work/out/pxattn/test-other/prob_missing_N2000.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       0.00     0.00    3.73   18.2%
+   0.50       0.00     0.00    1.71   33.6%
+   0.70       0.00     0.00    0.74   55.6%
+   0.90       0.00     0.00    0.10   90.9%
++ for N in pxattn pmaxsim pcascade
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pmaxsim work/out/pmaxsim/test-other/prob_N100.json'
+== test-other pmaxsim work/out/pmaxsim/test-other/prob_N100.json
++ python -m inference.eval_filter --prob work/out/pmaxsim/test-other/prob_N100.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      89.61    95.81    1.91   25.7%
+   0.50      97.21    91.08    1.67   29.3%
+   0.70      99.40    79.25    1.42   34.4%
+   0.90     100.00    14.58    0.26   77.9%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pmaxsim work/out/pmaxsim/test-other/prob_N2000.json'
+== test-other pmaxsim work/out/pmaxsim/test-other/prob_N2000.json
++ python -m inference.eval_filter --prob work/out/pmaxsim/test-other/prob_N2000.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      31.49    95.81    5.43   10.1%
+   0.50      69.53    91.08    2.34   21.5%
+   0.70      92.46    79.25    1.53   32.5%
+   0.90      98.84    14.58    0.26   77.7%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pmaxsim work/out/pmaxsim/test-other/prob_all.json'
+== test-other pmaxsim work/out/pmaxsim/test-other/prob_all.json
++ python -m inference.eval_filter --prob work/out/pmaxsim/test-other/prob_all.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       3.17    85.37   48.02    0.8%
+   0.50       3.93    84.98   38.57    1.9%
+   0.70      10.16    77.27   13.59    7.6%
+   0.90      47.17    14.31    0.54   70.5%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pmaxsim work/out/pmaxsim/test-other/prob_missing_N100.json'
+== test-other pmaxsim work/out/pmaxsim/test-other/prob_missing_N100.json
++ python -m inference.eval_filter --prob work/out/pmaxsim/test-other/prob_missing_N100.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       0.00     0.00    0.20   83.1%
+   0.50       0.00     0.00    0.05   95.5%
+   0.70       0.00     0.00    0.01   99.1%
+   0.90       0.00     0.00    0.00  100.0%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pmaxsim work/out/pmaxsim/test-other/prob_missing_N2000.json'
+== test-other pmaxsim work/out/pmaxsim/test-other/prob_missing_N2000.json
++ python -m inference.eval_filter --prob work/out/pmaxsim/test-other/prob_missing_N2000.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       0.00     0.00    3.72   16.4%
+   0.50       0.00     0.00    0.71   56.5%
+   0.70       0.00     0.00    0.12   89.6%
+   0.90       0.00     0.00    0.00   99.7%
++ for N in pxattn pmaxsim pcascade
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pcascade work/out/pcascade/test-other/prob_N2000.json'
+== test-other pcascade work/out/pcascade/test-other/prob_N2000.json
++ python -m inference.eval_filter --prob work/out/pcascade/test-other/prob_N2000.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30      37.61    91.77    4.36    8.8%
+   0.50      53.45    88.76    2.96   14.7%
+   0.70      69.91    83.67    2.14   22.4%
+   0.90      92.50    63.43    1.22   39.2%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pcascade work/out/pcascade/test-other/prob_all.json'
+== test-other pcascade work/out/pcascade/test-other/prob_all.json
++ python -m inference.eval_filter --prob work/out/pcascade/test-other/prob_all.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       3.92    84.41   38.47    0.1%
+   0.50       4.60    83.17   32.27    0.5%
+   0.70       5.99    79.82   23.80    1.3%
+   0.90      14.35    61.66    7.67   11.3%
++ for F in work/out/$N/$S/prob_*.json
++ echo '== test-other pcascade work/out/pcascade/test-other/prob_missing_N2000.json'
+== test-other pcascade work/out/pcascade/test-other/prob_missing_N2000.json
++ python -m inference.eval_filter --prob work/out/pcascade/test-other/prob_missing_N2000.json --ref ../bench/protocol/test-other/ref.tsv
+ ngưỡng  Precision   Recall  AvgLen    Rỗng
+   0.30       0.00     0.00    2.72   22.8%
+   0.50       0.00     0.00    1.38   38.8%
+   0.70       0.00     0.00    0.64   58.8%
+   0.90       0.00     0.00    0.09   91.4%
++ touch work/PHONE_DONE

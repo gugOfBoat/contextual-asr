@@ -1,0 +1,2 @@
+train960: 281241 câu, 256599 câu có từ hiếm
+near: 84358 từ, vocab TTS: 209604 từ

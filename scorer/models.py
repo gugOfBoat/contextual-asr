@@ -29,6 +29,16 @@ def pad_mask(lb, T):
     return torch.arange(T, device=lb.device)[None] >= lb[:, None]          # True = pad
 
 
+def diag_sum(cam, lb):
+    """cam (K, Ts, Tb) → (K, Ts): d[t0] = Σ_j cam[t0+j, j]; chỉ giữ đường chéo NẰM TRỌN trong câu
+    (t0 ≤ Ts − lb), để ô đệm 0 ở cuối câu không thắng các ô âm (lỗi thấy khi kiểm CPU 14/11)."""
+    K, Ts, Tb = cam.shape
+    pad = torch.cat([cam, cam.new_zeros(K, Tb, Tb)], 1)
+    d = sum(pad[:, j:j + Ts, j] for j in range(Tb))
+    last = (Ts - lb).clamp(min=0)
+    return d.masked_fill(torch.arange(Ts, device=cam.device)[None] > last[:, None], float("-inf"))
+
+
 def cos(x, y):
     return F.normalize(x, dim=-1) @ F.normalize(y, dim=-1).transpose(-1, -2)
 
@@ -36,9 +46,9 @@ def cos(x, y):
 class Hou25(nn.Module):
     cheap, bias_type = False, "tts"
 
-    def __init__(self, d=368, heads=8, drop=0.1, cross=True):
+    def __init__(self, d=368, heads=8, drop=0.1, cross=True, pool="mean"):
         super().__init__()
-        self.cross = cross
+        self.cross, self.pool = cross, pool
         self.proj = nn.Linear(1280, d)                                     # chung cho speech và bias [B]
         if cross:
             self.ca_sb = nn.MultiheadAttention(d, heads, dropout=drop, batch_first=True)   # Q = speech
@@ -60,8 +70,26 @@ class Hou25(nn.Module):
             S = cos(s, b).unsqueeze(1)
         valid = (~mask)[:, None, None, :].to(S.dtype)
         h = self.cnn(S * valid) * valid
-        h = h.sum((2, 3)) / (valid.sum((2, 3)) * S.shape[2])               # avg pool chỉ trên vùng thật [B]
-        return self.out(h).squeeze(-1)
+        if getattr(self, "want_span", False):  # vị trí = đường chéo cao nhất trên CAM (cho mọi pool) → (K, 2) frame
+            cam = (h.permute(0, 2, 3, 1) @ self.out.weight[0]) * valid[:, 0]
+            t0 = diag_sum(cam, lb).argmax(1)
+            self.span = torch.stack([t0, (t0 + lb).clamp(max=cam.shape[1])], 1)
+        if self.pool == "mean":
+            h = h.sum((2, 3)) / (valid.sum((2, 3)) * S.shape[2])           # avg pool chỉ trên vùng thật [B]
+            return self.out(h).squeeze(-1)
+        # E2 [C]: out là Linear nên mean-pool rồi out = out từng ô rồi mean → bản đồ điểm từng ô (CAM)
+        cam = (h.permute(0, 2, 3, 1) @ self.out.weight[0]) * valid[:, 0]   # (K, Ts, Tb), ô pad = 0
+        Ts = cam.shape[1]
+        n = lb.clamp(min=1).to(cam.dtype)
+        if self.pool == "topk":       # mỗi frame câu: trung bình theo Tb; giữ Tb frame cao nhất (≈ độ dài vệt)
+            row = cam.sum(2) / n[:, None]                                  # (K, Ts)
+            k = int(min(Ts, int(lb.max())))
+            top = row.topk(k, dim=1).values                                # (K, k) giảm dần
+            keep = torch.arange(k, device=cam.device)[None] < lb.clamp(max=Ts)[:, None]
+            s = (top * keep).sum(1) / keep.sum(1).clamp(min=1)
+        else:                         # diag: tổng trên đường chéo dốc 1 bắt đầu ở t0, lấy max theo t0
+            s = (diag_sum(cam, lb) / n[:, None]).amax(1)
+        return s + self.out.bias[0]
 
 
 class PhoneEnc(nn.Module):
@@ -103,13 +131,98 @@ class MaxSim(nn.Module):
         h = self.tb(self.lb(fb), src_key_padding_mask=pad_mask(lb, fb.shape[1]))
         return F.normalize(h, dim=-1)
 
-    def score(self, es, eb, lb):
-        sim = (eb @ es.T).amax(-1)                                          # (K, Tb): frame speech khớp nhất
+    def score(self, es, eb, lb, allow=None):
+        full = eb @ es.T                                                    # (K, Tb, Ts)
+        if allow is not None:                                               # train có vị trí: từ đúng chỉ được khớp trong span thật
+            full = full.masked_fill(~allow[:, None, :], -1.0)
+        sim = full.amax(-1)                                                 # (K, Tb): frame speech khớp nhất
         valid = (~pad_mask(lb, eb.shape[1])).to(sim.dtype)
+        if getattr(self, "want_span", False):  # [C] tâm = trung vị frame khớp nhất của các âm vị; rộng ≈ 4 frame/âm vị
+            arg = full.argmax(-1).float().masked_fill(valid == 0, float("nan"))
+            c = arg.nanmedian(1).values
+            half = 2 * lb.to(c.dtype)
+            self.span = torch.stack([(c - half).clamp(min=0), (c + half).clamp(max=es.shape[0])], 1).long()
         return self.a * (sim * valid).sum(1) / lb + self.c
 
-    def forward(self, fs, fb, lb):
-        return self.score(self.enc_speech(fs), self.enc_bias(fb, lb), lb)
+    def forward(self, fs, fb, lb, allow=None):
+        return self.score(self.enc_speech(fs), self.enc_bias(fb, lb), lb, allow)
+
+
+class MonoSim(MaxSim):
+    """pmono [C]: như maxsim nhưng các âm vị phải khớp ĐÚNG THỨ TỰ và LIỀN NHAU.
+    maxsim: mỗi âm vị lấy frame giống nhất ở bất kỳ đâu trong câu → từ nhiễu "gom" được điểm từ các chỗ rời rạc.
+    pmono: quy hoạch động D[p, t] = M[p, t] + max_{1≤g≤gap} D[p−1, t−g]  (âm vị p ở frame t, âm vị trước cách ≤ gap frame)
+           điểm = max_t D[P, t] / P. Lần ngược đường đi → frame đầu và cuối của từ (vị trí có sẵn, không cần mẹo).
+    Phía bias vẫn không phụ thuộc câu → vẫn cache được cả kho, vẫn là 1 phép nhân ma trận + P bước max-pool."""
+
+    def __init__(self, gap=15, **kw):
+        super().__init__(**kw)
+        self.gap = gap
+
+    def score(self, es, eb, lb, allow=None):
+        full = (eb @ es.T).float()                                          # (K, P, T)
+        if allow is not None:
+            full = full.masked_fill(~allow[:, None, :], -1.0)
+        return self.a * self._mono(full, lb) + self.c
+
+    def _mono(self, full, lb):
+        """full (K, P, T) → điểm đường đi đơn điệu tốt nhất / số âm vị; đặt self.span nếu want_span."""
+        K, P, T = full.shape
+        G, NEG = self.gap, -1e4
+        span = getattr(self, "want_span", False)
+        D = full[:, 0]
+        S = torch.arange(T, device=full.device).expand(K, T) if span else None   # frame bắt đầu của đường đi tốt nhất
+        for p in range(1, P):
+            pad = F.pad(D[:, None], (G, 0), value=NEG)                      # (K, 1, T+G): cột j = D[j−G]
+            if span:
+                prev, idx = F.max_pool1d(pad, G, 1, return_indices=True)
+                Sn = S.gather(1, (idx[:, 0, :T] - G).clamp(min=0))
+            else:
+                prev = F.max_pool1d(pad, G, 1)
+            live = (p < lb)[:, None]                                        # từ ngắn hơn thì giữ nguyên
+            D = torch.where(live, full[:, p] + prev[:, 0, :T], D)
+            if span:
+                S = torch.where(live, Sn, S)
+        best, end = D.max(1)
+        if span:
+            self.span = torch.stack([S.gather(1, end[:, None])[:, 0], end + 1], 1)
+        return best / lb
+
+
+class DualSim(MonoSim):
+    """pdual [C]: HAI NHÁNH đọc bản đồ giống nhau âm vị × frame, cộng điểm trong MỘT model, train chung.
+      nhánh tự do  (như maxsim): mỗi âm vị lấy frame giống nhất ở bất kỳ đâu → ít sót từ
+      nhánh thứ tự (như pmono) : đường đi đơn điệu, liền nhau → loại nhiễu "gom điểm rời rạc", cho biên đầu–cuối
+    two=False: hai nhánh dùng CHUNG một bộ embedding (cùng một bản đồ).
+    two=True : mỗi nhánh có bộ chiếu riêng (2 bản đồ), embedding nối lại nên vẫn cache được cả kho.
+    Căn cứ: cộng điểm pmaxsim + pmono train riêng cho Sạch@1 90.1 so với 87.5 (REPORT-1115 mục 6b)."""
+
+    def __init__(self, two=False, d=256, **kw):
+        super().__init__(d=d, **kw)
+        self.two, self.d = two, d
+        self.a2 = nn.Parameter(torch.tensor(10.0))
+        self.c.data.fill_(-10.0)                                            # hai nhánh cùng ~1 khi khớp → logit ban đầu ~ +10
+        if two:
+            self.free = MaxSim(d=d, **kw)
+
+    def enc_speech(self, fs):
+        e = super().enc_speech(fs)
+        return torch.cat([e, self.free.enc_speech(fs)], -1) if self.two else e
+
+    def enc_bias(self, fb, lb):
+        e = super().enc_bias(fb, lb)
+        return torch.cat([e, self.free.enc_bias(fb, lb)], -1) if self.two else e
+
+    def score(self, es, eb, lb, allow=None):
+        d = self.d
+        fm = (eb[..., :d] @ es[:, :d].T).float()                            # bản đồ cho nhánh thứ tự
+        ff = (eb[..., d:] @ es[:, d:].T).float() if self.two else fm        # bản đồ cho nhánh tự do
+        if allow is not None:
+            fm = fm.masked_fill(~allow[:, None, :], -1.0)
+            ff = ff.masked_fill(~allow[:, None, :], -1.0) if self.two else fm
+        valid = (~pad_mask(lb, eb.shape[1])).to(ff.dtype)
+        free = (ff.amax(-1) * valid).sum(1) / lb
+        return self.a * self._mono(fm, lb) + self.a2 * free + self.c
 
 
 class PhoneXAttn(nn.Module):
@@ -176,16 +289,23 @@ def hard_logit(z):                                                          # lo
 
 @torch.no_grad()
 def score_chunks(model, fs, fb, lb, chunk=32, hyp=None):
+    chunk = 1024 if model.cheap else chunk                                  # model rẻ: chấm cả nghìn từ một lần
     """Chấm K từ cho 1 câu theo từng khúc (K có thể vài nghìn) → (K,) hoặc (K, 3) float32."""
-    out = []
+    out, spans = [], []
     for i in range(0, len(fb), chunk):
         with torch.autocast("cuda", dtype=torch.bfloat16):
             x = (fs, fb[i:i + chunk], lb[i:i + chunk]) + ((hyp,) if hyp is not None else ())
             out.append(model(*x).float())
+        if getattr(model, "want_span", False):
+            spans.append(model.span)
+    if spans:
+        model.span_all = torch.cat(spans)                                   # (K, 2) frame, theo thứ tự từ
     return torch.cat(out)
 
 
 def build(arch, n_phone=None):
-    return {"hou25": lambda: Hou25(), "nocross": lambda: Hou25(cross=False), "maxsim": lambda: MaxSim(),
-            "pmaxsim": lambda: MaxSim(n_phone=n_phone), "pxattn": lambda: PhoneXAttn(n_phone),
+    return {"hou25": lambda: Hou25(), "hou25_topk": lambda: Hou25(pool="topk"),
+            "hou25_diag": lambda: Hou25(pool="diag"), "nocross": lambda: Hou25(cross=False), "maxsim": lambda: MaxSim(),
+            "pmaxsim": lambda: MaxSim(n_phone=n_phone), "pmono": lambda: MonoSim(n_phone=n_phone),
+            "pdual": lambda: DualSim(n_phone=n_phone), "pdual2": lambda: DualSim(two=True, n_phone=n_phone), "pxattn": lambda: PhoneXAttn(n_phone),
             "hxattn": lambda: HypXAttn(n_phone)}[arch]()

@@ -1,0 +1,87 @@
+W1114 14:37:18.056000 5100 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 14:37:18.085000 5100 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+hou25: 1.95M tham số
+hou25_topk: 1.95M tham số
+hou25_diag: 1.95M tham số
+28539 câu train (train), 500 câu dev (dev-clean, list 100)
+ep 0 step 100 loss hou25 0.5273 hou25_topk 0.5489 hou25_diag 0.5331  167s
+ep 0 step 200 loss hou25 0.4472 hou25_topk 0.4511 hou25_diag 0.4481  327s
+ep 0 step 300 loss hou25 0.4467 hou25_topk 0.4472 hou25_diag 0.4458  492s
+ep 0 step 400 loss hou25 0.4375 hou25_topk 0.4350 hou25_diag 0.4336  659s
+ep 0 step 500 loss hou25 0.4308 hou25_topk 0.4282 hou25_diag 0.4276  823s
+ep 0 step 600 loss hou25 0.4287 hou25_topk 0.4269 hou25_diag 0.4282  988s
+ep 0 step 700 loss hou25 0.4193 hou25_topk 0.4200 hou25_diag 0.4206  1152s
+ep 0 step 800 loss hou25 0.4138 hou25_topk 0.4192 hou25_diag 0.4185  1324s
+ep 0 step 900 loss hou25 0.3989 hou25_topk 0.4136 hou25_diag 0.4151  1494s
+ep 0 step 1000 loss hou25 0.3942 hou25_topk 0.4162 hou25_diag 0.4134  1663s
+ep 0 step 1100 loss hou25 0.3763 hou25_topk 0.3991 hou25_diag 0.4005  1833s
+ep 0 step 1200 loss hou25 0.3624 hou25_topk 0.3949 hou25_diag 0.3961  1996s
+ep 0 step 1300 loss hou25 0.3533 hou25_topk 0.3871 hou25_diag 0.3878  2163s
+ep 0 step 1400 loss hou25 0.3429 hou25_topk 0.3747 hou25_diag 0.3724  2327s
+ep 0 step 1500 loss hou25 0.3418 hou25_topk 0.3725 hou25_diag 0.3691  2489s
+ep 0 step 1600 loss hou25 0.3256 hou25_topk 0.3621 hou25_diag 0.3518  2653s
+ep 0 step 1700 loss hou25 0.3220 hou25_topk 0.3606 hou25_diag 0.3473  2815s
+ep 0 step 1800 loss hou25 0.3137 hou25_topk 0.3491 hou25_diag 0.3357  2980s
+ep 0 step 1900 loss hou25 0.3044 hou25_topk 0.3417 hou25_diag 0.3294  3140s
+ep 0 step 2000 loss hou25 0.2983 hou25_topk 0.3366 hou25_diag 0.3241  3307s
+ep 0 step 2100 loss hou25 0.2856 hou25_topk 0.3195 hou25_diag 0.3042  3472s
+ep 0 step 2200 loss hou25 0.2812 hou25_topk 0.3236 hou25_diag 0.3053  3634s
+ep 0 step 2300 loss hou25 0.2715 hou25_topk 0.3153 hou25_diag 0.2981  3787s
+ep 0 step 2400 loss hou25 0.2599 hou25_topk 0.2978 hou25_diag 0.2899  3941s
+ep 0 step 2500 loss hou25 0.2554 hou25_topk 0.2986 hou25_diag 0.2844  4095s
+ep 0 step 2600 loss hou25 0.2484 hou25_topk 0.2867 hou25_diag 0.2766  4253s
+ep 0 step 2700 loss hou25 0.2352 hou25_topk 0.2727 hou25_diag 0.2699  4408s
+ep 0 step 2800 loss hou25 0.2330 hou25_topk 0.2689 hou25_diag 0.2674  4559s
+ep 0 step 2900 loss hou25 0.2195 hou25_topk 0.2521 hou25_diag 0.2500  4717s
+ep 0 step 3000 loss hou25 0.2156 hou25_topk 0.2488 hou25_diag 0.2460  4869s
+ep 0 step 3100 loss hou25 0.2042 hou25_topk 0.2389 hou25_diag 0.2056  5021s
+ep 0 step 3200 loss hou25 0.2014 hou25_topk 0.2311 hou25_diag 0.1576  5174s
+ep 0 step 3300 loss hou25 0.2014 hou25_topk 0.2318 hou25_diag 0.1500  5329s
+ep 0 step 3400 loss hou25 0.1949 hou25_topk 0.2204 hou25_diag 0.1309  5485s
+ep 0 step 3500 loss hou25 0.1856 hou25_topk 0.2133 hou25_diag 0.1210  5639s
+== hou25 ep 0 step 3568: dev Recall@10 97.07  Recall@50 99.90  Hard-R@5 -1.00  (best 97.07)  5812s
+== hou25_topk ep 0 step 3568: dev Recall@10 94.34  Recall@50 99.39  Hard-R@5 -1.00  (best 94.34)  5883s
+== hou25_diag ep 0 step 3568: dev Recall@10 98.99  Recall@50 100.00  Hard-R@5 -1.00  (best 98.99)  5951s
+ep 1 step 3600 loss hou25 0.0544 hou25_topk 0.0635 hou25_diag 0.0347  6002s
+ep 1 step 3700 loss hou25 0.1705 hou25_topk 0.2013 hou25_diag 0.1069  6166s
+ep 1 step 3800 loss hou25 0.1737 hou25_topk 0.1952 hou25_diag 0.1062  6326s
+ep 1 step 3900 loss hou25 0.1698 hou25_topk 0.1909 hou25_diag 0.0961  6489s
+ep 1 step 4000 loss hou25 0.1610 hou25_topk 0.1859 hou25_diag 0.0876  6657s
+ep 1 step 4100 loss hou25 0.1586 hou25_topk 0.1792 hou25_diag 0.0890  6816s
+ep 1 step 4200 loss hou25 0.1545 hou25_topk 0.1727 hou25_diag 0.0851  6981s
+ep 1 step 4300 loss hou25 0.1539 hou25_topk 0.1728 hou25_diag 0.0852  7144s
+ep 1 step 4400 loss hou25 0.1478 hou25_topk 0.1709 hou25_diag 0.0809  7304s
+ep 1 step 4500 loss hou25 0.1519 hou25_topk 0.1704 hou25_diag 0.0824  7468s
+ep 1 step 4600 loss hou25 0.1440 hou25_topk 0.1611 hou25_diag 0.0874  7625s
+ep 1 step 4700 loss hou25 0.1412 hou25_topk 0.1578 hou25_diag 0.0794  7787s
+ep 1 step 4800 loss hou25 0.1471 hou25_topk 0.1639 hou25_diag 0.0839  7955s
+ep 1 step 4900 loss hou25 0.1379 hou25_topk 0.1544 hou25_diag 0.0789  8127s
+ep 1 step 5000 loss hou25 0.1446 hou25_topk 0.1549 hou25_diag 0.0768  8315s
+ep 1 step 5100 loss hou25 0.1362 hou25_topk 0.1513 hou25_diag 0.0763  8503s
+ep 1 step 5200 loss hou25 0.1319 hou25_topk 0.1474 hou25_diag 0.0727  8689s
+ep 1 step 5300 loss hou25 0.1309 hou25_topk 0.1416 hou25_diag 0.0703  8876s
+ep 1 step 5400 loss hou25 0.1318 hou25_topk 0.1462 hou25_diag 0.0734  9056s
+ep 1 step 5500 loss hou25 0.1299 hou25_topk 0.1429 hou25_diag 0.0757  9230s
+ep 1 step 5600 loss hou25 0.1284 hou25_topk 0.1377 hou25_diag 0.0690  9389s
+ep 1 step 5700 loss hou25 0.1311 hou25_topk 0.1409 hou25_diag 0.0765  9551s
+ep 1 step 5800 loss hou25 0.1291 hou25_topk 0.1430 hou25_diag 0.0741  9710s
+ep 1 step 5900 loss hou25 0.1262 hou25_topk 0.1305 hou25_diag 0.0710  9871s
+ep 1 step 6000 loss hou25 0.1221 hou25_topk 0.1288 hou25_diag 0.0686  10025s
+ep 1 step 6100 loss hou25 0.1172 hou25_topk 0.1225 hou25_diag 0.0721  10185s
+ep 1 step 6200 loss hou25 0.1173 hou25_topk 0.1250 hou25_diag 0.0715  10348s
+ep 1 step 6300 loss hou25 0.1221 hou25_topk 0.1329 hou25_diag 0.0703  10524s
+ep 1 step 6400 loss hou25 0.1088 hou25_topk 0.1169 hou25_diag 0.0617  10690s
+ep 1 step 6500 loss hou25 0.1131 hou25_topk 0.1180 hou25_diag 0.0674  10858s
+ep 1 step 6600 loss hou25 0.1081 hou25_topk 0.1214 hou25_diag 0.0657  11030s
+ep 1 step 6700 loss hou25 0.1144 hou25_topk 0.1198 hou25_diag 0.0718  11199s
+ep 1 step 6800 loss hou25 0.1127 hou25_topk 0.1184 hou25_diag 0.0684  11384s
+ep 1 step 6900 loss hou25 0.1068 hou25_topk 0.1171 hou25_diag 0.0685  11565s
+ep 1 step 7000 loss hou25 0.1076 hou25_topk 0.1143 hou25_diag 0.0606  11746s
+ep 1 step 7100 loss hou25 0.1065 hou25_topk 0.1150 hou25_diag 0.0719  11921s
+== hou25 ep 1 step 7136: dev Recall@10 98.58  Recall@50 100.00  Hard-R@5 -1.00  (best 98.58)  12059s
+== hou25_topk ep 1 step 7136: dev Recall@10 98.69  Recall@50 99.90  Hard-R@5 -1.00  (best 98.69)  12139s
+== hou25_diag ep 1 step 7136: dev Recall@10 99.60  Recall@50 100.00  Hard-R@5 -1.00  (best 99.60)  12213s
+ep 2 step 7200 loss hou25 0.0638 hou25_topk 0.0650 hou25_diag 0.0372  12346s
+ep 2 step 7300 loss hou25 0.0890 hou25_topk 0.0989 hou25_diag 0.0545  12553s
+ep 2 step 7400 loss hou25 0.0973 hou25_topk 0.1003 hou25_diag 0.0625  12759s

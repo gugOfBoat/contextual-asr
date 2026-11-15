@@ -30,17 +30,37 @@ def libri_path(libri, uid):
 class Encoder:
     """Encoder Whisper-large-v3 đóng băng (Hou25 §3.3). Trả feature cắt theo độ dài thật của audio."""
 
-    def __init__(self, name="openai/whisper-large-v3", dev="cuda"):
+    def __init__(self, name="openai/whisper-large-v3", dev="cuda", win=False, hop=25):
         from transformers import WhisperFeatureExtractor, WhisperModel
-        self.dev = dev
+        self.dev, self.win, self.hop = dev, win, hop
         self.fe = WhisperFeatureExtractor.from_pretrained(name)
         self.enc = WhisperModel.from_pretrained(name, torch_dtype=torch.float16).get_encoder().to(dev).eval()
 
     @torch.no_grad()
-    def __call__(self, wavs):
+    def _enc(self, wavs):
         x = self.fe(wavs, sampling_rate=SR, return_tensors="pt").input_features.to(self.dev, torch.float16)
         h = self.enc(x).last_hidden_state
         return [h[i, :max(1, min(1500, -(-len(w) * FPS // SR)))] for i, w in enumerate(wavs)]
+
+    @torch.no_grad()
+    def __call__(self, wavs):
+        """win=False: như cũ, câu > 30 s bị cắt (TAIL.md: từ sau giây 30 sót 83–100%).
+        win=True: câu > 30 s chia cửa sổ 30 s, bước hop giây; vùng chồng chia đôi, mỗi nửa lấy từ cửa sổ
+        mà nó nằm xa mép hơn. Câu <= 30 s ra y hệt bản cũ."""
+        if not self.win:
+            return self._enc(wavs)
+        step, ov = self.hop * SR, (30 - self.hop) * FPS // 2          # mẫu / bước; số frame bỏ ở mỗi mép trong
+        pieces, owner = [], []
+        for i, w in enumerate(wavs):
+            starts = [0] if len(w) <= 30 * SR else list(range(0, len(w) - (30 - self.hop) * SR, step))
+            for k, s in enumerate(starts):
+                pieces.append(w[s:s + 30 * SR])
+                owner.append((i, k, len(starts)))
+        feats = self._enc(pieces)
+        out = [[] for _ in wavs]
+        for (i, k, n), h in zip(owner, feats):
+            out[i].append(h[(ov if k > 0 else 0):(len(h) - ov if k < n - 1 else len(h))])
+        return [torch.cat(x) for x in out]
 
 
 PHONES = ("AA AE AH AO AW AY B CH D DH EH ER EY F G HH IH IY JH K L M N NG OW OY P R S SH T TH UH UW V W Y Z ZH").split()

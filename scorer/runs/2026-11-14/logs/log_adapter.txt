@@ -1,0 +1,94 @@
++ case $1 in
++ cd /work/code/bench
++ O=/work/code/scorer/work/out/hou25_win/test-other
++ S='--split test-other'
++ python spans_from_rank.py /work/code/scorer/work/out/hou25_win/test-other/span_N2000.json protocol/test-other/span_hou25_win_N2000.tsv
+146950 vị trí -> protocol/test-other/span_hou25_win_N2000.tsv
++ python spans_from_rank.py /work/code/scorer/work/out/hou25_win/test-other/span_missing_N2000.json protocol/test-other/span_hou25_win_missing.tsv
+146950 vị trí -> protocol/test-other/span_hou25_win_missing.tsv
++ D='--split dev-other --ctx oracle --subset protocol/dev-other/sub400.txt'
++ for b in 3 5 8
++ python gate_boost.py --split dev-other --ctx oracle --subset protocol/dev-other/sub400.txt --boost 3 --gate span --margin 0.1 --once
+W1114 10:52:39.593000 2494 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 10:52:39.621000 2494 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 400 câu, 71s -> /work/code/bench/out/dev-other/whisper_oracle_b3_span0.1_once.tsv
++ for b in 3 5 8
++ python gate_boost.py --split dev-other --ctx oracle --subset protocol/dev-other/sub400.txt --boost 5 --gate span --margin 0.1 --once
+W1114 10:54:04.611000 2628 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 10:54:04.658000 2628 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 400 câu, 71s -> /work/code/bench/out/dev-other/whisper_oracle_b5_span0.1_once.tsv
++ for b in 3 5 8
++ python gate_boost.py --split dev-other --ctx oracle --subset protocol/dev-other/sub400.txt --boost 8 --gate span --margin 0.1 --once
+W1114 10:55:29.536000 2762 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 10:55:29.566000 2762 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 400 câu, 70s -> /work/code/bench/out/dev-other/whisper_oracle_b8_span0.1_once.tsv
++ B=5
++ python gate_boost.py --split test-other --ctx none --times --tag _times
+W1114 10:56:53.254000 2896 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 10:56:53.286000 2896 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 2939 câu, 465s -> /work/code/bench/out/test-other/whisper_none_times.tsv
++ python gate_boost.py --split test-other --ctx hou25_win_N2000 --prompt
+W1114 11:04:51.739000 2998 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 11:04:51.767000 2998 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 2939 câu, 510s -> /work/code/bench/out/test-other/whisper_hou25_win_N2000_prompt.tsv
++ python gate_boost.py --split test-other --ctx hou25_win_N2000_p0.5 --prompt
+W1114 11:13:35.404000 3132 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 11:13:35.433000 3132 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 2939 câu, 452s -> /work/code/bench/out/test-other/whisper_hou25_win_N2000_p0.5_prompt.tsv
++ python gate_boost.py --split test-other --ctx hou25_win_N2000_p0.5 --boost 5 --gate none --once
+W1114 11:21:21.613000 3266 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 11:21:21.661000 3266 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 2939 câu, 503s -> /work/code/bench/out/test-other/whisper_hou25_win_N2000_p0.5_b5_none_once.tsv
++ python gate_boost.py --split test-other --ctx hou25_win_N2000_p0.5 --boost 5 --gate span --margin 0.1 --once --spans protocol/test-other/span_hou25_win_N2000.tsv --tag _gate_once
+W1114 11:29:58.050000 3400 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 11:29:58.083000 3400 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 2939 câu, 499s -> /work/code/bench/out/test-other/whisper_hou25_win_N2000_p0.5_gate_once.tsv
++ python gate_boost.py --split test-other --ctx oracle --boost 5 --gate span --margin 0.1 --once --tag _mfa_once
+W1114 11:38:32.125000 3534 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 11:38:32.172000 3534 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 2939 câu, 475s -> /work/code/bench/out/test-other/whisper_oracle_mfa_once.tsv
++ python gate_boost.py --split test-other --ctx hou25_win_missing_N2000 --prompt
+W1114 11:46:42.838000 3668 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 11:46:42.885000 3668 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 2939 câu, 511s -> /work/code/bench/out/test-other/whisper_hou25_win_missing_N2000_prompt.tsv
++ python gate_boost.py --split test-other --ctx hou25_win_missing_N2000_p0.5 --boost 5 --gate none --once
+W1114 11:55:27.054000 3802 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 11:55:27.083000 3802 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 2939 câu, 519s -> /work/code/bench/out/test-other/whisper_hou25_win_missing_N2000_p0.5_b5_none_once.tsv
++ python gate_boost.py --split test-other --ctx hou25_win_missing_N2000_p0.5 --boost 5 --gate span --margin 0.1 --once --spans protocol/test-other/span_hou25_win_missing.tsv --tag _gate_once
+W1114 12:04:20.078000 3936 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 12:04:20.108000 3936 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 2939 câu, 492s -> /work/code/bench/out/test-other/whisper_hou25_win_missing_N2000_p0.5_gate_once.tsv
++ for th in 0.6 0.7 0.8
++ python postcorr.py --split test-other --hyp whisper_none_times --ctx hou25_win_N2000_p0.5 --spans protocol/test-other/span_hou25_win_N2000.tsv --theta 0.6 --tag _t0.6
+Traceback (most recent call last):
+  File "/work/code/bench/postcorr.py", line 39, in <module>
+    for l in open(a.phones, encoding="utf-8"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/work/code/scorer/runs/2026-10-16/phones.tsv'
++ for th in 0.6 0.7 0.8
++ python postcorr.py --split test-other --hyp whisper_none_times --ctx hou25_win_N2000_p0.5 --spans protocol/test-other/span_hou25_win_N2000.tsv --theta 0.7 --tag _t0.7
+Traceback (most recent call last):
+  File "/work/code/bench/postcorr.py", line 39, in <module>
+    for l in open(a.phones, encoding="utf-8"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/work/code/scorer/runs/2026-10-16/phones.tsv'
++ for th in 0.6 0.7 0.8
++ python postcorr.py --split test-other --hyp whisper_none_times --ctx hou25_win_N2000_p0.5 --spans protocol/test-other/span_hou25_win_N2000.tsv --theta 0.8 --tag _t0.8
+Traceback (most recent call last):
+  File "/work/code/bench/postcorr.py", line 39, in <module>
+    for l in open(a.phones, encoding="utf-8"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/work/code/scorer/runs/2026-10-16/phones.tsv'

@@ -1,0 +1,12 @@
+W1114 17:53:00.790000 15507 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 17:53:00.836000 15507 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 400 câu, 0 câu decode lại vì lặp, 0s -> /work/code/bench/out/dev-other/whisper_pmaxsim_win_N2000_prompt_gate_b2_fb.tsv
+W1114 17:53:17.567000 15561 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 17:53:17.626000 15561 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 400 câu, 0 câu decode lại vì lặp, 5s -> /work/code/bench/out/dev-other/whisper_pmaxsim_win_N2000_prompt_gate_b3_fb.tsv
+W1114 17:53:39.248000 15645 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 17:53:39.288000 15645 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 400 câu, 0 câu decode lại vì lặp, 101s -> /work/code/bench/out/dev-other/whisper_pmaxsim_win_N2000_prompt_gate_b3_n5_fb.tsv

@@ -18,7 +18,7 @@ ap.add_argument("--cache", default="/work/hf_libri")
 a = ap.parse_args()
 
 for split in a.splits:
-    sub = "all/" + split.replace("-", ".", 1).replace("-", ".")           # train-clean-360 → all/train.clean.360
+    sub = "all/" + (split.replace("dev-", "validation.") if split.startswith("dev-") else split.replace("-", ".", 1).replace("-", "."))           # train-clean-360 → all/train.clean.360
     root = snapshot_download("openslr/librispeech_asr", repo_type="dataset", allow_patterns=[f"{sub}/*.parquet"],
                              local_dir=a.cache, max_workers=8)
     trans = defaultdict(list)

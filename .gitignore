@@ -34,3 +34,12 @@ archive/
 
 # ---- chỉ dẫn riêng máy (tên, đường dẫn, server) ----
 AGENTS.local.md
+
+# ---- output nặng của lượt chạy 14–15/11 (ở máy local + server, không đẩy lên) ----
+scorer/runs/*/out/
+scorer/runs/*/ckpt/
+scorer/runs/*/srv/
+scorer/runs/*/*.tgz
+bench/protocol/*/span_*.tsv
+bench/protocol/*/pred_*.tsv
+bench/out/*/*.time.tsv

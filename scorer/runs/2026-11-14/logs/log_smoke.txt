@@ -1,0 +1,64 @@
++ case $1 in
++ rk --split test-other --lists N2000 --ckpt work/ckpt/hou25/best.pt --name smoke_win --win --limit 32
++ python -m inference.rank --libri /work/libri/LibriSpeech --thr 0.5 --span --split test-other --lists N2000 --ckpt work/ckpt/hou25/best.pt --name smoke_win --win --limit 32
+W1114 07:40:11.755000 448 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 07:40:12.060000 448 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/32  tầng1 0ms/câu  tầng2 9888ms/câu
+32/32  tầng1 0ms/câu  tầng2 8216ms/câu
+N2000 p≥0.5: trung bình 4.0 từ/câu, 4 câu rỗng
+xong test-other: 32 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ python -m training.train --arch hou25 hou25_topk hou25_diag --epochs 1 --limit 200 --tag _smoke
+W1114 07:45:09.029000 550 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 07:45:09.075000 550 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+hou25: 1.95M tham số
+hou25_topk: 1.95M tham số
+hou25_diag: 1.95M tham số
+200 câu train (train), 500 câu dev (dev-clean, list 100)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/work/code/scorer/training/train.py", line 203, in <module>
+    for batch in loader(train, False):
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 725, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 1529, in _next_data
+    return self._process_data(data, worker_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 1567, in _process_data
+    data.reraise()
+  File "/usr/local/lib/python3.12/dist-packages/torch/_utils.py", line 802, in reraise
+    raise exception
+soundfile.LibsndfileError: <exception str() failed>
++ python -m training.train --arch hou25 --name smoke_e3 --neg_ratio 16 --balance --chunk 48 --epochs 1 --limit 200
+W1114 07:45:21.338000 645 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 07:45:21.367000 645 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+hou25: 1.95M tham số
+200 câu train (train), 500 câu dev (dev-clean, list 100)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/work/code/scorer/training/train.py", line 203, in <module>
+    for batch in loader(train, False):
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 725, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 1529, in _next_data
+    return self._process_data(data, worker_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 1567, in _process_data
+    data.reraise()
+  File "/usr/local/lib/python3.12/dist-packages/torch/_utils.py", line 802, in reraise
+    raise exception
+soundfile.LibsndfileError: <exception str() failed>
++ cd /work/code/bench
++ python spans_from_rank.py ../scorer/work/out/smoke_win/test-other/span_N2000.json /tmp/sp.tsv
+1600 vị trí -> /tmp/sp.tsv
++ python gate_boost.py --split test-other --ctx smoke_win_N2000_p0.5 --boost 5 --gate span --once --spans /tmp/sp.tsv --limit 8 --tag _smoke
+W1114 07:45:33.291000 741 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 07:45:33.335000 741 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 8 câu, 2s -> /work/code/bench/out/test-other/whisper_smoke_win_N2000_p0.5_smoke.tsv

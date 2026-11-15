@@ -1,0 +1,127 @@
+W1114 15:38:14.825000 7036 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 15:38:14.873000 7036 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+pmaxsim: 2.72M tham số
+pmono: 2.72M tham số
+28539 câu train (train), 500 câu dev (dev-other)
+ep 0 step 100 loss pmaxsim 1.3341 pmono 1.3348  35s
+ep 0 step 200 loss pmaxsim 1.2850 pmono 1.2848  72s
+ep 0 step 300 loss pmaxsim 1.2584 pmono 1.2734  108s
+ep 0 step 400 loss pmaxsim 1.2069 pmono 1.2050  139s
+ep 0 step 500 loss pmaxsim 1.1065 pmono 0.7105  165s
+ep 0 step 600 loss pmaxsim 0.9469 pmono 0.5646  204s
+ep 0 step 700 loss pmaxsim 0.7919 pmono 0.5179  241s
+ep 0 step 800 loss pmaxsim 0.7190 pmono 0.4970  275s
+ep 0 step 900 loss pmaxsim 0.6701 pmono 0.4828  309s
+ep 0 step 1000 loss pmaxsim 0.6307 pmono 0.4646  341s
+ep 0 step 1100 loss pmaxsim 0.6062 pmono 0.4625  375s
+ep 0 step 1200 loss pmaxsim 0.5831 pmono 0.4479  411s
+ep 0 step 1300 loss pmaxsim 0.5644 pmono 0.4424  442s
+ep 0 step 1400 loss pmaxsim 0.5503 pmono 0.4360  476s
+ep 0 step 1500 loss pmaxsim 0.5399 pmono 0.4358  511s
+ep 0 step 1600 loss pmaxsim 0.5275 pmono 0.4253  542s
+ep 0 step 1700 loss pmaxsim 0.5179 pmono 0.4203  580s
+ep 0 step 1800 loss pmaxsim 0.5076 pmono 0.4177  618s
+ep 0 step 1900 loss pmaxsim 0.5040 pmono 0.4161  653s
+ep 0 step 2000 loss pmaxsim 0.4910 pmono 0.4131  683s
+ep 0 step 2100 loss pmaxsim 0.4868 pmono 0.4089  713s
+ep 0 step 2200 loss pmaxsim 0.4697 pmono 0.4024  749s
+ep 0 step 2300 loss pmaxsim 0.4717 pmono 0.4024  786s
+ep 0 step 2400 loss pmaxsim 0.4556 pmono 0.3895  818s
+ep 0 step 2500 loss pmaxsim 0.4608 pmono 0.4011  853s
+ep 0 step 2600 loss pmaxsim 0.4560 pmono 0.3957  886s
+ep 0 step 2700 loss pmaxsim 0.4517 pmono 0.3926  921s
+ep 0 step 2800 loss pmaxsim 0.4445 pmono 0.3920  955s
+ep 0 step 2900 loss pmaxsim 0.4314 pmono 0.3828  994s
+ep 0 step 3000 loss pmaxsim 0.4393 pmono 0.3882  1029s
+ep 0 step 3100 loss pmaxsim 0.4249 pmono 0.3709  1066s
+ep 0 step 3200 loss pmaxsim 0.4342 pmono 0.3810  1099s
+ep 0 step 3300 loss pmaxsim 0.4271 pmono 0.3800  1132s
+ep 0 step 3400 loss pmaxsim 0.4193 pmono 0.3769  1169s
+ep 0 step 3500 loss pmaxsim 0.4239 pmono 0.3767  1200s
+== pmaxsim ep 0 step 3568: dev Recall@10 90.68  Recall@50 97.85  Sạch@1 74.79  Hard-R@5 -1.00  (best 74.79)  1267s
+== pmono ep 0 step 3568: dev Recall@10 96.18  Recall@50 99.28  Sạch@1 86.02  Hard-R@5 -1.00  (best 86.02)  1311s
+ep 1 step 3600 loss pmaxsim 0.1304 pmono 0.1174  1323s
+ep 1 step 3700 loss pmaxsim 0.4018 pmono 0.3638  1358s
+ep 1 step 3800 loss pmaxsim 0.4030 pmono 0.3635  1393s
+ep 1 step 3900 loss pmaxsim 0.3959 pmono 0.3642  1428s
+ep 1 step 4000 loss pmaxsim 0.3981 pmono 0.3657  1461s
+ep 1 step 4100 loss pmaxsim 0.4014 pmono 0.3625  1493s
+ep 1 step 4200 loss pmaxsim 0.4058 pmono 0.3643  1527s
+ep 1 step 4300 loss pmaxsim 0.3896 pmono 0.3553  1567s
+ep 1 step 4400 loss pmaxsim 0.3861 pmono 0.3637  1601s
+ep 1 step 4500 loss pmaxsim 0.3876 pmono 0.3592  1635s
+ep 1 step 4600 loss pmaxsim 0.3844 pmono 0.3564  1668s
+ep 1 step 4700 loss pmaxsim 0.3897 pmono 0.3562  1699s
+ep 1 step 4800 loss pmaxsim 0.3773 pmono 0.3489  1739s
+ep 1 step 4900 loss pmaxsim 0.3668 pmono 0.3422  1771s
+ep 1 step 5000 loss pmaxsim 0.3796 pmono 0.3480  1805s
+ep 1 step 5100 loss pmaxsim 0.3775 pmono 0.3496  1838s
+ep 1 step 5200 loss pmaxsim 0.3697 pmono 0.3446  1864s
+ep 1 step 5300 loss pmaxsim 0.3712 pmono 0.3449  1900s
+ep 1 step 5400 loss pmaxsim 0.3667 pmono 0.3432  1933s
+ep 1 step 5500 loss pmaxsim 0.3679 pmono 0.3455  1963s
+ep 1 step 5600 loss pmaxsim 0.3662 pmono 0.3438  1997s
+ep 1 step 5700 loss pmaxsim 0.3667 pmono 0.3415  2033s
+ep 1 step 5800 loss pmaxsim 0.3626 pmono 0.3409  2083s
+ep 1 step 5900 loss pmaxsim 0.3614 pmono 0.3371  2127s
+ep 1 step 6000 loss pmaxsim 0.3665 pmono 0.3421  2155s
+ep 1 step 6100 loss pmaxsim 0.3522 pmono 0.3366  2181s
+ep 1 step 6200 loss pmaxsim 0.3547 pmono 0.3380  2205s
+ep 1 step 6300 loss pmaxsim 0.3658 pmono 0.3394  2230s
+ep 1 step 6400 loss pmaxsim 0.3545 pmono 0.3330  2252s
+ep 1 step 6500 loss pmaxsim 0.3587 pmono 0.3375  2276s
+ep 1 step 6600 loss pmaxsim 0.3527 pmono 0.3336  2301s
+ep 1 step 6700 loss pmaxsim 0.3528 pmono 0.3354  2325s
+ep 1 step 6800 loss pmaxsim 0.3500 pmono 0.3285  2350s
+ep 1 step 6900 loss pmaxsim 0.3417 pmono 0.3207  2377s
+ep 1 step 7000 loss pmaxsim 0.3554 pmono 0.3333  2404s
+ep 1 step 7100 loss pmaxsim 0.3436 pmono 0.3278  2432s
+== pmaxsim ep 1 step 7136: dev Recall@10 92.47  Recall@50 97.49  Sạch@1 78.61  Hard-R@5 -1.00  (best 78.61)  2486s
+== pmono ep 1 step 7136: dev Recall@10 95.82  Recall@50 99.16  Sạch@1 82.92  Hard-R@5 -1.00  (best 86.02)  2527s
+ep 2 step 7200 loss pmaxsim 0.2106 pmono 0.1998  2542s
+ep 2 step 7300 loss pmaxsim 0.3320 pmono 0.3168  2566s
+ep 2 step 7400 loss pmaxsim 0.3295 pmono 0.3190  2593s
+ep 2 step 7500 loss pmaxsim 0.3380 pmono 0.3227  2616s
+ep 2 step 7600 loss pmaxsim 0.3259 pmono 0.3106  2640s
+ep 2 step 7700 loss pmaxsim 0.3285 pmono 0.3150  2665s
+ep 2 step 7800 loss pmaxsim 0.3265 pmono 0.3129  2694s
+ep 2 step 7900 loss pmaxsim 0.3324 pmono 0.3142  2725s
+ep 2 step 8000 loss pmaxsim 0.3276 pmono 0.3159  2750s
+ep 2 step 8100 loss pmaxsim 0.3341 pmono 0.3150  2775s
+ep 2 step 8200 loss pmaxsim 0.3262 pmono 0.3118  2799s
+ep 2 step 8300 loss pmaxsim 0.3305 pmono 0.3192  2822s
+ep 2 step 8400 loss pmaxsim 0.3264 pmono 0.3110  2845s
+ep 2 step 8500 loss pmaxsim 0.3175 pmono 0.3047  2868s
+ep 2 step 8600 loss pmaxsim 0.3206 pmono 0.3083  2895s
+ep 2 step 8700 loss pmaxsim 0.3270 pmono 0.3123  2927s
+ep 2 step 8800 loss pmaxsim 0.3238 pmono 0.3109  2961s
+ep 2 step 8900 loss pmaxsim 0.3151 pmono 0.3010  2991s
+ep 2 step 9000 loss pmaxsim 0.3168 pmono 0.3024  3016s
+ep 2 step 9100 loss pmaxsim 0.3236 pmono 0.3121  3040s
+ep 2 step 9200 loss pmaxsim 0.3167 pmono 0.3048  3064s
+ep 2 step 9300 loss pmaxsim 0.3210 pmono 0.3115  3088s
+ep 2 step 9400 loss pmaxsim 0.3149 pmono 0.3037  3111s
+ep 2 step 9500 loss pmaxsim 0.3067 pmono 0.2953  3134s
+ep 2 step 9600 loss pmaxsim 0.3159 pmono 0.3017  3158s
+ep 2 step 9700 loss pmaxsim 0.3089 pmono 0.2947  3184s
+ep 2 step 9800 loss pmaxsim 0.3090 pmono 0.2971  3212s
+ep 2 step 9900 loss pmaxsim 0.3193 pmono 0.3071  3239s
+ep 2 step 10000 loss pmaxsim 0.3182 pmono 0.3041  3263s
+ep 2 step 10100 loss pmaxsim 0.3126 pmono 0.2994  3288s
+ep 2 step 10200 loss pmaxsim 0.3056 pmono 0.2984  3312s
+ep 2 step 10300 loss pmaxsim 0.3128 pmono 0.3044  3340s
+ep 2 step 10400 loss pmaxsim 0.3152 pmono 0.2967  3368s
+ep 2 step 10500 loss pmaxsim 0.3134 pmono 0.2989  3396s
+ep 2 step 10600 loss pmaxsim 0.3015 pmono 0.2889  3419s
+ep 2 step 10700 loss pmaxsim 0.3079 pmono 0.2923  3443s
+== pmaxsim ep 2 step 10704: dev Recall@10 92.23  Recall@50 97.61  Sạch@1 82.08  Hard-R@5 -1.00  (best 82.08)  3486s
+== pmono ep 2 step 10704: dev Recall@10 96.06  Recall@50 99.16  Sạch@1 85.19  Hard-R@5 -1.00  (best 86.02)  3530s
+ep 3 step 10800 loss pmaxsim 0.2746 pmono 0.2684  3553s
+ep 3 step 10900 loss pmaxsim 0.2907 pmono 0.2808  3576s
+ep 3 step 11000 loss pmaxsim 0.2928 pmono 0.2827  3600s
+ep 3 step 11100 loss pmaxsim 0.2948 pmono 0.2854  3624s
+ep 3 step 11200 loss pmaxsim 0.2929 pmono 0.2862  3649s
+ep 3 step 11300 loss pmaxsim 0.2926 pmono 0.2835  3673s
+ep 3 step 11400 loss pmaxsim 0.2901 pmono 0.2772  3697s
+ep 3 step 11500 loss pmaxsim 0.2899 pmono 0.2812  3723s

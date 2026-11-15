@@ -1,0 +1,297 @@
+W1114 18:12:16.083000 16940 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 18:12:16.113000 16940 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/1000  tầng1 0ms/câu  tầng2 2470ms/câu
+32/1000  tầng1 0ms/câu  tầng2 3014ms/câu
+48/1000  tầng1 0ms/câu  tầng2 3038ms/câu
+64/1000  tầng1 0ms/câu  tầng2 2982ms/câu
+80/1000  tầng1 0ms/câu  tầng2 3001ms/câu
+96/1000  tầng1 0ms/câu  tầng2 3124ms/câu
+112/1000  tầng1 0ms/câu  tầng2 3032ms/câu
+128/1000  tầng1 0ms/câu  tầng2 3084ms/câu
+144/1000  tầng1 0ms/câu  tầng2 2961ms/câu
+160/1000  tầng1 0ms/câu  tầng2 2996ms/câu
+176/1000  tầng1 0ms/câu  tầng2 3008ms/câu
+192/1000  tầng1 0ms/câu  tầng2 3017ms/câu
+208/1000  tầng1 0ms/câu  tầng2 3017ms/câu
+224/1000  tầng1 0ms/câu  tầng2 3052ms/câu
+240/1000  tầng1 0ms/câu  tầng2 3066ms/câu
+256/1000  tầng1 0ms/câu  tầng2 3044ms/câu
+272/1000  tầng1 0ms/câu  tầng2 2984ms/câu
+288/1000  tầng1 0ms/câu  tầng2 3005ms/câu
+304/1000  tầng1 0ms/câu  tầng2 2980ms/câu
+320/1000  tầng1 0ms/câu  tầng2 3015ms/câu
+336/1000  tầng1 0ms/câu  tầng2 3018ms/câu
+352/1000  tầng1 0ms/câu  tầng2 3015ms/câu
+368/1000  tầng1 0ms/câu  tầng2 3029ms/câu
+384/1000  tầng1 0ms/câu  tầng2 3057ms/câu
+400/1000  tầng1 0ms/câu  tầng2 3025ms/câu
+[W1114 18:33:02.567842983 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 16515072, total: 25252724736).
+416/1000  tầng1 0ms/câu  tầng2 3048ms/câu
+432/1000  tầng1 0ms/câu  tầng2 3045ms/câu
+448/1000  tầng1 0ms/câu  tầng2 3047ms/câu
+464/1000  tầng1 0ms/câu  tầng2 3049ms/câu
+480/1000  tầng1 0ms/câu  tầng2 3036ms/câu
+496/1000  tầng1 0ms/câu  tầng2 3055ms/câu
+512/1000  tầng1 0ms/câu  tầng2 3034ms/câu
+528/1000  tầng1 0ms/câu  tầng2 3015ms/câu
+544/1000  tầng1 0ms/câu  tầng2 3021ms/câu
+560/1000  tầng1 0ms/câu  tầng2 3024ms/câu
+576/1000  tầng1 0ms/câu  tầng2 3026ms/câu
+592/1000  tầng1 0ms/câu  tầng2 3059ms/câu
+608/1000  tầng1 0ms/câu  tầng2 3058ms/câu
+624/1000  tầng1 0ms/câu  tầng2 3078ms/câu
+[W1114 18:45:28.753611139 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 18612224, total: 25252724736).
+640/1000  tầng1 0ms/câu  tầng2 3101ms/câu
+656/1000  tầng1 0ms/câu  tầng2 3093ms/câu
+672/1000  tầng1 0ms/câu  tầng2 3094ms/câu
+688/1000  tầng1 0ms/câu  tầng2 3078ms/câu
+704/1000  tầng1 0ms/câu  tầng2 3085ms/câu
+720/1000  tầng1 0ms/câu  tầng2 3076ms/câu
+736/1000  tầng1 0ms/câu  tầng2 3053ms/câu
+752/1000  tầng1 0ms/câu  tầng2 3049ms/câu
+768/1000  tầng1 0ms/câu  tầng2 3056ms/câu
+784/1000  tầng1 0ms/câu  tầng2 3048ms/câu
+800/1000  tầng1 0ms/câu  tầng2 3049ms/câu
+816/1000  tầng1 0ms/câu  tầng2 3029ms/câu
+832/1000  tầng1 0ms/câu  tầng2 3017ms/câu
+848/1000  tầng1 0ms/câu  tầng2 3012ms/câu
+864/1000  tầng1 0ms/câu  tầng2 3010ms/câu
+880/1000  tầng1 0ms/câu  tầng2 2993ms/câu
+896/1000  tầng1 0ms/câu  tầng2 2988ms/câu
+912/1000  tầng1 0ms/câu  tầng2 2990ms/câu
+928/1000  tầng1 0ms/câu  tầng2 2987ms/câu
+944/1000  tầng1 0ms/câu  tầng2 2974ms/câu
+960/1000  tầng1 0ms/câu  tầng2 2969ms/câu
+976/1000  tầng1 0ms/câu  tầng2 2981ms/câu
+[W1114 19:02:28.264018774 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 15794176, total: 25252724736).
+[W1114 19:02:28.415581262 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 22085632, total: 25252724736).
+[W1114 19:02:29.768731061 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 22085632, total: 25252724736).
+[W1114 19:02:29.129339176 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 22085632, total: 25252724736).
+[W1114 19:02:29.497552695 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 22085632, total: 25252724736).
+[W1114 19:02:30.825301630 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 22085632, total: 25252724736).
+992/1000  tầng1 0ms/câu  tầng2 2983ms/câu
+1000/1000  tầng1 0ms/câu  tầng2 2977ms/câu
+N2000 p≥0.5: trung bình 2.6 từ/câu, 171 câu rỗng
+xong test-other: 1000 câu, 0 lượt từ thiếu feature (TTS lỗi)
+W1114 19:03:29.419000 17854 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 19:03:29.448000 17854 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/1000  tầng1 0ms/câu  tầng2 1985ms/câu
+32/1000  tầng1 0ms/câu  tầng2 2381ms/câu
+48/1000  tầng1 0ms/câu  tầng2 2425ms/câu
+64/1000  tầng1 0ms/câu  tầng2 2336ms/câu
+80/1000  tầng1 0ms/câu  tầng2 2364ms/câu
+[W1114 19:07:24.446939748 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 17891328, total: 25252724736).
+[W1114 19:07:24.529904201 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.614723550 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.657352362 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.704530395 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.748638559 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.789279354 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.829301393 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.876583120 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.928366100 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.976455396 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.020995557 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.068604843 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.113048061 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.160895420 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.208545671 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.256959377 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.304495893 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.352882453 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.400493386 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.448481233 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.493105948 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.540520434 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:25.588575316 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:26.636574750 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:26.684680563 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:26.732581422 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:26.777089430 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:26.824727301 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:26.869132291 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:26.916613633 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:26.961169513 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:26.008625998 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:26.053304740 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:26.100678164 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+[W1114 19:07:26.145102867 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 5308416, total: 25252724736).
+96/1000  tầng1 0ms/câu  tầng2 2568ms/câu
+112/1000  tầng1 0ms/câu  tầng2 2488ms/câu
+[W1114 19:08:54.265600902 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 15794176, total: 25252724736).
+[W1114 19:08:54.353368965 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 22085632, total: 25252724736).
+[W1114 19:08:54.595022698 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 22085632, total: 25252724736).
+[W1114 19:08:55.839354360 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 22085632, total: 25252724736).
+128/1000  tầng1 0ms/câu  tầng2 2528ms/câu
+144/1000  tầng1 0ms/câu  tầng2 2420ms/câu
+160/1000  tầng1 0ms/câu  tầng2 2437ms/câu
+176/1000  tầng1 0ms/câu  tầng2 2436ms/câu
+192/1000  tầng1 0ms/câu  tầng2 2438ms/câu
+208/1000  tầng1 0ms/câu  tầng2 2432ms/câu
+224/1000  tầng1 0ms/câu  tầng2 2458ms/câu
+240/1000  tầng1 0ms/câu  tầng2 2468ms/câu
+256/1000  tầng1 0ms/câu  tầng2 2448ms/câu
+272/1000  tầng1 0ms/câu  tầng2 2406ms/câu
+288/1000  tầng1 0ms/câu  tầng2 2413ms/câu
+304/1000  tầng1 0ms/câu  tầng2 2388ms/câu
+320/1000  tầng1 0ms/câu  tầng2 2410ms/câu
+336/1000  tầng1 0ms/câu  tầng2 2410ms/câu
+352/1000  tầng1 0ms/câu  tầng2 2405ms/câu
+[W1114 19:18:10.575300834 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 15794176, total: 25252724736).
+368/1000  tầng1 0ms/câu  tầng2 2401ms/câu
+384/1000  tầng1 0ms/câu  tầng2 2405ms/câu
+400/1000  tầng1 0ms/câu  tầng2 2369ms/câu
+416/1000  tầng1 0ms/câu  tầng2 2371ms/câu
+432/1000  tầng1 0ms/câu  tầng2 2354ms/câu
+448/1000  tầng1 0ms/câu  tầng2 2343ms/câu
+464/1000  tầng1 0ms/câu  tầng2 2332ms/câu
+480/1000  tầng1 0ms/câu  tầng2 2313ms/câu
+496/1000  tầng1 0ms/câu  tầng2 2312ms/câu
+512/1000  tầng1 0ms/câu  tầng2 2290ms/câu
+528/1000  tầng1 0ms/câu  tầng2 2268ms/câu
+544/1000  tầng1 0ms/câu  tầng2 2261ms/câu
+560/1000  tầng1 0ms/câu  tầng2 2253ms/câu
+576/1000  tầng1 0ms/câu  tầng2 2246ms/câu
+592/1000  tầng1 0ms/câu  tầng2 2258ms/câu
+608/1000  tầng1 0ms/câu  tầng2 2250ms/câu
+624/1000  tầng1 0ms/câu  tầng2 2254ms/câu
+[W1114 19:27:54.990560951 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 10878976, total: 25252724736).
+[W1114 19:27:54.124901280 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 21364736, total: 25252724736).
+[W1114 19:27:54.378379641 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 21364736, total: 25252724736).
+640/1000  tầng1 0ms/câu  tầng2 2262ms/câu
+656/1000  tầng1 0ms/câu  tầng2 2250ms/câu
+672/1000  tầng1 0ms/câu  tầng2 2247ms/câu
+688/1000  tầng1 0ms/câu  tầng2 2236ms/câu
+704/1000  tầng1 0ms/câu  tầng2 2241ms/câu
+720/1000  tầng1 0ms/câu  tầng2 2237ms/câu
+736/1000  tầng1 0ms/câu  tầng2 2221ms/câu
+752/1000  tầng1 0ms/câu  tầng2 2219ms/câu
+768/1000  tầng1 0ms/câu  tầng2 2226ms/câu
+784/1000  tầng1 0ms/câu  tầng2 2221ms/câu
+800/1000  tầng1 0ms/câu  tầng2 2222ms/câu
+816/1000  tầng1 0ms/câu  tầng2 2208ms/câu
+832/1000  tầng1 0ms/câu  tầng2 2201ms/câu
+848/1000  tầng1 0ms/câu  tầng2 2198ms/câu
+864/1000  tầng1 0ms/câu  tầng2 2196ms/câu
+880/1000  tầng1 0ms/câu  tầng2 2184ms/câu
+896/1000  tầng1 0ms/câu  tầng2 2181ms/câu
+912/1000  tầng1 0ms/câu  tầng2 2183ms/câu
+928/1000  tầng1 0ms/câu  tầng2 2182ms/câu
+944/1000  tầng1 0ms/câu  tầng2 2171ms/câu
+960/1000  tầng1 0ms/câu  tầng2 2168ms/câu
+976/1000  tầng1 0ms/câu  tầng2 2178ms/câu
+[W1114 19:40:19.065643146 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 12976128, total: 25252724736).
+[W1114 19:40:19.221745711 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:19.281139271 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:19.344487712 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:19.401542526 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:19.461028866 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:19.524727100 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:19.585015437 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.648539317 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.708675488 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.765058435 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.824487937 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.888460542 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.952497166 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.009545706 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.069044380 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.126298746 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.185212264 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.248479538 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.305475136 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.365116105 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.424734480 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.481059073 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:20.540701654 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:21.604469179 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:21.668491485 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:21.725584396 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:21.785097802 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:21.848592129 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:21.905531604 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:21.968502937 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:21.025516405 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:21.088491830 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:21.145772471 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:21.208578346 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:21.268841036 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+[W1114 19:40:21.325093189 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19267584, total: 25252724736).
+992/1000  tầng1 0ms/câu  tầng2 2187ms/câu
+1000/1000  tầng1 0ms/câu  tầng2 2182ms/câu
+N2000 p≥0.5: trung bình 3.5 từ/câu, 148 câu rỗng
+xong test-other: 1000 câu, 0 lượt từ thiếu feature (TTS lỗi)
+W1114 19:41:15.759000 18046 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 19:41:15.788000 18046 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/1000  tầng1 0ms/câu  tầng2 2017ms/câu
+32/1000  tầng1 0ms/câu  tầng2 2419ms/câu
+48/1000  tầng1 0ms/câu  tầng2 2460ms/câu
+64/1000  tầng1 0ms/câu  tầng2 2420ms/câu
+80/1000  tầng1 0ms/câu  tầng2 2433ms/câu
+96/1000  tầng1 0ms/câu  tầng2 2522ms/câu
+112/1000  tầng1 0ms/câu  tầng2 2446ms/câu
+128/1000  tầng1 0ms/câu  tầng2 2476ms/câu
+144/1000  tầng1 0ms/câu  tầng2 2380ms/câu
+160/1000  tầng1 0ms/câu  tầng2 2398ms/câu
+176/1000  tầng1 0ms/câu  tầng2 2405ms/câu
+192/1000  tầng1 0ms/câu  tầng2 2409ms/câu
+208/1000  tầng1 0ms/câu  tầng2 2406ms/câu
+224/1000  tầng1 0ms/câu  tầng2 2433ms/câu
+240/1000  tầng1 0ms/câu  tầng2 2447ms/câu
+256/1000  tầng1 0ms/câu  tầng2 2427ms/câu
+272/1000  tầng1 0ms/câu  tầng2 2389ms/câu
+288/1000  tầng1 0ms/câu  tầng2 2399ms/câu
+304/1000  tầng1 0ms/câu  tầng2 2373ms/câu
+320/1000  tầng1 0ms/câu  tầng2 2397ms/câu
+336/1000  tầng1 0ms/câu  tầng2 2397ms/câu
+352/1000  tầng1 0ms/câu  tầng2 2392ms/câu
+368/1000  tầng1 0ms/câu  tầng2 2398ms/câu
+384/1000  tầng1 0ms/câu  tầng2 2419ms/câu
+400/1000  tầng1 0ms/câu  tầng2 2393ms/câu
+[W1114 19:57:42.252697907 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 10944512, total: 25252724736).
+[W1114 19:57:42.431183407 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19333120, total: 25252724736).
+[W1114 19:57:43.658633575 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19333120, total: 25252724736).
+[W1114 19:57:43.911480579 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 19333120, total: 25252724736).
+416/1000  tầng1 0ms/câu  tầng2 2412ms/câu
+432/1000  tầng1 0ms/câu  tầng2 2409ms/câu
+448/1000  tầng1 0ms/câu  tầng2 2407ms/câu
+464/1000  tầng1 0ms/câu  tầng2 2407ms/câu
+480/1000  tầng1 0ms/câu  tầng2 2393ms/câu
+496/1000  tầng1 0ms/câu  tầng2 2407ms/câu
+512/1000  tầng1 0ms/câu  tầng2 2390ms/câu
+528/1000  tầng1 0ms/câu  tầng2 2372ms/câu
+544/1000  tầng1 0ms/câu  tầng2 2376ms/câu
+560/1000  tầng1 0ms/câu  tầng2 2375ms/câu
+576/1000  tầng1 0ms/câu  tầng2 2375ms/câu
+592/1000  tầng1 0ms/câu  tầng2 2400ms/câu
+608/1000  tầng1 0ms/câu  tầng2 2394ms/câu
+624/1000  tầng1 0ms/câu  tầng2 2379ms/câu
+640/1000  tầng1 0ms/câu  tầng2 2395ms/câu
+656/1000  tầng1 0ms/câu  tầng2 2390ms/câu
+672/1000  tầng1 0ms/câu  tầng2 2393ms/câu
+688/1000  tầng1 0ms/câu  tầng2 2386ms/câu
+704/1000  tầng1 0ms/câu  tầng2 2401ms/câu
+720/1000  tầng1 0ms/câu  tầng2 2402ms/câu
+736/1000  tầng1 0ms/câu  tầng2 2389ms/câu
+752/1000  tầng1 0ms/câu  tầng2 2392ms/câu
+768/1000  tầng1 0ms/câu  tầng2 2407ms/câu
+784/1000  tầng1 0ms/câu  tầng2 2404ms/câu
+800/1000  tầng1 0ms/câu  tầng2 2411ms/câu
+816/1000  tầng1 0ms/câu  tầng2 2398ms/câu
+832/1000  tầng1 0ms/câu  tầng2 2394ms/câu
+848/1000  tầng1 0ms/câu  tầng2 2395ms/câu
+864/1000  tầng1 0ms/câu  tầng2 2399ms/câu
+880/1000  tầng1 0ms/câu  tầng2 2389ms/câu
+896/1000  tầng1 0ms/câu  tầng2 2390ms/câu
+912/1000  tầng1 0ms/câu  tầng2 2396ms/câu
+928/1000  tầng1 0ms/câu  tầng2 2399ms/câu
+944/1000  tầng1 0ms/câu  tầng2 2391ms/câu
+960/1000  tầng1 0ms/câu  tầng2 2391ms/câu
+976/1000  tầng1 0ms/câu  tầng2 2405ms/câu
+992/1000  tầng1 0ms/câu  tầng2 2409ms/câu
+1000/1000  tầng1 0ms/câu  tầng2 2406ms/câu
+N2000 p≥0.5: trung bình 3.8 từ/câu, 190 câu rỗng
+xong test-other: 1000 câu, 0 lượt từ thiếu feature (TTS lỗi)

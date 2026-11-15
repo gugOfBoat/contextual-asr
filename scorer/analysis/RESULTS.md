@@ -56,6 +56,8 @@
 
 ## A1: cùng checkpoint Hou25, đổi cách gộp (08–09/11/2026, GPU 4090 card 3) [đo]
 
+Báo cáo đầy đủ (CI, so ghép cặp, nhóm theo độ dài, AUC gộp, mức ngẫu nhiên): `A1_REPORT.md`.
+
 **Câu hỏi (Q2):** Hou25 lấy trung bình cả bản đồ. Nếu đọc điểm ở đúng vệt thì R#10 có lên không? Đọc từ đâu thì định vị được từ?
 
 **Setup**

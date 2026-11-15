@@ -1,0 +1,1173 @@
++ case $1 in
++ python -m training.train --arch hou25 hou25_topk hou25_diag --tag _e2 --epochs 3 --lr 5e-5
+Terminated
++ for A in hou25 hou25_topk hou25_diag
++ for S in test-other test-clean
++ rk --split test-other --lists N2000 --ckpt work/ckpt/hou25_e2/best.pt --name hou25_e2 --win
++ python -m inference.rank --libri /work/libri/LibriSpeech --thr 0.5 --span --split test-other --lists N2000 --ckpt work/ckpt/hou25_e2/best.pt --name hou25_e2 --win
+W1114 18:12:12.495000 16786 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 18:12:12.534000 16786 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2939  tầng1 0ms/câu  tầng2 2194ms/câu
+32/2939  tầng1 0ms/câu  tầng2 2675ms/câu
+48/2939  tầng1 0ms/câu  tầng2 2736ms/câu
+64/2939  tầng1 0ms/câu  tầng2 2676ms/câu
+80/2939  tầng1 0ms/câu  tầng2 2692ms/câu
+96/2939  tầng1 0ms/câu  tầng2 2822ms/câu
+112/2939  tầng1 0ms/câu  tầng2 2737ms/câu
+128/2939  tầng1 0ms/câu  tầng2 2771ms/câu
+144/2939  tầng1 0ms/câu  tầng2 2657ms/câu
+160/2939  tầng1 0ms/câu  tầng2 2676ms/câu
+176/2939  tầng1 0ms/câu  tầng2 2684ms/câu
+192/2939  tầng1 0ms/câu  tầng2 2688ms/câu
+208/2939  tầng1 0ms/câu  tầng2 2685ms/câu
+224/2939  tầng1 0ms/câu  tầng2 2710ms/câu
+240/2939  tầng1 0ms/câu  tầng2 2723ms/câu
+256/2939  tầng1 0ms/câu  tầng2 2703ms/câu
+272/2939  tầng1 0ms/câu  tầng2 2656ms/câu
+288/2939  tầng1 0ms/câu  tầng2 2668ms/câu
+304/2939  tầng1 0ms/câu  tầng2 2634ms/câu
+320/2939  tầng1 0ms/câu  tầng2 2660ms/câu
+336/2939  tầng1 0ms/câu  tầng2 2662ms/câu
+352/2939  tầng1 0ms/câu  tầng2 2659ms/câu
+368/2939  tầng1 0ms/câu  tầng2 2668ms/câu
+384/2939  tầng1 0ms/câu  tầng2 2693ms/câu
+400/2939  tầng1 0ms/câu  tầng2 2666ms/câu
+[W1114 18:30:35.813255986 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 18612224, total: 25252724736).
+[W1114 18:30:35.938470510 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 6029312, total: 25252724736).
+[W1114 18:30:35.252404362 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 6029312, total: 25252724736).
+[W1114 18:30:35.526762453 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 6029312, total: 25252724736).
+416/2939  tầng1 0ms/câu  tầng2 2687ms/câu
+432/2939  tầng1 0ms/câu  tầng2 2684ms/câu
+448/2939  tầng1 0ms/câu  tầng2 2685ms/câu
+464/2939  tầng1 0ms/câu  tầng2 2686ms/câu
+480/2939  tầng1 0ms/câu  tầng2 2669ms/câu
+496/2939  tầng1 0ms/câu  tầng2 2683ms/câu
+512/2939  tầng1 0ms/câu  tầng2 2665ms/câu
+528/2939  tầng1 0ms/câu  tầng2 2647ms/câu
+544/2939  tầng1 0ms/câu  tầng2 2651ms/câu
+560/2939  tầng1 0ms/câu  tầng2 2653ms/câu
+576/2939  tầng1 0ms/câu  tầng2 2654ms/câu
+592/2939  tầng1 0ms/câu  tầng2 2681ms/câu
+608/2939  tầng1 0ms/câu  tầng2 2679ms/câu
+624/2939  tầng1 0ms/câu  tầng2 2695ms/câu
+[W1114 18:41:23.138640388 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 14417920, total: 25252724736).
+[W1114 18:41:23.293311809 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3932160, total: 25252724736).
+[W1114 18:41:23.572947206 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3932160, total: 25252724736).
+[W1114 18:41:24.857171204 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3932160, total: 25252724736).
+[W1114 18:41:24.199157113 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3932160, total: 25252724736).
+640/2939  tầng1 0ms/câu  tầng2 2714ms/câu
+656/2939  tầng1 0ms/câu  tầng2 2708ms/câu
+672/2939  tầng1 0ms/câu  tầng2 2711ms/câu
+688/2939  tầng1 0ms/câu  tầng2 2702ms/câu
+[W1114 18:44:49.030989978 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 16515072, total: 25252724736).
+[W1114 18:44:49.181329275 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3932160, total: 25252724736).
+704/2939  tầng1 0ms/câu  tầng2 2719ms/câu
+720/2939  tầng1 0ms/câu  tầng2 2720ms/câu
+736/2939  tầng1 0ms/câu  tầng2 2704ms/câu
+752/2939  tầng1 0ms/câu  tầng2 2707ms/câu
+768/2939  tầng1 0ms/câu  tầng2 2717ms/câu
+784/2939  tầng1 0ms/câu  tầng2 2708ms/câu
+800/2939  tầng1 0ms/câu  tầng2 2709ms/câu
+816/2939  tầng1 0ms/câu  tầng2 2690ms/câu
+832/2939  tầng1 0ms/câu  tầng2 2679ms/câu
+848/2939  tầng1 0ms/câu  tầng2 2673ms/câu
+864/2939  tầng1 0ms/câu  tầng2 2670ms/câu
+880/2939  tầng1 0ms/câu  tầng2 2656ms/câu
+896/2939  tầng1 0ms/câu  tầng2 2650ms/câu
+912/2939  tầng1 0ms/câu  tầng2 2651ms/câu
+928/2939  tầng1 0ms/câu  tầng2 2648ms/câu
+944/2939  tầng1 0ms/câu  tầng2 2635ms/câu
+960/2939  tầng1 0ms/câu  tầng2 2629ms/câu
+976/2939  tầng1 0ms/câu  tầng2 2639ms/câu
+[W1114 18:56:48.146466178 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 15794176, total: 25252724736).
+[W1114 18:56:48.313049385 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 22085632, total: 25252724736).
+992/2939  tầng1 0ms/câu  tầng2 2638ms/câu
+1008/2939  tầng1 0ms/câu  tầng2 2632ms/câu
+1024/2939  tầng1 0ms/câu  tầng2 2630ms/câu
+1040/2939  tầng1 0ms/câu  tầng2 2620ms/câu
+1056/2939  tầng1 0ms/câu  tầng2 2620ms/câu
+1072/2939  tầng1 0ms/câu  tầng2 2618ms/câu
+1088/2939  tầng1 0ms/câu  tầng2 2616ms/câu
+1104/2939  tầng1 0ms/câu  tầng2 2610ms/câu
+1120/2939  tầng1 0ms/câu  tầng2 2602ms/câu
+1136/2939  tầng1 0ms/câu  tầng2 2600ms/câu
+1152/2939  tầng1 0ms/câu  tầng2 2585ms/câu
+1168/2939  tầng1 0ms/câu  tầng2 2577ms/câu
+1184/2939  tầng1 0ms/câu  tầng2 2568ms/câu
+1200/2939  tầng1 0ms/câu  tầng2 2576ms/câu
+[W1114 19:05:36.780893025 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 15794176, total: 25252724736).
+[W1114 19:05:36.986646642 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:36.460635623 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:37.931467236 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:37.365268196 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:38.843269903 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:38.369036294 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:39.835320618 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:39.296911958 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:40.767597309 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:40.236485921 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:41.712428767 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:41.219911528 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:42.756785320 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:42.192365648 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:43.664500043 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:43.197118145 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:44.669079934 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:44.175937836 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:45.648080388 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:45.039659693 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:45.504149258 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:46.980655455 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:46.508678410 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:47.006991211 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:47.474404760 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:48.947230415 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:48.434490033 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:49.860144963 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:49.367080301 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:50.849686045 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:50.173827814 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:51.688694013 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:51.079057015 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:51.561792168 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:52.016172799 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:52.492630515 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:53.969656873 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:53.479331018 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:54.987297599 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:54.482252820 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:55.878036061 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:55.382399981 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:56.887208373 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:56.383560397 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:57.824313542 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:57.336974836 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:58.846117369 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:58.386352768 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:59.756699980 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:05:59.262658198 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:06:00.770636808 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:06:00.100762680 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:06:01.608021252 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:06:01.118636065 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:06:01.592536166 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:06:02.098034491 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:06:03.605961050 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:06:03.137917838 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:06:04.645571544 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:06:04.094034094 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+[W1114 19:06:04.597704940 CUDACachingAllocator.cpp:511] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 3211264, total: 25252724736).
+1216/2939  tầng1 0ms/câu  tầng2 2595ms/câu
+1232/2939  tầng1 0ms/câu  tầng2 2597ms/câu
+1248/2939  tầng1 0ms/câu  tầng2 2595ms/câu
+1264/2939  tầng1 0ms/câu  tầng2 2600ms/câu
+1280/2939  tầng1 0ms/câu  tầng2 2602ms/câu
+1296/2939  tầng1 0ms/câu  tầng2 2599ms/câu
+1312/2939  tầng1 0ms/câu  tầng2 2593ms/câu
+1328/2939  tầng1 0ms/câu  tầng2 2585ms/câu
+1344/2939  tầng1 0ms/câu  tầng2 2586ms/câu
+1360/2939  tầng1 0ms/câu  tầng2 2589ms/câu
+1376/2939  tầng1 0ms/câu  tầng2 2582ms/câu
+1392/2939  tầng1 0ms/câu  tầng2 2580ms/câu
+1408/2939  tầng1 0ms/câu  tầng2 2580ms/câu
+1424/2939  tầng1 0ms/câu  tầng2 2572ms/câu
+1440/2939  tầng1 0ms/câu  tầng2 2565ms/câu
+1456/2939  tầng1 0ms/câu  tầng2 2568ms/câu
+1472/2939  tầng1 0ms/câu  tầng2 2561ms/câu
+1488/2939  tầng1 0ms/câu  tầng2 2555ms/câu
+1504/2939  tầng1 0ms/câu  tầng2 2557ms/câu
+1520/2939  tầng1 0ms/câu  tầng2 2552ms/câu
+1536/2939  tầng1 0ms/câu  tầng2 2553ms/câu
+1552/2939  tầng1 0ms/câu  tầng2 2547ms/câu
+1568/2939  tầng1 0ms/câu  tầng2 2539ms/câu
+1584/2939  tầng1 0ms/câu  tầng2 2533ms/câu
+1600/2939  tầng1 0ms/câu  tầng2 2528ms/câu
+1616/2939  tầng1 0ms/câu  tầng2 2521ms/câu
+1632/2939  tầng1 0ms/câu  tầng2 2519ms/câu
+1648/2939  tầng1 0ms/câu  tầng2 2508ms/câu
+1664/2939  tầng1 0ms/câu  tầng2 2507ms/câu
+1680/2939  tầng1 0ms/câu  tầng2 2500ms/câu
+1696/2939  tầng1 0ms/câu  tầng2 2490ms/câu
+1712/2939  tầng1 0ms/câu  tầng2 2483ms/câu
+1728/2939  tầng1 0ms/câu  tầng2 2478ms/câu
+1744/2939  tầng1 0ms/câu  tầng2 2477ms/câu
+1760/2939  tầng1 0ms/câu  tầng2 2469ms/câu
+1776/2939  tầng1 0ms/câu  tầng2 2463ms/câu
+1792/2939  tầng1 0ms/câu  tầng2 2458ms/câu
+1808/2939  tầng1 0ms/câu  tầng2 2453ms/câu
+1824/2939  tầng1 0ms/câu  tầng2 2444ms/câu
+1840/2939  tầng1 0ms/câu  tầng2 2443ms/câu
+1856/2939  tầng1 0ms/câu  tầng2 2438ms/câu
+1872/2939  tầng1 0ms/câu  tầng2 2435ms/câu
+1888/2939  tầng1 0ms/câu  tầng2 2433ms/câu
+1904/2939  tầng1 0ms/câu  tầng2 2426ms/câu
+1920/2939  tầng1 0ms/câu  tầng2 2425ms/câu
+1936/2939  tầng1 0ms/câu  tầng2 2421ms/câu
+1952/2939  tầng1 0ms/câu  tầng2 2419ms/câu
+1968/2939  tầng1 0ms/câu  tầng2 2418ms/câu
+1984/2939  tầng1 0ms/câu  tầng2 2415ms/câu
+2000/2939  tầng1 0ms/câu  tầng2 2412ms/câu
+2016/2939  tầng1 0ms/câu  tầng2 2409ms/câu
+2032/2939  tầng1 0ms/câu  tầng2 2403ms/câu
+2048/2939  tầng1 0ms/câu  tầng2 2398ms/câu
+2064/2939  tầng1 0ms/câu  tầng2 2394ms/câu
+2080/2939  tầng1 0ms/câu  tầng2 2390ms/câu
+2096/2939  tầng1 0ms/câu  tầng2 2388ms/câu
+2112/2939  tầng1 0ms/câu  tầng2 2383ms/câu
+2128/2939  tầng1 0ms/câu  tầng2 2382ms/câu
+2144/2939  tầng1 0ms/câu  tầng2 2381ms/câu
+2160/2939  tầng1 0ms/câu  tầng2 2376ms/câu
+2176/2939  tầng1 0ms/câu  tầng2 2372ms/câu
+2192/2939  tầng1 0ms/câu  tầng2 2362ms/câu
+2208/2939  tầng1 0ms/câu  tầng2 2358ms/câu
+2224/2939  tầng1 0ms/câu  tầng2 2357ms/câu
+2240/2939  tầng1 0ms/câu  tầng2 2355ms/câu
+2256/2939  tầng1 0ms/câu  tầng2 2355ms/câu
+2272/2939  tầng1 0ms/câu  tầng2 2355ms/câu
+2288/2939  tầng1 0ms/câu  tầng2 2352ms/câu
+2304/2939  tầng1 0ms/câu  tầng2 2351ms/câu
+2320/2939  tầng1 0ms/câu  tầng2 2350ms/câu
+2336/2939  tầng1 0ms/câu  tầng2 2346ms/câu
+2352/2939  tầng1 0ms/câu  tầng2 2341ms/câu
+2368/2939  tầng1 0ms/câu  tầng2 2337ms/câu
+2384/2939  tầng1 0ms/câu  tầng2 2333ms/câu
+2400/2939  tầng1 0ms/câu  tầng2 2332ms/câu
+2416/2939  tầng1 0ms/câu  tầng2 2327ms/câu
+2432/2939  tầng1 0ms/câu  tầng2 2324ms/câu
+2448/2939  tầng1 0ms/câu  tầng2 2323ms/câu
+2464/2939  tầng1 0ms/câu  tầng2 2319ms/câu
+2480/2939  tầng1 0ms/câu  tầng2 2321ms/câu
+2496/2939  tầng1 0ms/câu  tầng2 2318ms/câu
+2512/2939  tầng1 0ms/câu  tầng2 2316ms/câu
+2528/2939  tầng1 0ms/câu  tầng2 2313ms/câu
+2544/2939  tầng1 0ms/câu  tầng2 2310ms/câu
+2560/2939  tầng1 0ms/câu  tầng2 2306ms/câu
+2576/2939  tầng1 0ms/câu  tầng2 2305ms/câu
+2592/2939  tầng1 0ms/câu  tầng2 2302ms/câu
+2608/2939  tầng1 0ms/câu  tầng2 2299ms/câu
+2624/2939  tầng1 0ms/câu  tầng2 2296ms/câu
+2640/2939  tầng1 0ms/câu  tầng2 2295ms/câu
+2656/2939  tầng1 0ms/câu  tầng2 2292ms/câu
+2672/2939  tầng1 0ms/câu  tầng2 2289ms/câu
+2688/2939  tầng1 0ms/câu  tầng2 2288ms/câu
+2704/2939  tầng1 0ms/câu  tầng2 2289ms/câu
+2720/2939  tầng1 0ms/câu  tầng2 2286ms/câu
+2736/2939  tầng1 0ms/câu  tầng2 2282ms/câu
+2752/2939  tầng1 0ms/câu  tầng2 2280ms/câu
+2768/2939  tầng1 0ms/câu  tầng2 2276ms/câu
+2784/2939  tầng1 0ms/câu  tầng2 2273ms/câu
+2800/2939  tầng1 0ms/câu  tầng2 2273ms/câu
+2816/2939  tầng1 0ms/câu  tầng2 2270ms/câu
+2832/2939  tầng1 0ms/câu  tầng2 2266ms/câu
+2848/2939  tầng1 0ms/câu  tầng2 2265ms/câu
+2864/2939  tầng1 0ms/câu  tầng2 2265ms/câu
+2880/2939  tầng1 0ms/câu  tầng2 2260ms/câu
+2896/2939  tầng1 0ms/câu  tầng2 2255ms/câu
+2912/2939  tầng1 0ms/câu  tầng2 2256ms/câu
+2928/2939  tầng1 0ms/câu  tầng2 2256ms/câu
+2939/2939  tầng1 0ms/câu  tầng2 2255ms/câu
+N2000 p≥0.5: trung bình 3.5 từ/câu, 449 câu rỗng
+xong test-other: 2939 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ for S in test-other test-clean
++ rk --split test-clean --lists N2000 --ckpt work/ckpt/hou25_e2/best.pt --name hou25_e2 --win
++ python -m inference.rank --libri /work/libri/LibriSpeech --thr 0.5 --span --split test-clean --lists N2000 --ckpt work/ckpt/hou25_e2/best.pt --name hou25_e2 --win
+W1114 20:06:32.722000 18148 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 20:06:32.760000 18148 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2620  tầng1 0ms/câu  tầng2 2074ms/câu
+32/2620  tầng1 0ms/câu  tầng2 1931ms/câu
+48/2620  tầng1 0ms/câu  tầng2 1981ms/câu
+64/2620  tầng1 0ms/câu  tầng2 2021ms/câu
+80/2620  tầng1 0ms/câu  tầng2 2024ms/câu
+96/2620  tầng1 0ms/câu  tầng2 2112ms/câu
+112/2620  tầng1 0ms/câu  tầng2 2151ms/câu
+128/2620  tầng1 0ms/câu  tầng2 2129ms/câu
+144/2620  tầng1 0ms/câu  tầng2 2173ms/câu
+160/2620  tầng1 0ms/câu  tầng2 2138ms/câu
+176/2620  tầng1 0ms/câu  tầng2 2154ms/câu
+192/2620  tầng1 0ms/câu  tầng2 2112ms/câu
+208/2620  tầng1 0ms/câu  tầng2 2108ms/câu
+224/2620  tầng1 0ms/câu  tầng2 2108ms/câu
+240/2620  tầng1 0ms/câu  tầng2 2081ms/câu
+256/2620  tầng1 0ms/câu  tầng2 2112ms/câu
+272/2620  tầng1 0ms/câu  tầng2 2151ms/câu
+288/2620  tầng1 0ms/câu  tầng2 2154ms/câu
+304/2620  tầng1 0ms/câu  tầng2 2169ms/câu
+320/2620  tầng1 0ms/câu  tầng2 2180ms/câu
+336/2620  tầng1 0ms/câu  tầng2 2171ms/câu
+352/2620  tầng1 0ms/câu  tầng2 2179ms/câu
+368/2620  tầng1 0ms/câu  tầng2 2170ms/câu
+384/2620  tầng1 0ms/câu  tầng2 2177ms/câu
+400/2620  tầng1 0ms/câu  tầng2 2164ms/câu
+416/2620  tầng1 0ms/câu  tầng2 2184ms/câu
+432/2620  tầng1 0ms/câu  tầng2 2165ms/câu
+448/2620  tầng1 0ms/câu  tầng2 2127ms/câu
+464/2620  tầng1 0ms/câu  tầng2 2094ms/câu
+480/2620  tầng1 0ms/câu  tầng2 2064ms/câu
+496/2620  tầng1 0ms/câu  tầng2 2032ms/câu
+512/2620  tầng1 0ms/câu  tầng2 2012ms/câu
+528/2620  tầng1 0ms/câu  tầng2 1993ms/câu
+544/2620  tầng1 0ms/câu  tầng2 1966ms/câu
+560/2620  tầng1 0ms/câu  tầng2 1946ms/câu
+576/2620  tầng1 0ms/câu  tầng2 1925ms/câu
+592/2620  tầng1 0ms/câu  tầng2 1905ms/câu
+608/2620  tầng1 0ms/câu  tầng2 1883ms/câu
+624/2620  tầng1 0ms/câu  tầng2 1862ms/câu
+640/2620  tầng1 0ms/câu  tầng2 1846ms/câu
+656/2620  tầng1 0ms/câu  tầng2 1837ms/câu
+672/2620  tầng1 0ms/câu  tầng2 1818ms/câu
+688/2620  tầng1 0ms/câu  tầng2 1802ms/câu
+704/2620  tầng1 0ms/câu  tầng2 1787ms/câu
+720/2620  tầng1 0ms/câu  tầng2 1779ms/câu
+736/2620  tầng1 0ms/câu  tầng2 1769ms/câu
+752/2620  tầng1 0ms/câu  tầng2 1760ms/câu
+768/2620  tầng1 0ms/câu  tầng2 1755ms/câu
+784/2620  tầng1 0ms/câu  tầng2 1742ms/câu
+800/2620  tầng1 0ms/câu  tầng2 1727ms/câu
+816/2620  tầng1 0ms/câu  tầng2 1714ms/câu
+832/2620  tầng1 0ms/câu  tầng2 1707ms/câu
+848/2620  tầng1 0ms/câu  tầng2 1697ms/câu
+864/2620  tầng1 0ms/câu  tầng2 1685ms/câu
+880/2620  tầng1 0ms/câu  tầng2 1676ms/câu
+896/2620  tầng1 0ms/câu  tầng2 1663ms/câu
+912/2620  tầng1 0ms/câu  tầng2 1650ms/câu
+928/2620  tầng1 0ms/câu  tầng2 1644ms/câu
+944/2620  tầng1 0ms/câu  tầng2 1638ms/câu
+960/2620  tầng1 0ms/câu  tầng2 1627ms/câu
+976/2620  tầng1 0ms/câu  tầng2 1623ms/câu
+992/2620  tầng1 0ms/câu  tầng2 1617ms/câu
+1008/2620  tầng1 0ms/câu  tầng2 1615ms/câu
+1024/2620  tầng1 0ms/câu  tầng2 1616ms/câu
+1040/2620  tầng1 0ms/câu  tầng2 1612ms/câu
+1056/2620  tầng1 0ms/câu  tầng2 1610ms/câu
+1072/2620  tầng1 0ms/câu  tầng2 1603ms/câu
+1088/2620  tầng1 0ms/câu  tầng2 1599ms/câu
+1104/2620  tầng1 0ms/câu  tầng2 1591ms/câu
+1120/2620  tầng1 0ms/câu  tầng2 1588ms/câu
+1136/2620  tầng1 0ms/câu  tầng2 1579ms/câu
+1152/2620  tầng1 0ms/câu  tầng2 1572ms/câu
+1168/2620  tầng1 0ms/câu  tầng2 1565ms/câu
+1184/2620  tầng1 0ms/câu  tầng2 1561ms/câu
+1200/2620  tầng1 0ms/câu  tầng2 1556ms/câu
+1216/2620  tầng1 0ms/câu  tầng2 1549ms/câu
+1232/2620  tầng1 0ms/câu  tầng2 1542ms/câu
+1248/2620  tầng1 0ms/câu  tầng2 1538ms/câu
+1264/2620  tầng1 0ms/câu  tầng2 1529ms/câu
+1280/2620  tầng1 0ms/câu  tầng2 1525ms/câu
+1296/2620  tầng1 0ms/câu  tầng2 1522ms/câu
+1312/2620  tầng1 0ms/câu  tầng2 1518ms/câu
+1328/2620  tầng1 0ms/câu  tầng2 1512ms/câu
+1344/2620  tầng1 0ms/câu  tầng2 1507ms/câu
+1360/2620  tầng1 0ms/câu  tầng2 1503ms/câu
+1376/2620  tầng1 0ms/câu  tầng2 1500ms/câu
+1392/2620  tầng1 0ms/câu  tầng2 1496ms/câu
+1408/2620  tầng1 0ms/câu  tầng2 1491ms/câu
+1424/2620  tầng1 0ms/câu  tầng2 1487ms/câu
+1440/2620  tầng1 0ms/câu  tầng2 1486ms/câu
+1456/2620  tầng1 0ms/câu  tầng2 1483ms/câu
+1472/2620  tầng1 0ms/câu  tầng2 1482ms/câu
+1488/2620  tầng1 0ms/câu  tầng2 1480ms/câu
+1504/2620  tầng1 0ms/câu  tầng2 1477ms/câu
+1520/2620  tầng1 0ms/câu  tầng2 1473ms/câu
+1536/2620  tầng1 0ms/câu  tầng2 1472ms/câu
+1552/2620  tầng1 0ms/câu  tầng2 1469ms/câu
+1568/2620  tầng1 0ms/câu  tầng2 1468ms/câu
+1584/2620  tầng1 0ms/câu  tầng2 1469ms/câu
+1600/2620  tầng1 0ms/câu  tầng2 1465ms/câu
+1616/2620  tầng1 0ms/câu  tầng2 1462ms/câu
+1632/2620  tầng1 0ms/câu  tầng2 1462ms/câu
+1648/2620  tầng1 0ms/câu  tầng2 1460ms/câu
+1664/2620  tầng1 0ms/câu  tầng2 1457ms/câu
+1680/2620  tầng1 0ms/câu  tầng2 1454ms/câu
+1696/2620  tầng1 0ms/câu  tầng2 1452ms/câu
+1712/2620  tầng1 0ms/câu  tầng2 1451ms/câu
+1728/2620  tầng1 0ms/câu  tầng2 1449ms/câu
+1744/2620  tầng1 0ms/câu  tầng2 1445ms/câu
+1760/2620  tầng1 0ms/câu  tầng2 1445ms/câu
+1776/2620  tầng1 0ms/câu  tầng2 1440ms/câu
+1792/2620  tầng1 0ms/câu  tầng2 1440ms/câu
+1808/2620  tầng1 0ms/câu  tầng2 1439ms/câu
+1824/2620  tầng1 0ms/câu  tầng2 1438ms/câu
+1840/2620  tầng1 0ms/câu  tầng2 1437ms/câu
+1856/2620  tầng1 0ms/câu  tầng2 1436ms/câu
+1872/2620  tầng1 0ms/câu  tầng2 1434ms/câu
+1888/2620  tầng1 0ms/câu  tầng2 1433ms/câu
+1904/2620  tầng1 0ms/câu  tầng2 1438ms/câu
+1920/2620  tầng1 0ms/câu  tầng2 1435ms/câu
+1936/2620  tầng1 0ms/câu  tầng2 1434ms/câu
+1952/2620  tầng1 0ms/câu  tầng2 1432ms/câu
+1968/2620  tầng1 0ms/câu  tầng2 1432ms/câu
+1984/2620  tầng1 0ms/câu  tầng2 1429ms/câu
+2000/2620  tầng1 0ms/câu  tầng2 1428ms/câu
+2016/2620  tầng1 0ms/câu  tầng2 1426ms/câu
+2032/2620  tầng1 0ms/câu  tầng2 1428ms/câu
+2048/2620  tầng1 0ms/câu  tầng2 1425ms/câu
+2064/2620  tầng1 0ms/câu  tầng2 1425ms/câu
+2080/2620  tầng1 0ms/câu  tầng2 1423ms/câu
+2096/2620  tầng1 0ms/câu  tầng2 1420ms/câu
+2112/2620  tầng1 0ms/câu  tầng2 1423ms/câu
+2128/2620  tầng1 0ms/câu  tầng2 1421ms/câu
+2144/2620  tầng1 0ms/câu  tầng2 1418ms/câu
+2160/2620  tầng1 0ms/câu  tầng2 1416ms/câu
+2176/2620  tầng1 0ms/câu  tầng2 1417ms/câu
+2192/2620  tầng1 0ms/câu  tầng2 1418ms/câu
+2208/2620  tầng1 0ms/câu  tầng2 1414ms/câu
+2224/2620  tầng1 0ms/câu  tầng2 1413ms/câu
+2240/2620  tầng1 0ms/câu  tầng2 1409ms/câu
+2256/2620  tầng1 0ms/câu  tầng2 1410ms/câu
+2272/2620  tầng1 0ms/câu  tầng2 1408ms/câu
+2288/2620  tầng1 0ms/câu  tầng2 1406ms/câu
+2304/2620  tầng1 0ms/câu  tầng2 1403ms/câu
+2320/2620  tầng1 0ms/câu  tầng2 1402ms/câu
+2336/2620  tầng1 0ms/câu  tầng2 1400ms/câu
+2352/2620  tầng1 0ms/câu  tầng2 1400ms/câu
+2368/2620  tầng1 0ms/câu  tầng2 1399ms/câu
+2384/2620  tầng1 0ms/câu  tầng2 1396ms/câu
+2400/2620  tầng1 0ms/câu  tầng2 1395ms/câu
+2416/2620  tầng1 0ms/câu  tầng2 1394ms/câu
+2432/2620  tầng1 0ms/câu  tầng2 1393ms/câu
+2448/2620  tầng1 0ms/câu  tầng2 1390ms/câu
+2464/2620  tầng1 0ms/câu  tầng2 1390ms/câu
+2480/2620  tầng1 0ms/câu  tầng2 1389ms/câu
+2496/2620  tầng1 0ms/câu  tầng2 1388ms/câu
+2512/2620  tầng1 0ms/câu  tầng2 1389ms/câu
+2528/2620  tầng1 0ms/câu  tầng2 1391ms/câu
+2544/2620  tầng1 0ms/câu  tầng2 1389ms/câu
+2560/2620  tầng1 0ms/câu  tầng2 1389ms/câu
+2576/2620  tầng1 0ms/câu  tầng2 1388ms/câu
+2592/2620  tầng1 0ms/câu  tầng2 1388ms/câu
+2608/2620  tầng1 0ms/câu  tầng2 1387ms/câu
+2620/2620  tầng1 0ms/câu  tầng2 1388ms/câu
+N2000 p≥0.5: trung bình 3.3 từ/câu, 417 câu rỗng
+xong test-clean: 2620 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ for A in hou25 hou25_topk hou25_diag
++ for S in test-other test-clean
++ rk --split test-other --lists N2000 --ckpt work/ckpt/hou25_topk_e2/best.pt --name hou25_topk_e2 --win
++ python -m inference.rank --libri /work/libri/LibriSpeech --thr 0.5 --span --split test-other --lists N2000 --ckpt work/ckpt/hou25_topk_e2/best.pt --name hou25_topk_e2 --win
+W1114 21:09:17.027000 18251 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 21:09:17.056000 18251 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2939  tầng1 0ms/câu  tầng2 1255ms/câu
+32/2939  tầng1 0ms/câu  tầng2 1398ms/câu
+48/2939  tầng1 0ms/câu  tầng2 1410ms/câu
+64/2939  tầng1 0ms/câu  tầng2 1386ms/câu
+80/2939  tầng1 0ms/câu  tầng2 1394ms/câu
+96/2939  tầng1 0ms/câu  tầng2 1435ms/câu
+112/2939  tầng1 0ms/câu  tầng2 1394ms/câu
+128/2939  tầng1 0ms/câu  tầng2 1411ms/câu
+144/2939  tầng1 0ms/câu  tầng2 1358ms/câu
+160/2939  tầng1 0ms/câu  tầng2 1366ms/câu
+176/2939  tầng1 0ms/câu  tầng2 1367ms/câu
+192/2939  tầng1 0ms/câu  tầng2 1369ms/câu
+208/2939  tầng1 0ms/câu  tầng2 1366ms/câu
+224/2939  tầng1 0ms/câu  tầng2 1377ms/câu
+240/2939  tầng1 0ms/câu  tầng2 1381ms/câu
+256/2939  tầng1 0ms/câu  tầng2 1373ms/câu
+272/2939  tầng1 0ms/câu  tầng2 1352ms/câu
+288/2939  tầng1 0ms/câu  tầng2 1357ms/câu
+304/2939  tầng1 0ms/câu  tầng2 1344ms/câu
+320/2939  tầng1 0ms/câu  tầng2 1355ms/câu
+336/2939  tầng1 0ms/câu  tầng2 1354ms/câu
+352/2939  tầng1 0ms/câu  tầng2 1353ms/câu
+368/2939  tầng1 0ms/câu  tầng2 1356ms/câu
+384/2939  tầng1 0ms/câu  tầng2 1367ms/câu
+400/2939  tầng1 0ms/câu  tầng2 1354ms/câu
+416/2939  tầng1 0ms/câu  tầng2 1362ms/câu
+432/2939  tầng1 0ms/câu  tầng2 1362ms/câu
+448/2939  tầng1 0ms/câu  tầng2 1361ms/câu
+464/2939  tầng1 0ms/câu  tầng2 1362ms/câu
+480/2939  tầng1 0ms/câu  tầng2 1356ms/câu
+496/2939  tầng1 0ms/câu  tầng2 1361ms/câu
+512/2939  tầng1 0ms/câu  tầng2 1352ms/câu
+528/2939  tầng1 0ms/câu  tầng2 1343ms/câu
+544/2939  tầng1 0ms/câu  tầng2 1344ms/câu
+560/2939  tầng1 0ms/câu  tầng2 1344ms/câu
+576/2939  tầng1 0ms/câu  tầng2 1344ms/câu
+592/2939  tầng1 0ms/câu  tầng2 1355ms/câu
+608/2939  tầng1 0ms/câu  tầng2 1354ms/câu
+624/2939  tầng1 0ms/câu  tầng2 1360ms/câu
+640/2939  tầng1 0ms/câu  tầng2 1367ms/câu
+656/2939  tầng1 0ms/câu  tầng2 1363ms/câu
+672/2939  tầng1 0ms/câu  tầng2 1364ms/câu
+688/2939  tầng1 0ms/câu  tầng2 1360ms/câu
+704/2939  tầng1 0ms/câu  tầng2 1366ms/câu
+720/2939  tầng1 0ms/câu  tầng2 1365ms/câu
+736/2939  tầng1 0ms/câu  tầng2 1359ms/câu
+752/2939  tầng1 0ms/câu  tầng2 1360ms/câu
+768/2939  tầng1 0ms/câu  tầng2 1366ms/câu
+784/2939  tầng1 0ms/câu  tầng2 1365ms/câu
+800/2939  tầng1 0ms/câu  tầng2 1368ms/câu
+816/2939  tầng1 0ms/câu  tầng2 1361ms/câu
+832/2939  tầng1 0ms/câu  tầng2 1359ms/câu
+848/2939  tầng1 0ms/câu  tầng2 1358ms/câu
+864/2939  tầng1 0ms/câu  tầng2 1359ms/câu
+880/2939  tầng1 0ms/câu  tầng2 1355ms/câu
+896/2939  tầng1 0ms/câu  tầng2 1355ms/câu
+912/2939  tầng1 0ms/câu  tầng2 1358ms/câu
+928/2939  tầng1 0ms/câu  tầng2 1359ms/câu
+944/2939  tầng1 0ms/câu  tầng2 1355ms/câu
+960/2939  tầng1 0ms/câu  tầng2 1354ms/câu
+976/2939  tầng1 0ms/câu  tầng2 1361ms/câu
+992/2939  tầng1 0ms/câu  tầng2 1363ms/câu
+1008/2939  tầng1 0ms/câu  tầng2 1362ms/câu
+1024/2939  tầng1 0ms/câu  tầng2 1363ms/câu
+1040/2939  tầng1 0ms/câu  tầng2 1360ms/câu
+1056/2939  tầng1 0ms/câu  tầng2 1361ms/câu
+1072/2939  tầng1 0ms/câu  tầng2 1362ms/câu
+1088/2939  tầng1 0ms/câu  tầng2 1362ms/câu
+1104/2939  tầng1 0ms/câu  tầng2 1360ms/câu
+1120/2939  tầng1 0ms/câu  tầng2 1357ms/câu
+1136/2939  tầng1 0ms/câu  tầng2 1358ms/câu
+1152/2939  tầng1 0ms/câu  tầng2 1355ms/câu
+1168/2939  tầng1 0ms/câu  tầng2 1354ms/câu
+1184/2939  tầng1 0ms/câu  tầng2 1351ms/câu
+1200/2939  tầng1 0ms/câu  tầng2 1356ms/câu
+1216/2939  tầng1 0ms/câu  tầng2 1364ms/câu
+1232/2939  tầng1 0ms/câu  tầng2 1366ms/câu
+1248/2939  tầng1 0ms/câu  tầng2 1366ms/câu
+1264/2939  tầng1 0ms/câu  tầng2 1369ms/câu
+1280/2939  tầng1 0ms/câu  tầng2 1371ms/câu
+1296/2939  tầng1 0ms/câu  tầng2 1371ms/câu
+1312/2939  tầng1 0ms/câu  tầng2 1368ms/câu
+1328/2939  tầng1 0ms/câu  tầng2 1365ms/câu
+1344/2939  tầng1 0ms/câu  tầng2 1367ms/câu
+1360/2939  tầng1 0ms/câu  tầng2 1369ms/câu
+1376/2939  tầng1 0ms/câu  tầng2 1366ms/câu
+1392/2939  tầng1 0ms/câu  tầng2 1366ms/câu
+1408/2939  tầng1 0ms/câu  tầng2 1367ms/câu
+1424/2939  tầng1 0ms/câu  tầng2 1364ms/câu
+1440/2939  tầng1 0ms/câu  tầng2 1362ms/câu
+1456/2939  tầng1 0ms/câu  tầng2 1365ms/câu
+1472/2939  tầng1 0ms/câu  tầng2 1363ms/câu
+1488/2939  tầng1 0ms/câu  tầng2 1360ms/câu
+1504/2939  tầng1 0ms/câu  tầng2 1362ms/câu
+1520/2939  tầng1 0ms/câu  tầng2 1362ms/câu
+1536/2939  tầng1 0ms/câu  tầng2 1366ms/câu
+1552/2939  tầng1 0ms/câu  tầng2 1365ms/câu
+1568/2939  tầng1 0ms/câu  tầng2 1364ms/câu
+1584/2939  tầng1 0ms/câu  tầng2 1363ms/câu
+1600/2939  tầng1 0ms/câu  tầng2 1363ms/câu
+1616/2939  tầng1 0ms/câu  tầng2 1362ms/câu
+1632/2939  tầng1 0ms/câu  tầng2 1363ms/câu
+1648/2939  tầng1 0ms/câu  tầng2 1360ms/câu
+1664/2939  tầng1 0ms/câu  tầng2 1362ms/câu
+1680/2939  tầng1 0ms/câu  tầng2 1360ms/câu
+1696/2939  tầng1 0ms/câu  tầng2 1357ms/câu
+1712/2939  tầng1 0ms/câu  tầng2 1355ms/câu
+1728/2939  tầng1 0ms/câu  tầng2 1355ms/câu
+1744/2939  tầng1 0ms/câu  tầng2 1356ms/câu
+1760/2939  tầng1 0ms/câu  tầng2 1354ms/câu
+1776/2939  tầng1 0ms/câu  tầng2 1353ms/câu
+1792/2939  tầng1 0ms/câu  tầng2 1352ms/câu
+1808/2939  tầng1 0ms/câu  tầng2 1351ms/câu
+1824/2939  tầng1 0ms/câu  tầng2 1348ms/câu
+1840/2939  tầng1 0ms/câu  tầng2 1350ms/câu
+1856/2939  tầng1 0ms/câu  tầng2 1349ms/câu
+1872/2939  tầng1 0ms/câu  tầng2 1349ms/câu
+1888/2939  tầng1 0ms/câu  tầng2 1350ms/câu
+1904/2939  tầng1 0ms/câu  tầng2 1348ms/câu
+1920/2939  tầng1 0ms/câu  tầng2 1349ms/câu
+1936/2939  tầng1 0ms/câu  tầng2 1349ms/câu
+1952/2939  tầng1 0ms/câu  tầng2 1349ms/câu
+1968/2939  tầng1 0ms/câu  tầng2 1350ms/câu
+1984/2939  tầng1 0ms/câu  tầng2 1351ms/câu
+2000/2939  tầng1 0ms/câu  tầng2 1351ms/câu
+2016/2939  tầng1 0ms/câu  tầng2 1351ms/câu
+2032/2939  tầng1 0ms/câu  tầng2 1349ms/câu
+2048/2939  tầng1 0ms/câu  tầng2 1348ms/câu
+2064/2939  tầng1 0ms/câu  tầng2 1347ms/câu
+2080/2939  tầng1 0ms/câu  tầng2 1347ms/câu
+2096/2939  tầng1 0ms/câu  tầng2 1347ms/câu
+2112/2939  tầng1 0ms/câu  tầng2 1346ms/câu
+2128/2939  tầng1 0ms/câu  tầng2 1347ms/câu
+2144/2939  tầng1 0ms/câu  tầng2 1348ms/câu
+2160/2939  tầng1 0ms/câu  tầng2 1347ms/câu
+2176/2939  tầng1 0ms/câu  tầng2 1346ms/câu
+2192/2939  tầng1 0ms/câu  tầng2 1345ms/câu
+2208/2939  tầng1 0ms/câu  tầng2 1345ms/câu
+2224/2939  tầng1 0ms/câu  tầng2 1346ms/câu
+2240/2939  tầng1 0ms/câu  tầng2 1346ms/câu
+2256/2939  tầng1 0ms/câu  tầng2 1347ms/câu
+2272/2939  tầng1 0ms/câu  tầng2 1349ms/câu
+2288/2939  tầng1 0ms/câu  tầng2 1349ms/câu
+2304/2939  tầng1 0ms/câu  tầng2 1349ms/câu
+2320/2939  tầng1 0ms/câu  tầng2 1350ms/câu
+2336/2939  tầng1 0ms/câu  tầng2 1349ms/câu
+2352/2939  tầng1 0ms/câu  tầng2 1348ms/câu
+2368/2939  tầng1 0ms/câu  tầng2 1347ms/câu
+2384/2939  tầng1 0ms/câu  tầng2 1346ms/câu
+2400/2939  tầng1 0ms/câu  tầng2 1347ms/câu
+2416/2939  tầng1 0ms/câu  tầng2 1345ms/câu
+2432/2939  tầng1 0ms/câu  tầng2 1345ms/câu
+2448/2939  tầng1 0ms/câu  tầng2 1345ms/câu
+2464/2939  tầng1 0ms/câu  tầng2 1344ms/câu
+2480/2939  tầng1 0ms/câu  tầng2 1346ms/câu
+2496/2939  tầng1 0ms/câu  tầng2 1346ms/câu
+2512/2939  tầng1 0ms/câu  tầng2 1346ms/câu
+2528/2939  tầng1 0ms/câu  tầng2 1345ms/câu
+2544/2939  tầng1 0ms/câu  tầng2 1345ms/câu
+2560/2939  tầng1 0ms/câu  tầng2 1344ms/câu
+2576/2939  tầng1 0ms/câu  tầng2 1344ms/câu
+2592/2939  tầng1 0ms/câu  tầng2 1344ms/câu
+2608/2939  tầng1 0ms/câu  tầng2 1344ms/câu
+2624/2939  tầng1 0ms/câu  tầng2 1343ms/câu
+2640/2939  tầng1 0ms/câu  tầng2 1343ms/câu
+2656/2939  tầng1 0ms/câu  tầng2 1343ms/câu
+2672/2939  tầng1 0ms/câu  tầng2 1342ms/câu
+2688/2939  tầng1 0ms/câu  tầng2 1343ms/câu
+2704/2939  tầng1 0ms/câu  tầng2 1345ms/câu
+2720/2939  tầng1 0ms/câu  tầng2 1344ms/câu
+2736/2939  tầng1 0ms/câu  tầng2 1343ms/câu
+2752/2939  tầng1 0ms/câu  tầng2 1342ms/câu
+2768/2939  tầng1 0ms/câu  tầng2 1341ms/câu
+2784/2939  tầng1 0ms/câu  tầng2 1340ms/câu
+2800/2939  tầng1 0ms/câu  tầng2 1341ms/câu
+2816/2939  tầng1 0ms/câu  tầng2 1340ms/câu
+2832/2939  tầng1 0ms/câu  tầng2 1339ms/câu
+2848/2939  tầng1 0ms/câu  tầng2 1339ms/câu
+2864/2939  tầng1 0ms/câu  tầng2 1340ms/câu
+2880/2939  tầng1 0ms/câu  tầng2 1338ms/câu
+2896/2939  tầng1 0ms/câu  tầng2 1336ms/câu
+2912/2939  tầng1 0ms/câu  tầng2 1337ms/câu
+2928/2939  tầng1 0ms/câu  tầng2 1338ms/câu
+2939/2939  tầng1 0ms/câu  tầng2 1338ms/câu
+N2000 p≥0.5: trung bình 3.6 từ/câu, 561 câu rỗng
+xong test-other: 2939 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ for S in test-other test-clean
++ rk --split test-clean --lists N2000 --ckpt work/ckpt/hou25_topk_e2/best.pt --name hou25_topk_e2 --win
++ python -m inference.rank --libri /work/libri/LibriSpeech --thr 0.5 --span --split test-clean --lists N2000 --ckpt work/ckpt/hou25_topk_e2/best.pt --name hou25_topk_e2 --win
+W1114 22:16:58.225000 18353 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 22:16:58.251000 18353 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2620  tầng1 0ms/câu  tầng2 1386ms/câu
+32/2620  tầng1 0ms/câu  tầng2 1286ms/câu
+48/2620  tầng1 0ms/câu  tầng2 1325ms/câu
+64/2620  tầng1 0ms/câu  tầng2 1343ms/câu
+80/2620  tầng1 0ms/câu  tầng2 1356ms/câu
+96/2620  tầng1 0ms/câu  tầng2 1406ms/câu
+112/2620  tầng1 0ms/câu  tầng2 1429ms/câu
+128/2620  tầng1 0ms/câu  tầng2 1418ms/câu
+144/2620  tầng1 0ms/câu  tầng2 1443ms/câu
+160/2620  tầng1 0ms/câu  tầng2 1424ms/câu
+176/2620  tầng1 0ms/câu  tầng2 1431ms/câu
+192/2620  tầng1 0ms/câu  tầng2 1406ms/câu
+208/2620  tầng1 0ms/câu  tầng2 1403ms/câu
+224/2620  tầng1 0ms/câu  tầng2 1406ms/câu
+240/2620  tầng1 0ms/câu  tầng2 1392ms/câu
+256/2620  tầng1 0ms/câu  tầng2 1414ms/câu
+272/2620  tầng1 0ms/câu  tầng2 1435ms/câu
+288/2620  tầng1 0ms/câu  tầng2 1439ms/câu
+304/2620  tầng1 0ms/câu  tầng2 1448ms/câu
+320/2620  tầng1 0ms/câu  tầng2 1453ms/câu
+336/2620  tầng1 0ms/câu  tầng2 1447ms/câu
+352/2620  tầng1 0ms/câu  tầng2 1452ms/câu
+368/2620  tầng1 0ms/câu  tầng2 1447ms/câu
+384/2620  tầng1 0ms/câu  tầng2 1451ms/câu
+400/2620  tầng1 0ms/câu  tầng2 1443ms/câu
+416/2620  tầng1 0ms/câu  tầng2 1454ms/câu
+432/2620  tầng1 0ms/câu  tầng2 1453ms/câu
+448/2620  tầng1 0ms/câu  tầng2 1448ms/câu
+464/2620  tầng1 0ms/câu  tầng2 1446ms/câu
+480/2620  tầng1 0ms/câu  tầng2 1444ms/câu
+496/2620  tầng1 0ms/câu  tầng2 1439ms/câu
+512/2620  tầng1 0ms/câu  tầng2 1445ms/câu
+528/2620  tầng1 0ms/câu  tầng2 1453ms/câu
+544/2620  tầng1 0ms/câu  tầng2 1447ms/câu
+560/2620  tầng1 0ms/câu  tầng2 1449ms/câu
+576/2620  tầng1 0ms/câu  tầng2 1449ms/câu
+592/2620  tầng1 0ms/câu  tầng2 1449ms/câu
+608/2620  tầng1 0ms/câu  tầng2 1444ms/câu
+624/2620  tầng1 0ms/câu  tầng2 1441ms/câu
+640/2620  tầng1 0ms/câu  tầng2 1442ms/câu
+656/2620  tầng1 0ms/câu  tầng2 1450ms/câu
+672/2620  tầng1 0ms/câu  tầng2 1445ms/câu
+688/2620  tầng1 0ms/câu  tầng2 1442ms/câu
+704/2620  tầng1 0ms/câu  tầng2 1440ms/câu
+720/2620  tầng1 0ms/câu  tầng2 1446ms/câu
+736/2620  tầng1 0ms/câu  tầng2 1448ms/câu
+752/2620  tầng1 0ms/câu  tầng2 1451ms/câu
+768/2620  tầng1 0ms/câu  tầng2 1459ms/câu
+784/2620  tầng1 0ms/câu  tầng2 1456ms/câu
+800/2620  tầng1 0ms/câu  tầng2 1450ms/câu
+816/2620  tầng1 0ms/câu  tầng2 1447ms/câu
+832/2620  tầng1 0ms/câu  tầng2 1449ms/câu
+848/2620  tầng1 0ms/câu  tầng2 1449ms/câu
+864/2620  tầng1 0ms/câu  tầng2 1446ms/câu
+880/2620  tầng1 0ms/câu  tầng2 1445ms/câu
+896/2620  tầng1 0ms/câu  tầng2 1441ms/câu
+912/2620  tầng1 0ms/câu  tầng2 1435ms/câu
+928/2620  tầng1 0ms/câu  tầng2 1436ms/câu
+944/2620  tầng1 0ms/câu  tầng2 1438ms/câu
+960/2620  tầng1 0ms/câu  tầng2 1434ms/câu
+976/2620  tầng1 0ms/câu  tầng2 1438ms/câu
+992/2620  tầng1 0ms/câu  tầng2 1438ms/câu
+1008/2620  tầng1 0ms/câu  tầng2 1444ms/câu
+1024/2620  tầng1 0ms/câu  tầng2 1452ms/câu
+1040/2620  tầng1 0ms/câu  tầng2 1454ms/câu
+1056/2620  tầng1 0ms/câu  tầng2 1459ms/câu
+1072/2620  tầng1 0ms/câu  tầng2 1457ms/câu
+1088/2620  tầng1 0ms/câu  tầng2 1460ms/câu
+1104/2620  tầng1 0ms/câu  tầng2 1457ms/câu
+1120/2620  tầng1 0ms/câu  tầng2 1459ms/câu
+1136/2620  tầng1 0ms/câu  tầng2 1455ms/câu
+1152/2620  tầng1 0ms/câu  tầng2 1452ms/câu
+1168/2620  tầng1 0ms/câu  tầng2 1451ms/câu
+1184/2620  tầng1 0ms/câu  tầng2 1451ms/câu
+1200/2620  tầng1 0ms/câu  tầng2 1451ms/câu
+1216/2620  tầng1 0ms/câu  tầng2 1447ms/câu
+1232/2620  tầng1 0ms/câu  tầng2 1445ms/câu
+1248/2620  tầng1 0ms/câu  tầng2 1445ms/câu
+1264/2620  tầng1 0ms/câu  tầng2 1439ms/câu
+1280/2620  tầng1 0ms/câu  tầng2 1439ms/câu
+1296/2620  tầng1 0ms/câu  tầng2 1439ms/câu
+1312/2620  tầng1 0ms/câu  tầng2 1439ms/câu
+1328/2620  tầng1 0ms/câu  tầng2 1437ms/câu
+1344/2620  tầng1 0ms/câu  tầng2 1435ms/câu
+1360/2620  tầng1 0ms/câu  tầng2 1434ms/câu
+1376/2620  tầng1 0ms/câu  tầng2 1434ms/câu
+1392/2620  tầng1 0ms/câu  tầng2 1435ms/câu
+1408/2620  tầng1 0ms/câu  tầng2 1432ms/câu
+1424/2620  tầng1 0ms/câu  tầng2 1432ms/câu
+1440/2620  tầng1 0ms/câu  tầng2 1434ms/câu
+1456/2620  tầng1 0ms/câu  tầng2 1434ms/câu
+1472/2620  tầng1 0ms/câu  tầng2 1436ms/câu
+1488/2620  tầng1 0ms/câu  tầng2 1438ms/câu
+1504/2620  tầng1 0ms/câu  tầng2 1437ms/câu
+1520/2620  tầng1 0ms/câu  tầng2 1436ms/câu
+1536/2620  tầng1 0ms/câu  tầng2 1438ms/câu
+1552/2620  tầng1 0ms/câu  tầng2 1437ms/câu
+1568/2620  tầng1 0ms/câu  tầng2 1439ms/câu
+1584/2620  tầng1 0ms/câu  tầng2 1443ms/câu
+1600/2620  tầng1 0ms/câu  tầng2 1442ms/câu
+1616/2620  tầng1 0ms/câu  tầng2 1441ms/câu
+1632/2620  tầng1 0ms/câu  tầng2 1444ms/câu
+1648/2620  tầng1 0ms/câu  tầng2 1445ms/câu
+1664/2620  tầng1 0ms/câu  tầng2 1444ms/câu
+1680/2620  tầng1 0ms/câu  tầng2 1443ms/câu
+1696/2620  tầng1 0ms/câu  tầng2 1443ms/câu
+1712/2620  tầng1 0ms/câu  tầng2 1446ms/câu
+1728/2620  tầng1 0ms/câu  tầng2 1446ms/câu
+1744/2620  tầng1 0ms/câu  tầng2 1444ms/câu
+1760/2620  tầng1 0ms/câu  tầng2 1445ms/câu
+1776/2620  tầng1 0ms/câu  tầng2 1442ms/câu
+1792/2620  tầng1 0ms/câu  tầng2 1445ms/câu
+1808/2620  tầng1 0ms/câu  tầng2 1446ms/câu
+1824/2620  tầng1 0ms/câu  tầng2 1447ms/câu
+1840/2620  tầng1 0ms/câu  tầng2 1448ms/câu
+1856/2620  tầng1 0ms/câu  tầng2 1449ms/câu
+1872/2620  tầng1 0ms/câu  tầng2 1449ms/câu
+1888/2620  tầng1 0ms/câu  tầng2 1450ms/câu
+1904/2620  tầng1 0ms/câu  tầng2 1458ms/câu
+1920/2620  tầng1 0ms/câu  tầng2 1457ms/câu
+1936/2620  tầng1 0ms/câu  tầng2 1457ms/câu
+1952/2620  tầng1 0ms/câu  tầng2 1457ms/câu
+1968/2620  tầng1 0ms/câu  tầng2 1459ms/câu
+1984/2620  tầng1 0ms/câu  tầng2 1457ms/câu
+2000/2620  tầng1 0ms/câu  tầng2 1459ms/câu
+2016/2620  tầng1 0ms/câu  tầng2 1459ms/câu
+2032/2620  tầng1 0ms/câu  tầng2 1463ms/câu
+2048/2620  tầng1 0ms/câu  tầng2 1461ms/câu
+2064/2620  tầng1 0ms/câu  tầng2 1463ms/câu
+2080/2620  tầng1 0ms/câu  tầng2 1462ms/câu
+2096/2620  tầng1 0ms/câu  tầng2 1461ms/câu
+2112/2620  tầng1 0ms/câu  tầng2 1466ms/câu
+2128/2620  tầng1 0ms/câu  tầng2 1466ms/câu
+2144/2620  tầng1 0ms/câu  tầng2 1464ms/câu
+2160/2620  tầng1 0ms/câu  tầng2 1463ms/câu
+2176/2620  tầng1 0ms/câu  tầng2 1466ms/câu
+2192/2620  tầng1 0ms/câu  tầng2 1468ms/câu
+2208/2620  tầng1 0ms/câu  tầng2 1466ms/câu
+2224/2620  tầng1 0ms/câu  tầng2 1466ms/câu
+2240/2620  tầng1 0ms/câu  tầng2 1464ms/câu
+2256/2620  tầng1 0ms/câu  tầng2 1465ms/câu
+2272/2620  tầng1 0ms/câu  tầng2 1466ms/câu
+2288/2620  tầng1 0ms/câu  tầng2 1465ms/câu
+2304/2620  tầng1 0ms/câu  tầng2 1463ms/câu
+2320/2620  tầng1 0ms/câu  tầng2 1463ms/câu
+2336/2620  tầng1 0ms/câu  tầng2 1462ms/câu
+2352/2620  tầng1 0ms/câu  tầng2 1464ms/câu
+2368/2620  tầng1 0ms/câu  tầng2 1464ms/câu
+2384/2620  tầng1 0ms/câu  tầng2 1462ms/câu
+2400/2620  tầng1 0ms/câu  tầng2 1462ms/câu
+2416/2620  tầng1 0ms/câu  tầng2 1462ms/câu
+2432/2620  tầng1 0ms/câu  tầng2 1462ms/câu
+2448/2620  tầng1 0ms/câu  tầng2 1460ms/câu
+2464/2620  tầng1 0ms/câu  tầng2 1461ms/câu
+2480/2620  tầng1 0ms/câu  tầng2 1462ms/câu
+2496/2620  tầng1 0ms/câu  tầng2 1461ms/câu
+2512/2620  tầng1 0ms/câu  tầng2 1464ms/câu
+2528/2620  tầng1 0ms/câu  tầng2 1467ms/câu
+2544/2620  tầng1 0ms/câu  tầng2 1467ms/câu
+2560/2620  tầng1 0ms/câu  tầng2 1468ms/câu
+2576/2620  tầng1 0ms/câu  tầng2 1468ms/câu
+2592/2620  tầng1 0ms/câu  tầng2 1468ms/câu
+2608/2620  tầng1 0ms/câu  tầng2 1468ms/câu
+2620/2620  tầng1 0ms/câu  tầng2 1470ms/câu
+N2000 p≥0.5: trung bình 3.6 từ/câu, 508 câu rỗng
+xong test-clean: 2620 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ for A in hou25 hou25_topk hou25_diag
++ for S in test-other test-clean
++ rk --split test-other --lists N2000 --ckpt work/ckpt/hou25_diag_e2/best.pt --name hou25_diag_e2 --win
++ python -m inference.rank --libri /work/libri/LibriSpeech --thr 0.5 --span --split test-other --lists N2000 --ckpt work/ckpt/hou25_diag_e2/best.pt --name hou25_diag_e2 --win
+W1114 23:23:07.569000 18455 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 23:23:07.613000 18455 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2939  tầng1 0ms/câu  tầng2 1151ms/câu
+32/2939  tầng1 0ms/câu  tầng2 1323ms/câu
+48/2939  tầng1 0ms/câu  tầng2 1329ms/câu
+64/2939  tầng1 0ms/câu  tầng2 1304ms/câu
+80/2939  tầng1 0ms/câu  tầng2 1310ms/câu
+96/2939  tầng1 0ms/câu  tầng2 1357ms/câu
+112/2939  tầng1 0ms/câu  tầng2 1319ms/câu
+128/2939  tầng1 0ms/câu  tầng2 1337ms/câu
+144/2939  tầng1 0ms/câu  tầng2 1285ms/câu
+160/2939  tầng1 0ms/câu  tầng2 1296ms/câu
+176/2939  tầng1 0ms/câu  tầng2 1299ms/câu
+192/2939  tầng1 0ms/câu  tầng2 1300ms/câu
+208/2939  tầng1 0ms/câu  tầng2 1299ms/câu
+224/2939  tầng1 0ms/câu  tầng2 1311ms/câu
+240/2939  tầng1 0ms/câu  tầng2 1317ms/câu
+256/2939  tầng1 0ms/câu  tầng2 1308ms/câu
+272/2939  tầng1 0ms/câu  tầng2 1287ms/câu
+288/2939  tầng1 0ms/câu  tầng2 1293ms/câu
+304/2939  tầng1 0ms/câu  tầng2 1281ms/câu
+320/2939  tầng1 0ms/câu  tầng2 1293ms/câu
+336/2939  tầng1 0ms/câu  tầng2 1293ms/câu
+352/2939  tầng1 0ms/câu  tầng2 1291ms/câu
+368/2939  tầng1 0ms/câu  tầng2 1294ms/câu
+384/2939  tầng1 0ms/câu  tầng2 1306ms/câu
+400/2939  tầng1 0ms/câu  tầng2 1293ms/câu
+416/2939  tầng1 0ms/câu  tầng2 1301ms/câu
+432/2939  tầng1 0ms/câu  tầng2 1300ms/câu
+448/2939  tầng1 0ms/câu  tầng2 1300ms/câu
+464/2939  tầng1 0ms/câu  tầng2 1300ms/câu
+480/2939  tầng1 0ms/câu  tầng2 1294ms/câu
+496/2939  tầng1 0ms/câu  tầng2 1300ms/câu
+512/2939  tầng1 0ms/câu  tầng2 1292ms/câu
+528/2939  tầng1 0ms/câu  tầng2 1283ms/câu
+544/2939  tầng1 0ms/câu  tầng2 1285ms/câu
+560/2939  tầng1 0ms/câu  tầng2 1285ms/câu
+576/2939  tầng1 0ms/câu  tầng2 1285ms/câu
+592/2939  tầng1 0ms/câu  tầng2 1297ms/câu
+608/2939  tầng1 0ms/câu  tầng2 1296ms/câu
+624/2939  tầng1 0ms/câu  tầng2 1303ms/câu
+640/2939  tầng1 0ms/câu  tầng2 1311ms/câu
+656/2939  tầng1 0ms/câu  tầng2 1307ms/câu
+672/2939  tầng1 0ms/câu  tầng2 1308ms/câu
+688/2939  tầng1 0ms/câu  tầng2 1304ms/câu
+704/2939  tầng1 0ms/câu  tầng2 1311ms/câu
+720/2939  tầng1 0ms/câu  tầng2 1310ms/câu
+736/2939  tầng1 0ms/câu  tầng2 1304ms/câu
+752/2939  tầng1 0ms/câu  tầng2 1304ms/câu
+768/2939  tầng1 0ms/câu  tầng2 1311ms/câu
+784/2939  tầng1 0ms/câu  tầng2 1310ms/câu
+800/2939  tầng1 0ms/câu  tầng2 1313ms/câu
+816/2939  tầng1 0ms/câu  tầng2 1306ms/câu
+832/2939  tầng1 0ms/câu  tầng2 1304ms/câu
+848/2939  tầng1 0ms/câu  tầng2 1303ms/câu
+864/2939  tầng1 0ms/câu  tầng2 1305ms/câu
+880/2939  tầng1 0ms/câu  tầng2 1299ms/câu
+896/2939  tầng1 0ms/câu  tầng2 1299ms/câu
+912/2939  tầng1 0ms/câu  tầng2 1302ms/câu
+928/2939  tầng1 0ms/câu  tầng2 1303ms/câu
+944/2939  tầng1 0ms/câu  tầng2 1299ms/câu
+960/2939  tầng1 0ms/câu  tầng2 1298ms/câu
+976/2939  tầng1 0ms/câu  tầng2 1306ms/câu
+992/2939  tầng1 0ms/câu  tầng2 1307ms/câu
+1008/2939  tầng1 0ms/câu  tầng2 1307ms/câu
+1024/2939  tầng1 0ms/câu  tầng2 1307ms/câu
+1040/2939  tầng1 0ms/câu  tầng2 1304ms/câu
+1056/2939  tầng1 0ms/câu  tầng2 1306ms/câu
+1072/2939  tầng1 0ms/câu  tầng2 1306ms/câu
+1088/2939  tầng1 0ms/câu  tầng2 1307ms/câu
+1104/2939  tầng1 0ms/câu  tầng2 1305ms/câu
+1120/2939  tầng1 0ms/câu  tầng2 1302ms/câu
+1136/2939  tầng1 0ms/câu  tầng2 1303ms/câu
+1152/2939  tầng1 0ms/câu  tầng2 1299ms/câu
+1168/2939  tầng1 0ms/câu  tầng2 1299ms/câu
+1184/2939  tầng1 0ms/câu  tầng2 1295ms/câu
+1200/2939  tầng1 0ms/câu  tầng2 1301ms/câu
+1216/2939  tầng1 0ms/câu  tầng2 1309ms/câu
+1232/2939  tầng1 0ms/câu  tầng2 1311ms/câu
+1248/2939  tầng1 0ms/câu  tầng2 1311ms/câu
+1264/2939  tầng1 0ms/câu  tầng2 1314ms/câu
+1280/2939  tầng1 0ms/câu  tầng2 1317ms/câu
+1296/2939  tầng1 0ms/câu  tầng2 1316ms/câu
+1312/2939  tầng1 0ms/câu  tầng2 1314ms/câu
+1328/2939  tầng1 0ms/câu  tầng2 1311ms/câu
+1344/2939  tầng1 0ms/câu  tầng2 1312ms/câu
+1360/2939  tầng1 0ms/câu  tầng2 1314ms/câu
+1376/2939  tầng1 0ms/câu  tầng2 1312ms/câu
+1392/2939  tầng1 0ms/câu  tầng2 1311ms/câu
+1408/2939  tầng1 0ms/câu  tầng2 1313ms/câu
+1424/2939  tầng1 0ms/câu  tầng2 1310ms/câu
+1440/2939  tầng1 0ms/câu  tầng2 1307ms/câu
+1456/2939  tầng1 0ms/câu  tầng2 1309ms/câu
+1472/2939  tầng1 0ms/câu  tầng2 1307ms/câu
+1488/2939  tầng1 0ms/câu  tầng2 1304ms/câu
+1504/2939  tầng1 0ms/câu  tầng2 1305ms/câu
+1520/2939  tầng1 0ms/câu  tầng2 1305ms/câu
+1536/2939  tầng1 0ms/câu  tầng2 1309ms/câu
+1552/2939  tầng1 0ms/câu  tầng2 1308ms/câu
+1568/2939  tầng1 0ms/câu  tầng2 1307ms/câu
+1584/2939  tầng1 0ms/câu  tầng2 1306ms/câu
+1600/2939  tầng1 0ms/câu  tầng2 1306ms/câu
+1616/2939  tầng1 0ms/câu  tầng2 1304ms/câu
+1632/2939  tầng1 0ms/câu  tầng2 1305ms/câu
+1648/2939  tầng1 0ms/câu  tầng2 1302ms/câu
+1664/2939  tầng1 0ms/câu  tầng2 1305ms/câu
+1680/2939  tầng1 0ms/câu  tầng2 1303ms/câu
+1696/2939  tầng1 0ms/câu  tầng2 1300ms/câu
+1712/2939  tầng1 0ms/câu  tầng2 1299ms/câu
+1728/2939  tầng1 0ms/câu  tầng2 1298ms/câu
+1744/2939  tầng1 0ms/câu  tầng2 1299ms/câu
+1760/2939  tầng1 0ms/câu  tầng2 1296ms/câu
+1776/2939  tầng1 0ms/câu  tầng2 1295ms/câu
+1792/2939  tầng1 0ms/câu  tầng2 1294ms/câu
+1808/2939  tầng1 0ms/câu  tầng2 1293ms/câu
+1824/2939  tầng1 0ms/câu  tầng2 1290ms/câu
+1840/2939  tầng1 0ms/câu  tầng2 1292ms/câu
+1856/2939  tầng1 0ms/câu  tầng2 1291ms/câu
+1872/2939  tầng1 0ms/câu  tầng2 1291ms/câu
+1888/2939  tầng1 0ms/câu  tầng2 1292ms/câu
+1904/2939  tầng1 0ms/câu  tầng2 1290ms/câu
+1920/2939  tầng1 0ms/câu  tầng2 1291ms/câu
+1936/2939  tầng1 0ms/câu  tầng2 1290ms/câu
+1952/2939  tầng1 0ms/câu  tầng2 1291ms/câu
+1968/2939  tầng1 0ms/câu  tầng2 1292ms/câu
+1984/2939  tầng1 0ms/câu  tầng2 1293ms/câu
+2000/2939  tầng1 0ms/câu  tầng2 1293ms/câu
+2016/2939  tầng1 0ms/câu  tầng2 1293ms/câu
+2032/2939  tầng1 0ms/câu  tầng2 1291ms/câu
+2048/2939  tầng1 0ms/câu  tầng2 1290ms/câu
+2064/2939  tầng1 0ms/câu  tầng2 1289ms/câu
+2080/2939  tầng1 0ms/câu  tầng2 1289ms/câu
+2096/2939  tầng1 0ms/câu  tầng2 1289ms/câu
+2112/2939  tầng1 0ms/câu  tầng2 1288ms/câu
+2128/2939  tầng1 0ms/câu  tầng2 1289ms/câu
+2144/2939  tầng1 0ms/câu  tầng2 1290ms/câu
+2160/2939  tầng1 0ms/câu  tầng2 1289ms/câu
+2176/2939  tầng1 0ms/câu  tầng2 1287ms/câu
+2192/2939  tầng1 0ms/câu  tầng2 1286ms/câu
+2208/2939  tầng1 0ms/câu  tầng2 1286ms/câu
+2224/2939  tầng1 0ms/câu  tầng2 1287ms/câu
+2240/2939  tầng1 0ms/câu  tầng2 1287ms/câu
+2256/2939  tầng1 0ms/câu  tầng2 1289ms/câu
+2272/2939  tầng1 0ms/câu  tầng2 1291ms/câu
+2288/2939  tầng1 0ms/câu  tầng2 1291ms/câu
+2304/2939  tầng1 0ms/câu  tầng2 1291ms/câu
+2320/2939  tầng1 0ms/câu  tầng2 1292ms/câu
+2336/2939  tầng1 0ms/câu  tầng2 1291ms/câu
+2352/2939  tầng1 0ms/câu  tầng2 1289ms/câu
+2368/2939  tầng1 0ms/câu  tầng2 1288ms/câu
+2384/2939  tầng1 0ms/câu  tầng2 1287ms/câu
+2400/2939  tầng1 0ms/câu  tầng2 1288ms/câu
+2416/2939  tầng1 0ms/câu  tầng2 1287ms/câu
+2432/2939  tầng1 0ms/câu  tầng2 1286ms/câu
+2448/2939  tầng1 0ms/câu  tầng2 1286ms/câu
+2464/2939  tầng1 0ms/câu  tầng2 1285ms/câu
+2480/2939  tầng1 0ms/câu  tầng2 1287ms/câu
+2496/2939  tầng1 0ms/câu  tầng2 1287ms/câu
+2512/2939  tầng1 0ms/câu  tầng2 1287ms/câu
+2528/2939  tầng1 0ms/câu  tầng2 1287ms/câu
+2544/2939  tầng1 0ms/câu  tầng2 1286ms/câu
+2560/2939  tầng1 0ms/câu  tầng2 1285ms/câu
+2576/2939  tầng1 0ms/câu  tầng2 1285ms/câu
+2592/2939  tầng1 0ms/câu  tầng2 1284ms/câu
+2608/2939  tầng1 0ms/câu  tầng2 1283ms/câu
+2624/2939  tầng1 0ms/câu  tầng2 1283ms/câu
+2640/2939  tầng1 0ms/câu  tầng2 1283ms/câu
+2656/2939  tầng1 0ms/câu  tầng2 1283ms/câu
+2672/2939  tầng1 0ms/câu  tầng2 1282ms/câu
+2688/2939  tầng1 0ms/câu  tầng2 1282ms/câu
+2704/2939  tầng1 0ms/câu  tầng2 1284ms/câu
+2720/2939  tầng1 0ms/câu  tầng2 1283ms/câu
+2736/2939  tầng1 0ms/câu  tầng2 1282ms/câu
+2752/2939  tầng1 0ms/câu  tầng2 1282ms/câu
+2768/2939  tầng1 0ms/câu  tầng2 1280ms/câu
+2784/2939  tầng1 0ms/câu  tầng2 1280ms/câu
+2800/2939  tầng1 0ms/câu  tầng2 1280ms/câu
+2816/2939  tầng1 0ms/câu  tầng2 1279ms/câu
+2832/2939  tầng1 0ms/câu  tầng2 1278ms/câu
+2848/2939  tầng1 0ms/câu  tầng2 1279ms/câu
+2864/2939  tầng1 0ms/câu  tầng2 1280ms/câu
+2880/2939  tầng1 0ms/câu  tầng2 1277ms/câu
+2896/2939  tầng1 0ms/câu  tầng2 1275ms/câu
+2912/2939  tầng1 0ms/câu  tầng2 1277ms/câu
+2928/2939  tầng1 0ms/câu  tầng2 1277ms/câu
+2939/2939  tầng1 0ms/câu  tầng2 1277ms/câu
+N2000 p≥0.5: trung bình 2.6 từ/câu, 503 câu rỗng
+xong test-other: 2939 câu, 0 lượt từ thiếu feature (TTS lỗi)
++ for S in test-other test-clean
++ rk --split test-clean --lists N2000 --ckpt work/ckpt/hou25_diag_e2/best.pt --name hou25_diag_e2 --win
++ python -m inference.rank --libri /work/libri/LibriSpeech --thr 0.5 --span --split test-clean --lists N2000 --ckpt work/ckpt/hou25_diag_e2/best.pt --name hou25_diag_e2 --win
+W1115 00:27:49.490000 18557 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1115 00:27:49.519000 18557 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+16/2620  tầng1 0ms/câu  tầng2 1363ms/câu
+32/2620  tầng1 0ms/câu  tầng2 1253ms/câu
+48/2620  tầng1 0ms/câu  tầng2 1286ms/câu
+64/2620  tầng1 0ms/câu  tầng2 1300ms/câu
+80/2620  tầng1 0ms/câu  tầng2 1303ms/câu
+96/2620  tầng1 0ms/câu  tầng2 1358ms/câu
+112/2620  tầng1 0ms/câu  tầng2 1380ms/câu
+128/2620  tầng1 0ms/câu  tầng2 1371ms/câu
+144/2620  tầng1 0ms/câu  tầng2 1396ms/câu
+160/2620  tầng1 0ms/câu  tầng2 1377ms/câu
+176/2620  tầng1 0ms/câu  tầng2 1386ms/câu
+192/2620  tầng1 0ms/câu  tầng2 1360ms/câu
+208/2620  tầng1 0ms/câu  tầng2 1359ms/câu
+224/2620  tầng1 0ms/câu  tầng2 1359ms/câu
+240/2620  tầng1 0ms/câu  tầng2 1343ms/câu
+256/2620  tầng1 0ms/câu  tầng2 1361ms/câu
+272/2620  tầng1 0ms/câu  tầng2 1383ms/câu
+288/2620  tầng1 0ms/câu  tầng2 1387ms/câu
+304/2620  tầng1 0ms/câu  tầng2 1398ms/câu
+320/2620  tầng1 0ms/câu  tầng2 1401ms/câu
+336/2620  tầng1 0ms/câu  tầng2 1396ms/câu
+352/2620  tầng1 0ms/câu  tầng2 1401ms/câu
+368/2620  tầng1 0ms/câu  tầng2 1396ms/câu
+384/2620  tầng1 0ms/câu  tầng2 1400ms/câu
+400/2620  tầng1 0ms/câu  tầng2 1393ms/câu
+416/2620  tầng1 0ms/câu  tầng2 1404ms/câu
+432/2620  tầng1 0ms/câu  tầng2 1403ms/câu
+448/2620  tầng1 0ms/câu  tầng2 1399ms/câu
+464/2620  tầng1 0ms/câu  tầng2 1398ms/câu
+480/2620  tầng1 0ms/câu  tầng2 1397ms/câu
+496/2620  tầng1 0ms/câu  tầng2 1393ms/câu
+512/2620  tầng1 0ms/câu  tầng2 1399ms/câu
+528/2620  tầng1 0ms/câu  tầng2 1406ms/câu
+544/2620  tầng1 0ms/câu  tầng2 1399ms/câu
+560/2620  tầng1 0ms/câu  tầng2 1401ms/câu
+576/2620  tầng1 0ms/câu  tầng2 1401ms/câu
+592/2620  tầng1 0ms/câu  tầng2 1400ms/câu
+608/2620  tầng1 0ms/câu  tầng2 1396ms/câu
+624/2620  tầng1 0ms/câu  tầng2 1393ms/câu
+640/2620  tầng1 0ms/câu  tầng2 1393ms/câu
+656/2620  tầng1 0ms/câu  tầng2 1401ms/câu
+672/2620  tầng1 0ms/câu  tầng2 1397ms/câu
+688/2620  tầng1 0ms/câu  tầng2 1394ms/câu
+704/2620  tầng1 0ms/câu  tầng2 1392ms/câu
+720/2620  tầng1 0ms/câu  tầng2 1398ms/câu
+736/2620  tầng1 0ms/câu  tầng2 1401ms/câu
+752/2620  tầng1 0ms/câu  tầng2 1404ms/câu
+768/2620  tầng1 0ms/câu  tầng2 1412ms/câu
+784/2620  tầng1 0ms/câu  tầng2 1410ms/câu
+800/2620  tầng1 0ms/câu  tầng2 1405ms/câu
+816/2620  tầng1 0ms/câu  tầng2 1402ms/câu
+832/2620  tầng1 0ms/câu  tầng2 1404ms/câu
+848/2620  tầng1 0ms/câu  tầng2 1404ms/câu
+864/2620  tầng1 0ms/câu  tầng2 1401ms/câu
+880/2620  tầng1 0ms/câu  tầng2 1400ms/câu
+896/2620  tầng1 0ms/câu  tầng2 1395ms/câu
+912/2620  tầng1 0ms/câu  tầng2 1389ms/câu
+928/2620  tầng1 0ms/câu  tầng2 1390ms/câu
+944/2620  tầng1 0ms/câu  tầng2 1392ms/câu
+960/2620  tầng1 0ms/câu  tầng2 1388ms/câu
+976/2620  tầng1 0ms/câu  tầng2 1391ms/câu
+992/2620  tầng1 0ms/câu  tầng2 1391ms/câu
+1008/2620  tầng1 0ms/câu  tầng2 1397ms/câu
+1024/2620  tầng1 0ms/câu  tầng2 1405ms/câu
+1040/2620  tầng1 0ms/câu  tầng2 1407ms/câu
+1056/2620  tầng1 0ms/câu  tầng2 1412ms/câu
+1072/2620  tầng1 0ms/câu  tầng2 1410ms/câu
+1088/2620  tầng1 0ms/câu  tầng2 1413ms/câu
+1104/2620  tầng1 0ms/câu  tầng2 1410ms/câu
+1120/2620  tầng1 0ms/câu  tầng2 1412ms/câu
+1136/2620  tầng1 0ms/câu  tầng2 1408ms/câu
+1152/2620  tầng1 0ms/câu  tầng2 1405ms/câu
+1168/2620  tầng1 0ms/câu  tầng2 1403ms/câu
+1184/2620  tầng1 0ms/câu  tầng2 1404ms/câu
+1200/2620  tầng1 0ms/câu  tầng2 1403ms/câu
+1216/2620  tầng1 0ms/câu  tầng2 1400ms/câu
+1232/2620  tầng1 0ms/câu  tầng2 1398ms/câu
+1248/2620  tầng1 0ms/câu  tầng2 1397ms/câu
+1264/2620  tầng1 0ms/câu  tầng2 1391ms/câu
+1280/2620  tầng1 0ms/câu  tầng2 1392ms/câu
+1296/2620  tầng1 0ms/câu  tầng2 1392ms/câu
+1312/2620  tầng1 0ms/câu  tầng2 1392ms/câu
+1328/2620  tầng1 0ms/câu  tầng2 1389ms/câu
+1344/2620  tầng1 0ms/câu  tầng2 1388ms/câu
+1360/2620  tầng1 0ms/câu  tầng2 1387ms/câu
+1376/2620  tầng1 0ms/câu  tầng2 1387ms/câu
+1392/2620  tầng1 0ms/câu  tầng2 1387ms/câu
+1408/2620  tầng1 0ms/câu  tầng2 1385ms/câu
+1424/2620  tầng1 0ms/câu  tầng2 1384ms/câu
+1440/2620  tầng1 0ms/câu  tầng2 1387ms/câu
+1456/2620  tầng1 0ms/câu  tầng2 1386ms/câu
+1472/2620  tầng1 0ms/câu  tầng2 1389ms/câu
+1488/2620  tầng1 0ms/câu  tầng2 1390ms/câu
+1504/2620  tầng1 0ms/câu  tầng2 1390ms/câu
+1520/2620  tầng1 0ms/câu  tầng2 1389ms/câu
+1536/2620  tầng1 0ms/câu  tầng2 1391ms/câu
+1552/2620  tầng1 0ms/câu  tầng2 1390ms/câu
+1568/2620  tầng1 0ms/câu  tầng2 1392ms/câu
+1584/2620  tầng1 0ms/câu  tầng2 1396ms/câu
+1600/2620  tầng1 0ms/câu  tầng2 1395ms/câu
+1616/2620  tầng1 0ms/câu  tầng2 1394ms/câu
+1632/2620  tầng1 0ms/câu  tầng2 1398ms/câu
+1648/2620  tầng1 0ms/câu  tầng2 1399ms/câu
+1664/2620  tầng1 0ms/câu  tầng2 1397ms/câu
+1680/2620  tầng1 0ms/câu  tầng2 1396ms/câu
+1696/2620  tầng1 0ms/câu  tầng2 1396ms/câu
+1712/2620  tầng1 0ms/câu  tầng2 1399ms/câu
+1728/2620  tầng1 0ms/câu  tầng2 1399ms/câu
+1744/2620  tầng1 0ms/câu  tầng2 1397ms/câu
+1760/2620  tầng1 0ms/câu  tầng2 1399ms/câu
+1776/2620  tầng1 0ms/câu  tầng2 1395ms/câu
+1792/2620  tầng1 0ms/câu  tầng2 1398ms/câu
+1808/2620  tầng1 0ms/câu  tầng2 1399ms/câu
+1824/2620  tầng1 0ms/câu  tầng2 1400ms/câu
+1840/2620  tầng1 0ms/câu  tầng2 1401ms/câu
+1856/2620  tầng1 0ms/câu  tầng2 1403ms/câu
+1872/2620  tầng1 0ms/câu  tầng2 1402ms/câu
+1888/2620  tầng1 0ms/câu  tầng2 1404ms/câu
+1904/2620  tầng1 0ms/câu  tầng2 1411ms/câu
+1920/2620  tầng1 0ms/câu  tầng2 1410ms/câu
+1936/2620  tầng1 0ms/câu  tầng2 1411ms/câu
+1952/2620  tầng1 0ms/câu  tầng2 1410ms/câu
+1968/2620  tầng1 0ms/câu  tầng2 1413ms/câu
+1984/2620  tầng1 0ms/câu  tầng2 1411ms/câu
+2000/2620  tầng1 0ms/câu  tầng2 1412ms/câu
+2016/2620  tầng1 0ms/câu  tầng2 1412ms/câu
+2032/2620  tầng1 0ms/câu  tầng2 1416ms/câu
+2048/2620  tầng1 0ms/câu  tầng2 1414ms/câu
+2064/2620  tầng1 0ms/câu  tầng2 1416ms/câu
+2080/2620  tầng1 0ms/câu  tầng2 1416ms/câu
+2096/2620  tầng1 0ms/câu  tầng2 1414ms/câu
+2112/2620  tầng1 0ms/câu  tầng2 1419ms/câu
+2128/2620  tầng1 0ms/câu  tầng2 1419ms/câu
+2144/2620  tầng1 0ms/câu  tầng2 1416ms/câu
+2160/2620  tầng1 0ms/câu  tầng2 1416ms/câu
+2176/2620  tầng1 0ms/câu  tầng2 1418ms/câu
+2192/2620  tầng1 0ms/câu  tầng2 1421ms/câu
+2208/2620  tầng1 0ms/câu  tầng2 1419ms/câu
+2224/2620  tầng1 0ms/câu  tầng2 1419ms/câu
+2240/2620  tầng1 0ms/câu  tầng2 1416ms/câu
+2256/2620  tầng1 0ms/câu  tầng2 1418ms/câu
+2272/2620  tầng1 0ms/câu  tầng2 1418ms/câu
+2288/2620  tầng1 0ms/câu  tầng2 1417ms/câu
+2304/2620  tầng1 0ms/câu  tầng2 1415ms/câu
+2320/2620  tầng1 0ms/câu  tầng2 1415ms/câu
+2336/2620  tầng1 0ms/câu  tầng2 1414ms/câu
+2352/2620  tầng1 0ms/câu  tầng2 1416ms/câu
+2368/2620  tầng1 0ms/câu  tầng2 1416ms/câu
+2384/2620  tầng1 0ms/câu  tầng2 1413ms/câu
+2400/2620  tầng1 0ms/câu  tầng2 1414ms/câu
+2416/2620  tầng1 0ms/câu  tầng2 1413ms/câu
+2432/2620  tầng1 0ms/câu  tầng2 1414ms/câu
+2448/2620  tầng1 0ms/câu  tầng2 1411ms/câu
+2464/2620  tầng1 0ms/câu  tầng2 1412ms/câu
+2480/2620  tầng1 0ms/câu  tầng2 1413ms/câu
+2496/2620  tầng1 0ms/câu  tầng2 1412ms/câu
+2512/2620  tầng1 0ms/câu  tầng2 1415ms/câu
+2528/2620  tầng1 0ms/câu  tầng2 1418ms/câu
+2544/2620  tầng1 0ms/câu  tầng2 1418ms/câu
+2560/2620  tầng1 0ms/câu  tầng2 1419ms/câu
+2576/2620  tầng1 0ms/câu  tầng2 1419ms/câu
+2592/2620  tầng1 0ms/câu  tầng2 1419ms/câu
+2608/2620  tầng1 0ms/câu  tầng2 1419ms/câu
+2620/2620  tầng1 0ms/câu  tầng2 1421ms/câu
+N2000 p≥0.5: trung bình 2.6 từ/câu, 454 câu rỗng
+xong test-clean: 2620 câu, 0 lượt từ thiếu feature (TTS lỗi)

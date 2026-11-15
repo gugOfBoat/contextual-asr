@@ -37,6 +37,8 @@ ap.add_argument("--limit", type=int, help="chỉ chấm n câu đầu (chạy th
 ap.add_argument("--thr", type=float, nargs="*", default=[0.5], help="ngưỡng xác suất cho list lọc theo độ liên quan")
 ap.add_argument("--target", default="present", choices=["present", "hard"],
                 help="hxattn: xếp hạng / lọc theo p(có trong câu) hay p(có VÀ Qwen chép sai)")
+ap.add_argument("--span", action="store_true", help="lưu vị trí (giây) của top-k từ ra span_<L>.json (Đúng@chỗ)")
+ap.add_argument("--win", action="store_true", help="E1: câu > 30 s encode theo cửa sổ trượt 30 s (common.Encoder)")
 ap.add_argument("--hyp", help="bản chép lần 1 (mặc định bench/out/<split>/qwen3asr_none.tsv), cho hxattn")
 a = ap.parse_args()
 
@@ -70,12 +72,16 @@ class Bank:
         with torch.autocast("cuda", dtype=torch.bfloat16):
             es = model.enc_speech(fs).half()
         ids = torch.tensor([self.pos[w] for w in words], device="cuda")
-        out = []
+        out, spans = [], []
         for i in range(0, len(ids), chunk):
             k = ids[i:i + chunk]
             lb = self.len[k]
             idx = (self.start[k, None] + torch.arange(int(lb.max()), device="cuda")).clamp(max=len(self.E) - 1)
             out.append(model.score(es, self.E[idx], lb).float())
+            if getattr(model, "want_span", False):
+                spans.append(model.span)
+        if spans:
+            model.span_all = torch.cat(spans)
         return torch.cat(out)
 
 
@@ -111,6 +117,7 @@ if __name__ == "__main__":
     hyps = {l.split("\t")[0]: l.rstrip("\n").partition("\t")[2].split() for l in open(hyp_file, encoding="utf-8")}
 
     main = load(a.ckpt)
+    main.want_span = a.span
     pre = load(a.pre) if a.pre else None
     if "all" in a.lists and not (pre or main).cheap:
         raise SystemExit("list 'all' (209k từ) cần tầng đầu là model rẻ: dùng --pre maxsim hoặc --ckpt maxsim")
@@ -118,10 +125,11 @@ if __name__ == "__main__":
     f_pre, st_pre = scorer(pre) if pre else (None, st_main)
     store = {w for w in st_main.idx if w in st_pre}                     # từ chấm được ở cả 2 tầng
     rare = [w for w in open(IS21 / "all_rare_words.txt", encoding="utf-8").read().split() if w in store]
-    enc = Encoder()
+    enc = Encoder(win=a.win)
 
     rank = {L: {} for L in a.lists}
     prob = {L: {} for L in a.lists}
+    span = {L: {} for L in a.lists}
     t1 = t2 = 0.0
     miss = 0
     for i in range(0, len(uids), a.bs):
@@ -142,10 +150,13 @@ if __name__ == "__main__":
             s, dt = timed(f_main, fs, u, hyps[uid])
             t2 += dt
             s2 = dict(zip(u, s))
+            sp = dict(zip(u, (main.span_all.float() / 50).tolist())) if a.span else {}
             for L, ws in lists.items():  # lưu kèm logit; từ bị tầng 1 loại: logit tầng 1 − 1000 (luôn xếp sau)
                 rank[L][uid] = ([[w, round(s2[w], 3)] for w in sorted(ws, key=s2.get, reverse=True)]
                                 + [[w, round(s1[w] - 1000, 3)] for w in tail[L]])[:a.keep]
                 prob[L][uid] = [[w, round(1 / (1 + math.exp(-s)), 4)] for w, s in rank[L][uid][:a.k] if w in s2]
+                if a.span:
+                    span[L][uid] = {w: [round(x, 2) for x in sp[w]] for w, _ in rank[L][uid][:a.k] if w in sp}
         print(f"{i + len(bu)}/{len(uids)}  tầng1 {1000 * t1 / (i + len(bu)):.0f}ms/câu  "
               f"tầng2 {1000 * t2 / (i + len(bu)):.0f}ms/câu", flush=True)
 
@@ -156,6 +167,8 @@ if __name__ == "__main__":
         json.dump({u: [w for w, _ in ws[:a.k]][::-1] for u, ws in r.items()},
                   open(proto / f"ctx_{a.name}_{L}.json", "w", encoding="utf-8"), ensure_ascii=False)
         json.dump(prob[L], open(out / f"prob_{L}.json", "w", encoding="utf-8"))
+        if a.span:
+            json.dump(span[L], open(out / f"span_{L}.json", "w", encoding="utf-8"))
         for thr in a.thr:
             keep = {u: [w for w, p in ps if p >= thr][::-1] for u, ps in prob[L].items()}
             json.dump(keep, open(proto / f"ctx_{a.name}_{L}_p{thr:g}.json", "w", encoding="utf-8"), ensure_ascii=False)

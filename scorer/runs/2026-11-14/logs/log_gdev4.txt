@@ -1,0 +1,12 @@
+W1114 17:29:54.928000 13812 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 17:29:54.968000 13812 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 400 câu, 0 câu decode lại vì lặp, 273s -> /work/code/bench/out/dev-other/whisper_pmaxsim_win_N2000_prompt_gate_m0_fb.tsv
+W1114 17:34:40.865000 14042 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 17:34:40.903000 14042 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 400 câu, 0 câu decode lại vì lặp, 233s -> /work/code/bench/out/dev-other/whisper_pmaxsim_win_N2000_prompt_gate_m0.1_fb.tsv
+W1114 17:38:48.009000 14278 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 17:38:48.042000 14278 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 400 câu, 0 câu decode lại vì lặp, 239s -> /work/code/bench/out/dev-other/whisper_oracle_oracle_pspan_m0_fb.tsv

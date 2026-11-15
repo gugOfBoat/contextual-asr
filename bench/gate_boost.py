@@ -13,7 +13,7 @@ Một bias word chỉ được cộng điểm khi thời điểm đó nằm tron
 Vị trí: --spans = align.tsv (vị trí hoàn hảo từ align_words.py); sau này thay bằng vị trí do scorer dự đoán.
 Ra: out/<split>/whisper_<ctx><tag>.tsv (+ .raw.tsv, + .gate.tsv ghi mỗi lần boost), chấm bằng score.py.
 """
-import argparse, json, time
+import argparse, json, os, time, zlib
 from collections import defaultdict
 from pathlib import Path
 
@@ -38,6 +38,13 @@ ap.add_argument("--boost", type=float, default=0.0, help="cộng vào log-prob t
 ap.add_argument("--gate", default="span", choices=["none", "span", "center"])
 ap.add_argument("--margin", type=float, default=0.1, help="nới cửa sổ mỗi bên (s); với center là nửa bề rộng")
 ap.add_argument("--spans", help="tsv: uid, i, từ, bắt đầu, kết thúc (mặc định protocol/<split>/align.tsv)")
+ap.add_argument("--once", action="store_true",
+                help="B3: chỉ boost token ĐẦU của từ khi số lần từ đã được viết < số lần nó có trong câu (số span; gate none = 1)")
+ap.add_argument("--times", action="store_true", help="ghi giây decoder đang nghe cho mỗi token ra .time.tsv (để sửa sau theo span)")
+ap.add_argument("--boost_ctx", help="list riêng cho boost (mặc định = --ctx): vd prompt top-50 + boost chỉ vài từ chắc chắn")
+ap.add_argument("--topk", type=int, default=0,
+                help="chỉ boost token ĐẦU của từ khi nó đã nằm trong top-k của model ở bước đó (0 = tắt): tránh đè lên từ thường")
+ap.add_argument("--fallback", action="store_true", help="câu bị lặp chữ thì decode lại không context (đếm số câu)")
 ap.add_argument("--tag", default="")
 a = ap.parse_args()
 
@@ -48,6 +55,7 @@ if a.subset:
     audio = [x for x in audio if x[0] in keep]
 audio = audio[:a.limit] if a.limit else audio
 ctx = json.load(open(proto / f"ctx_{a.ctx}.json", encoding="utf-8"))
+bctx = json.load(open(proto / f"ctx_{a.boost_ctx}.json", encoding="utf-8")) if a.boost_ctx else ctx
 
 spans = defaultdict(list)  # (uid, từ) -> các khoảng (bắt đầu, kết thúc); từ nói 2 lần thì có 2 khoảng
 if a.boost and a.gate != "none":
@@ -72,6 +80,7 @@ ban[list(model.generation_config.suppress_tokens or [])] = True
 
 if not a.tag:
     a.tag = ("_prompt" if a.prompt else "") + (f"_b{a.boost:g}_{a.gate}" + (f"{a.margin:g}" if a.gate != "none" else "") if a.boost else "")
+    a.tag += "_once" if a.once and a.boost else ""
     a.tag = a.tag or "_plain"
 out = ROOT / "out" / a.split
 out.mkdir(parents=True, exist_ok=True)
@@ -83,10 +92,11 @@ def variants(w):  # các cách viết token hoá của một bias word: " cabine
     return {tuple(tok.encode(" " + v, add_special_tokens=False)) for v in (w, w.capitalize())}
 
 
-t0 = time.time()
+t0, nfb = time.time(), 0
 with open(fn, "a", encoding="utf-8", buffering=1) as f, \
      open(out / f"whisper_{a.ctx}{a.tag}.raw.tsv", "a", encoding="utf-8", buffering=1) as fr, \
-     open(out / f"whisper_{a.ctx}{a.tag}.gate.tsv", "a", encoding="utf-8", buffering=1) as fg:
+     open(out / f"whisper_{a.ctx}{a.tag}.gate.tsv", "a", encoding="utf-8", buffering=1) as fg, \
+     open(out / f"whisper_{a.ctx}{a.tag}.time.tsv" if a.times else os.devnull, "a", encoding="utf-8", buffering=1) as ft:
     for uid, path in audio:
         if uid in done:
             continue
@@ -94,40 +104,60 @@ with open(fn, "a", encoding="utf-8", buffering=1) as f, \
         n = min(1500, int(len(wav) / sr / FR) + 1)  # số frame có audio thật
         feats = proc(wav, sampling_rate=sr, return_tensors="pt").input_features.to(dev, dtype)
         words = ctx[uid]
-        prefix = list(start)
-        if a.prompt and words:  # giống openai-whisper: chỉ giữ 223 token cuối của prompt
-            p = proc.get_prompt_ids(", ".join(words))
-            prefix = [int(p[0]), *map(int, p[1:][-223:])] + prefix
-        seqs = [(w, s) for w in words for s in variants(w)] if a.boost else []
-        gen, pkv, inp = [], None, torch.tensor([prefix], device=dev)
-        with torch.no_grad():
-            enc = model.model.encoder(feats).last_hidden_state
-            for _ in range(224):
-                o = model.model.decoder(input_ids=inp, encoder_hidden_states=enc, past_key_values=pkv,
-                                        use_cache=True, output_attentions=True)
-                pkv = o.past_key_values
-                lp = F.log_softmax(model.proj_out(o.last_hidden_state[0, -1]).float(), -1).masked_fill(ban, -1e9)
-                if seqs:
-                    att = sum(o.cross_attentions[l][0, h, -1, :n].float() for l, h in heads)
-                    att = F.pad(att[None, None], (3, 3), mode="replicate").unfold(-1, 7, 1).median(-1).values[0, 0]
-                    t = att.argmax().item() * FR  # decoder đang nghe giây thứ t
-                    bonus = {}
-                    for w, s in seqs:
-                        if a.gate != "none" and not any(b <= t <= e for b, e in spans[uid, w]):
-                            continue
-                        for k in range(len(s)):  # k = số token của từ đã sinh ngay trước đó
-                            if k == 0 or gen[-k:] == list(s[:k]):
-                                bonus[s[k]] = w
-                    for v, w in bonus.items():
-                        lp[v] += a.boost
-                nxt = int(lp.argmax())
-                if seqs and nxt in bonus:
-                    fg.write(f"{uid}\t{len(gen)}\t{t:.2f}\t{bonus[nxt]}\t{tok.decode([nxt])}\n")
-                if nxt == eot:
-                    break
-                gen.append(nxt)
-                inp = torch.tensor([[nxt]], device=dev)
-        text = tok.decode(gen, skip_special_tokens=True)
+        for attempt in (0, 1):  # --fallback: chữ lặp (tỉ lệ nén > 2.4, như openai-whisper) → decode lại KHÔNG context
+            use = attempt == 0
+            prefix = list(start)
+            if use and a.prompt and words:  # giống openai-whisper: chỉ giữ 223 token cuối của prompt
+                p = proc.get_prompt_ids(", ".join(words))
+                prefix = [int(p[0]), *map(int, p[1:][-223:])] + prefix
+            bw = bctx[uid]
+            seqs = [(w, s) for w in bw for s in variants(w)] if a.boost and use else []
+            cap = {w: (len(spans[uid, w]) if a.gate != "none" else 1) for w in bw}  # B3: số lần được viết
+            wrote = defaultdict(int)
+            gen, pkv, inp = [], None, torch.tensor([prefix], device=dev)
+            with torch.no_grad():
+                enc = model.model.encoder(feats).last_hidden_state
+                for _ in range(224):
+                    o = model.model.decoder(input_ids=inp, encoder_hidden_states=enc, past_key_values=pkv,
+                                            use_cache=True, output_attentions=True)
+                    pkv = o.past_key_values
+                    lp = F.log_softmax(model.proj_out(o.last_hidden_state[0, -1]).float(), -1).masked_fill(ban, -1e9)
+                    if seqs or a.times:
+                        att = sum(o.cross_attentions[l][0, h, -1, :n].float() for l, h in heads)
+                        att = F.pad(att[None, None], (3, 3), mode="replicate").unfold(-1, 7, 1).median(-1).values[0, 0]
+                        t = att.argmax().item() * FR  # decoder đang nghe giây thứ t
+                    if seqs:
+                        bonus = {}
+                        for w, s in seqs:
+                            if a.gate != "none" and not any(b <= t <= e for b, e in spans[uid, w]):
+                                continue
+                            for k in range(len(s)):  # k = số token của từ đã sinh ngay trước đó
+                                if k == 0 and a.once and wrote[w] >= cap[w]:
+                                    continue
+                                if k == 0 or gen[-k:] == list(s[:k]):
+                                    bonus[s[k]] = w
+                        if a.topk and bonus:
+                            top = set(lp.topk(a.topk).indices.tolist())
+                            first = {s_[0] for _, s_ in seqs}
+                            bonus = {v: w for v, w in bonus.items() if v in top or (v not in first) or (gen and any(gen[-k:] == list(s_[:k]) and s_[k] == v for _, s_ in seqs for k in range(1, len(s_))))}
+                        for v, w in bonus.items():
+                            lp[v] += a.boost
+                    nxt = int(lp.argmax())
+                    if seqs and nxt in bonus:
+                        fg.write(f"{uid}\t{len(gen)}\t{t:.2f}\t{bonus[nxt]}\t{tok.decode([nxt])}\n")
+                    if nxt == eot:
+                        break
+                    if a.times:
+                        ft.write(f"{uid}\t{len(gen)}\t{t:.2f}\t{tok.decode([nxt])}\n")
+                    gen.append(nxt)
+                    for w, s in seqs:  # đếm từ đã viết xong (kể cả khi model tự viết, không nhờ boost)
+                        if gen[-len(s):] == list(s):
+                            wrote[w] += 1
+                    inp = torch.tensor([[nxt]], device=dev)
+            text = tok.decode(gen, skip_special_tokens=True)
+            if not a.fallback or attempt == 1 or len(text.encode()) <= 2.4 * len(zlib.compress(text.encode())):
+                break
+            nfb += 1
         f.write(f"{uid}\t{norm(text)}\n")
         fr.write(f"{uid}\t{text.strip()}\n")
-print(f"xong {len(audio)} câu, {time.time() - t0:.0f}s -> {fn}")
+print(f"xong {len(audio)} câu, {nfb} câu decode lại vì lặp, {time.time() - t0:.0f}s -> {fn}")

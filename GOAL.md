@@ -10,6 +10,13 @@ Có audio và một list bias **dài, nhiều nhiễu** (IS21, N100 → N2000). 
 
 Scorer là module cắm ngoài. Xuất phát trên Whisper; cơ chế phải áp được cho mọi SpeechLLM.
 
+**Chốt 11/11:** *một scorer cắm vào mọi SpeechLLM, train một lần, đẩy từ đúng lúc mà không cần biết bên trong model.*
+- Scorer dùng encoder riêng.
+- Từ ASR chỉ cần prompt, logits + tokenizer, và text.
+- Giây decoder đang nghe được suy ra bằng cách căn chữ đã viết với audio.
+
+Gap, quan sát, giả thuyết G1–G6: **`PROPOSAL.md` mục 0**.
+
 ## 2. Đối thủ chính: Hou25 (Interspeech 2025), IS21 + LibriSpeech
 Hệ gồm 2 pha:
 
@@ -111,5 +118,17 @@ Cách kể chuyện: Hou25 vứt thời gian ở bước pool; ta chứng minh t
    - Bước kế: thêm quyết định "từ có trong câu không" trước khi boost (ngưỡng điểm / top-k nhỏ), rồi chạy lại top-50; chạy gate trên test-clean. Cần duyệt trước khi code.
    - A1 (09/11): đổi cách gộp không tăng R#10; vị trí nằm ở S1 (92–96% trong span), không ở CAM.
 6. Thiết kế C1 chi tiết, duyệt với user trước khi code.
+7. **(11/11) Kế hoạch mới: `PLAN.md` bản 2** (quan sát → giả định → gap → kiến trúc → thí nghiệm → đóng góp; phần R, B, K, D, E, F). Bước kế theo `PROPOSAL.md` mục 0: G1 (vị trí được lệch bao nhiêu), G2 (gate so với prompt và sửa sau, chia lỗi theo nhóm), G6a (vị trí decoder suy ra từ chữ đã viết so với alignment heads). Cả 3 chỉ decode Whisper, không train. Cần xin GPU và duyệt code.
+
+8. **(14/11) Đến buổi gặp thầy 20/11: chỉ làm scorer.** Roadmap: `scorer/PLAN-2011.md` (giả định S1–S5, thí nghiệm E0–E5). Adapter để sau.
+   - E0 đã xong (`scorer/analysis/SMALL_R.md`): đo với R nhỏ, Sạch@1 của Hou25 là 72.8, pmaxsim 85.7.
+   - Hou25 thua vì **báo động giả với từ khác hẳn**, và báo động giả tăng theo độ dài câu (1.4 → 11.4 từ/câu). Không phải vì từ nghe giống.
+
+9. **(15/11) Kết quả chạy 2× 4090: `scorer/analysis/REPORT-1115.md`.**
+   - Hou25 gộp theo vệt chéo + train lại: Sạch@1 73.3 → 82.9, định vị 98.9% (giả thuyết của Hoàng đúng).
+   - Scorer âm vị vẫn là nền tốt nhất (87.5).
+   - pmono + đẩy có vị trí, không prompt, thắng Hou25 prompt về B-WER (8.14 so với 9.69 trên test-other; 3.79 so với 5.15 trên test-clean).
+   - Sáng 15/11: scorer hai nhánh (khớp tự do + khớp đúng thứ tự) có dạy vị trí. Một model 89.3 Sạch@1; cộng điểm hai model 90.8. Vào Whisper không prompt: WER 3.14–3.22, B-WER 7.53–7.65 (Hou25 3.39 / 9.69). Kênh prompt bão hoà.
+   - Bước tiếp theo: bảng 1b trong báo cáo (chấm bản train có dạy vị trí; ghép pmaxsim + pmono; tranh nhau tại chỗ + "không từ nào" được train; nhóm từ ASR nghe sai; 960h; đủ N100–2000).
 
 Hạn Interspeech 2027: 09/02/2027.

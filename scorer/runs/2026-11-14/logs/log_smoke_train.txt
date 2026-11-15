@@ -1,0 +1,31 @@
+W1114 08:17:17.237000 1385 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 08:17:17.282000 1385 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+hou25: 1.95M tham số
+hou25_topk: 1.95M tham số
+hou25_diag: 1.95M tham số
+200 câu train (train), 500 câu dev (dev-clean, list 100)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/work/code/scorer/training/train.py", line 225, in <module>
+    checkpoint(ep)
+  File "/work/code/scorer/training/train.py", line 188, in checkpoint
+    r10, hr5, r50 = evaluate(m, enc, loader(dev, True))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/work/code/scorer/training/train.py", line 139, in evaluate
+    for batch in dl:
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 725, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 1529, in _next_data
+    return self._process_data(data, worker_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/utils/data/dataloader.py", line 1567, in _process_data
+    data.reraise()
+  File "/usr/local/lib/python3.12/dist-packages/torch/_utils.py", line 802, in reraise
+    raise exception
+soundfile.LibsndfileError: <exception str() failed>

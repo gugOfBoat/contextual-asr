@@ -1,0 +1,16 @@
+W1114 17:56:17.361000 16035 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 17:56:17.395000 16035 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 2939 câu, 1 câu decode lại vì lặp, 809s -> /work/code/bench/out/test-other/whisper_pmaxsim_win_N2000_prompt_gate_b3_fb.tsv
+W1114 18:09:59.522000 16691 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 18:09:59.563000 16691 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 2620 câu, 0 câu decode lại vì lặp, 1412s -> /work/code/bench/out/test-clean/whisper_pmaxsim_win_N2000_prompt_gate_b3_fb.tsv
+W1114 18:33:45.057000 17514 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 18:33:45.088000 17514 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 2939 câu, 0 câu decode lại vì lặp, 1512s -> /work/code/bench/out/test-other/whisper_pmaxsim_win_missing_N2000_prompt_gate_b3_fb.tsv
+W1114 18:59:10.745000 17810 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1114 18:59:10.775000 17810 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+`torch_dtype` is deprecated! Use `dtype` instead!
+xong 2939 câu, 1 câu decode lại vì lặp, 1149s -> /work/code/bench/out/test-other/whisper_pmaxsim_win_missing_N2000_prompt_fb.tsv

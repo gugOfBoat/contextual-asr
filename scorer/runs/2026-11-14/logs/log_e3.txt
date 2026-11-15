@@ -1,0 +1,2 @@
++ case $1 in
++ python -m training.train --arch hou25 --name hou25_neg16 --neg_ratio 16 --balance --chunk 48 --epochs 2 --lr 5e-5
