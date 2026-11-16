@@ -1,0 +1,767 @@
+\documentclass[aspectratio=169,xcolor=table]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1,T5]{fontenc}
+\usepackage{amsmath,amssymb,booktabs,array,graphicx,tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\definecolor{Primary}{HTML}{111B88}
+\definecolor{Secondary}{HTML}{101659}
+\definecolor{Accent}{HTML}{F2A900}
+\definecolor{SoftBlue}{HTML}{EAF2F8}
+\definecolor{TextGray}{HTML}{4D5966}
+\definecolor{RiskRed}{HTML}{A23B3B}
+\definecolor{GoodGreen}{HTML}{26734D}
+\mode<presentation>{\usetheme{Madrid}\usecolortheme{default}\setbeamertemplate{navigation symbols}{}}
+\setbeamercolor{structure}{fg=Primary}
+\setbeamercolor{frametitle}{fg=white,bg=Primary}
+\setbeamercolor{title}{fg=white,bg=Primary}
+\setbeamercolor{block body}{fg=black,bg=SoftBlue}
+\setbeamercolor{block body alerted}{fg=black,bg=Accent!12}
+\setbeamercolor{qbox}{fg=black,bg=Accent!22}
+\setbeamercolor{kbox}{fg=black,bg=GoodGreen!13}
+\setbeamercolor{rbox}{fg=black,bg=RiskRed!10}
+\setbeamercolor{section in head/foot}{fg=white,bg=Primary}
+\setbeamercolor{author in head/foot}{fg=white,bg=Secondary}
+\setbeamercolor{date in head/foot}{fg=white,bg=Primary}
+\setbeamerfont{section in head/foot}{size=\tiny,series=\bfseries}
+\setbeamerfont{author in head/foot}{size=\scriptsize}
+\setbeamerfont{date in head/foot}{size=\scriptsize,series=\bfseries}
+\setbeamerfont{frametitle}{series=\bfseries,size=\normalsize}
+\setbeamerfont{title}{series=\bfseries}
+\newcommand{\decklabel}{Contextual ASR -- Scorer}
+\setbeamertemplate{itemize item}{\color{Secondary}$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\color{Accent}$\bullet$}
+\setbeamertemplate{headline}{\leavevmode\begin{beamercolorbox}[wd=\paperwidth,ht=2.7ex,dp=1.1ex,leftskip=.35cm,rightskip=.35cm]{section in head/foot}\insertsectionnavigationhorizontal{\dimexpr\paperwidth-.70cm\relax}{}{}\end{beamercolorbox}}
+\setbeamertemplate{footline}{\leavevmode\hbox{\begin{beamercolorbox}[wd=.55\paperwidth,ht=2.6ex,dp=1ex,leftskip=.35cm,rightskip=.20cm]{section in head/foot}\usebeamerfont{section in head/foot}\insertsectionhead\end{beamercolorbox}\begin{beamercolorbox}[wd=.27\paperwidth,ht=2.6ex,dp=1ex,center]{author in head/foot}\usebeamerfont{author in head/foot}\decklabel\end{beamercolorbox}\begin{beamercolorbox}[wd=.18\paperwidth,ht=2.6ex,dp=1ex,rightskip=.35cm plus1fil]{date in head/foot}\usebeamerfont{date in head/foot}\hfill\insertframenumber\,/\,\inserttotalframenumber\end{beamercolorbox}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\hi}[1]{\textcolor{Primary}{\textbf{#1}}}
+\newcommand{\bad}[1]{\textcolor{RiskRed}{\textbf{#1}}}
+\newcommand{\good}[1]{\textcolor{GoodGreen}{\textbf{#1}}}
+\newcommand{\src}[1]{\par\vfill{\tiny\color{TextGray}[#1]}}
+\newcommand{\ra}{$\rightarrow$}
+\newcommand{\nbox}[2][block body]{\begin{beamercolorbox}[sep=0.45em,rounded=true]{#1}\footnotesize #2\end{beamercolorbox}}
+% Khung cố định cho mỗi phát hiện: câu hỏi ở trên, nghĩa là ở dưới
+\newcommand{\cauhoi}[1]{\begin{beamercolorbox}[sep=0.30em,rounded=true]{qbox}\footnotesize\textbf{Câu hỏi:} #1\end{beamercolorbox}\vspace{0.08cm}}
+\newcommand{\nghiala}[1]{\begin{beamercolorbox}[sep=0.32em,rounded=true]{kbox}\footnotesize\textbf{Nghĩa là:} #1\end{beamercolorbox}}
+\newcommand{\yeu}[1]{\begin{beamercolorbox}[sep=0.40em,rounded=true]{rbox}\footnotesize #1\end{beamercolorbox}}
+\newcommand{\step}[2]{{\footnotesize\textcolor{Primary}{\textbf{#1}}\enspace #2\par\vspace{0.08cm}}}
+
+\title{Scorer biết từ nằm ở đâu}
+\subtitle{Báo cáo chi tiết 13--15/11: đặt câu hỏi gì, làm gì, ra gì, đi tiếp đâu}
+\author{Nhóm Contextual ASR}
+\institute{}
+\date{20/11/2026}
+\setbeamertemplate{title page}{\begin{centering}\vspace*{0.10cm}\includegraphics[height=1.08cm]{../2026-10-23/imgs/logo.png}\par\vspace{0.32cm}\begin{beamercolorbox}[sep=0.50em,center,rounded=true]{title}\usebeamerfont{title}\inserttitle\par\vspace{0.14cm}{\small\insertsubtitle\par}\end{beamercolorbox}\vspace{0.42cm}{\usebeamerfont{author}\insertauthor\par}\vspace{0.10cm}{\usebeamerfont{institute}\insertinstitute\par}\vfill{\usebeamerfont{date}\insertdate\par}\end{centering}}
+
+\begin{document}
+\begin{frame}[plain]\titlepage\end{frame}
+
+% ==================================================================
+\section{Tóm tắt}
+\begin{frame}{Tóm tắt: giữ lại ``từ nằm ở giây nào'' có lợi ở cả scorer lẫn ASR}
+\renewcommand{\arraystretch}{1.18}\footnotesize
+\begin{tabular}{L{5.6cm}L{8.6cm}}
+\toprule
+Câu hỏi & Trả lời \\
+\midrule
+Hou25 yếu cỡ nào nếu đo kỹ hơn ``lọt top-50''? & Từ đúng đứng đầu list: Hou25 \bad{72.6\%}, scorer âm vị 87.5\% \\
+Hou25 sai vì đâu? & \textbf{Từ nhiễu bị đẩy lên} ở câu dài, không phải từ đúng bị chìm \\
+Giả thuyết ``đọc theo vệt chéo'' của Hoàng? & \good{Đúng khi train lại}: 73.3 \ra{} 82.9, định vị được 99\% \\
+Scorer nên xây trên nền nào? & \textbf{Âm vị, hai nhánh, dạy vị trí}: \good{89.3} (một model), định vị lệch 0.02 s \\
+Có vị trí thì lọc list được không? & 2000 từ \ra{} $\sim$2 từ/câu, \good{precision 91\%} (Hou25 top-50: 3--4\%) \\
+Đưa vào Whisper, không prompt, có thắng Hou25? & \good{Thắng về B-WER} (từ hiếm): 9.69 \ra{} 7.53, có ý nghĩa. WER tổng \bad{mới ngang} \\
+Whisper có cần vị trí không? & \good{Cần}: cùng list, nhắc đúng lúc tốt hơn nhắc mọi lúc 0.42 WER \\
+Scorer tốt hơn có giúp prompt không? & \bad{Không}: kênh prompt đã bão hoà \\
+\bottomrule
+\end{tabular}
+\vspace{0.2cm}
+
+{\footnotesize Chạy 14--15/11 trên 2$\times$RTX 4090. LibriSpeech test-other / test-clean, bias list IS21 (2000 từ). Scorer train trên train-clean-100. ASR: Whisper-large-v3-turbo đóng băng. \textbf{Hou25 = bản nhóm tái hiện} (2 epoch).}
+\end{frame}
+
+\begin{frame}{Mạch trình bày}
+\centering
+\begin{tikzpicture}[font=\footnotesize,>={Stealth},
+  st/.style={draw=Primary,fill=SoftBlue,rounded corners=3pt,minimum height=1.25cm,text width=2.05cm,align=center,inner sep=3pt},
+  hl/.style={draw=Accent,fill=Accent!15,rounded corners=3pt,minimum height=1.25cm,text width=2.05cm,align=center,inner sep=3pt,thick}]
+\node[st] (a) at (0,0) {\textbf{1. Bài toán}\\Hou25 làm gì, mất gì};
+\node[st] (b) at (2.45,0) {\textbf{2. Đặt câu hỏi}\\3 quyết định, thước đo mới};
+\node[hl] (c) at (4.9,0) {\textbf{3. Scorer}\\6 phát hiện};
+\node[hl] (d) at (7.35,0) {\textbf{4. Whisper}\\nhắc đúng lúc};
+\node[st] (e) at (9.8,0) {\textbf{5. Tổng hợp}\\giả thuyết vs thực tế};
+\node[st] (f) at (12.25,0) {\textbf{6. Đi tiếp}\\việc + câu hỏi thầy};
+\foreach \u/\v in {a/b,b/c,c/d,d/e,e/f}{\draw[->,thick,Primary] (\u) -- (\v);}
+\end{tikzpicture}
+\vspace{0.5cm}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\nbox{\textbf{Mỗi phát hiện trình bày theo một khung cố định:}\\[3pt]
+\colorbox{Accent!22}{\textbf{Câu hỏi}} \ra{} \textbf{Nghĩ} (giả thuyết) \ra{} \textbf{Thử} (làm gì) \ra{} \textbf{Thấy} (số đo) \ra{} \colorbox{GoodGreen!13}{\textbf{Nghĩa là}}}
+\column{0.48\textwidth}
+\nbox{\textbf{Quy ước:}\\
+\good{xanh} = tốt / khớp giả thuyết; \bad{đỏ} = xấu / lệch giả thuyết.\\
+{[a; b]} = khoảng tin cậy 95\% (bootstrap theo câu). Không chứa 0 = có ý nghĩa thống kê.}
+\end{columns}
+\end{frame}
+
+% ==================================================================
+\section{Bài toán}
+\begin{frame}{Bài toán, kể bằng ví dụ: thư ký, danh bạ và trợ lý}
+\begin{columns}[T]
+\column{0.55\textwidth}
+\nbox{\textbf{Thư ký = ASR (Whisper).} Chép lời tốt với từ thường, hay sai \textbf{tên riêng, từ hiếm}: ``Pileser'' \ra{} ``pillar sir''.}
+\vspace{0.12cm}
+\nbox{\textbf{Danh bạ = bias list, 2000 từ.} Mỗi câu chỉ có \hi{1--3 từ thật sự được nói}. Gần 2000 từ còn lại là \bad{nhiễu}.}
+\vspace{0.12cm}
+\nbox{\textbf{Trợ lý = scorer.} Nghe audio trước, chấm từng từ trong danh bạ, chọn ra vài từ đáng tin để giúp thư ký.}
+\column{0.43\textwidth}
+\nbox[block body alerted]{\textbf{Vì sao không đưa nguyên danh bạ?}\\[2pt]
+Đưa 2000 từ thì thư ký rối và \bad{``nghe ra'' từ không hề có}. Mỗi từ nhiễu bị viết vào là một lỗi.\\[4pt]
+\textbf{Mục tiêu:} viết đúng từ hiếm có trong câu, \textbf{và} không viết bừa từ nhiễu.}
+\vspace{0.12cm}
+\nbox{\textbf{Đo bằng:}\\
+\textbf{B-WER} = tỉ lệ lỗi chỉ trên từ hiếm\\
+\textbf{U-WER} = chỉ trên từ thường\\
+\textbf{WER} = trên mọi từ}
+\end{columns}
+\src{Benchmark IS21 (Le et al. 2021): LibriSpeech test-other 2939 câu, test-clean 2620 câu; list N = 100 / 500 / 1000 / 2000 từ}
+\end{frame}
+
+\begin{frame}{Hou25 (mốc phải thắng) làm thế nào, và làm mất gì}
+\centering
+\begin{tikzpicture}[font=\footnotesize,>={Stealth},
+  box/.style={draw=Primary,fill=SoftBlue,rounded corners=2pt,minimum height=0.9cm,align=center,inner sep=4pt},
+  bad/.style={draw=RiskRed,fill=RiskRed!10,rounded corners=2pt,minimum height=0.9cm,align=center,inner sep=4pt,thick}]
+\node[box] (a) at (0,0) {audio câu};
+\node[box] (l) at (0,-1.6) {list\\2000 từ};
+\node[box] (tts) at (2.5,-1.6) {đọc từng từ\\bằng giọng máy};
+\node[box] (m) at (5.2,-0.8) {bản đồ giống nhau\\\scriptsize thời gian câu $\times$ từ};
+\node[bad] (p) at (8.2,-0.8) {CNN +\\\textbf{lấy trung bình}\\\textbf{cả bản đồ}};
+\node[box] (k) at (10.9,-0.8) {top-50\\\scriptsize điểm cao nhất};
+\node[bad] (w) at (13.4,-0.8) {\textbf{prompt}\\của Whisper};
+\draw[->,thick] (a) -- (m); \draw[->,thick] (l) -- (tts); \draw[->,thick] (tts) -- (m);
+\draw[->,thick] (m) -- (p); \draw[->,thick] (p) -- (k); \draw[->,thick] (k) -- (w);
+\node[font=\scriptsize,text=RiskRed,align=center] at (8.2,-2.2) {\textcircled{\tiny 1} vị trí của từ\\bị vứt ở đây};
+\node[font=\scriptsize,text=RiskRed,align=center] at (13.4,-2.2) {\textcircled{\tiny 2} 50 từ, không biết\\từ nào ở đâu};
+\end{tikzpicture}
+\vspace{0.3cm}
+\begin{columns}[T]
+\column{0.32\textwidth}
+\nbox{\textbf{Chỗ đáng tiếc:} bản đồ ở bước 3 \hi{có} vị trí. Hoàng thấy một \textbf{vệt chéo} đúng ở đoạn từ được nói. Bước 4 lấy trung bình nên vứt nó đi.}
+\column{0.32\textwidth}
+\nbox{\textbf{Top-50:} mỗi câu có 1--3 từ đúng, nên $\sim$48 từ đưa vào prompt là \bad{nhiễu}.}
+\column{0.32\textwidth}
+\nbox{\textbf{Prompt có giới hạn riêng:} Whisper chỉ giữ 223 token cuối; đổi thứ tự là đổi kết quả; mỗi ASR một kiểu prompt.}
+\end{columns}
+\src{Hou25, Interspeech 2025; không có code công bố, nhóm tự tái hiện. Vệt chéo: Hoàng F10, F14}
+\end{frame}
+
+\begin{frame}{Ý tưởng của nhóm: giữ lại vị trí, rồi dùng nó ở cả hai đầu}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\nbox[block body alerted]{\textbf{Một câu:} trợ lý trả ra \hi{(từ, độ tin $p$, vị trí)}, không chỉ một điểm.}
+\vspace{0.15cm}
+\nbox{\textbf{Lợi 1, ở scorer:}\\
+\textbullet\ chấm điểm dựa vào đúng đoạn audio của từ \ra{} ít bị mảng ngẫu nhiên đánh lừa;\\
+\textbullet\ hai từ không thể nằm cùng một chỗ \ra{} cho chúng \textbf{tranh nhau} để loại nhiễu.}
+\vspace{0.12cm}
+\nbox{\textbf{Lợi 2, ở ASR:} nhắc thư ký \textbf{đúng lúc} họ đang nghe đoạn đó. Không cần prompt.}
+\column{0.47\textwidth}
+\textbf{\footnotesize Ví dụ: trợ lý báo ``pileser ở giây 3.0--3.6''}\par\vspace{0.15cm}
+\centering
+\begin{tikzpicture}[font=\scriptsize,>={Stealth}]
+\draw[->,thick] (0,0) -- (6.4,0) node[right] {giây};
+\foreach \xx in {0,1,2,3,4,5,6}{\draw (\xx,0.06) -- (\xx,-0.06) node[below] {\xx};}
+\fill[GoodGreen!30] (3.0,0.12) rectangle (3.6,0.62);
+\node[font=\scriptsize\bfseries,text=GoodGreen] at (3.3,0.85) {pileser};
+\draw[->,RiskRed,thick] (1.0,1.7) -- (1.0,0.15); \node[align=center,text=TextGray] at (1.0,2.05) {giây 1.0:\\im lặng};
+\draw[->,GoodGreen,thick] (3.2,1.7) -- (3.2,0.66); \node[align=center,text=GoodGreen] at (3.2,2.05) {giây 3.2:\\\textbf{nhắc ``pileser''}};
+\draw[->,RiskRed,thick] (5.0,1.7) -- (5.0,0.15); \node[align=center,text=TextGray] at (5.0,2.05) {giây 5.0:\\im lặng};
+\end{tikzpicture}
+\vspace{0.2cm}
+
+{\footnotesize Câu hỏi lớn của 3 ngày: \textbf{giữ lại vị trí thì có lợi thật không, ở phía scorer và phía ASR?}}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Từ điển tên gọi: các scorer và các cách đưa list vào Whisper}
+\renewcommand{\arraystretch}{1.12}\scriptsize
+\begin{columns}[T]
+\column{0.56\textwidth}
+\begin{tabular}{L{2.2cm}L{5.4cm}}
+\toprule
+Scorer & Là gì \\
+\midrule
+Hou25 & bản nhóm tái hiện paper: giọng máy + CNN + trung bình \\
+Hou25 vệt chéo & Hou25, chỉ đổi ``trung bình'' thành ``đọc vệt chéo mạnh nhất'', train lại \\
+pmaxsim & scorer \textbf{âm vị} của nhóm: từ \ra{} phiên âm (P-AY-L-IY-Z-ER); mỗi âm vị tự tìm chỗ giống nhất trong audio (\textbf{khớp tự do}) \\
+pmono & như trên, nhưng âm vị phải khớp \textbf{đúng thứ tự, liền nhau}; ra luôn đoạn [đầu, cuối] \\
+``dạy vị trí'' & khi train, từ đúng chỉ được tính điểm ở đúng đoạn nó được nói (căn chỉnh MFA) \\
+cộng điểm & cộng điểm pmaxsim + pmono (2 model riêng) \\
+\rowcolor{Accent!15}\textbf{pdual2\_dl} & \textbf{một model, hai nhánh} (tự do + đúng thứ tự), dạy vị trí: \textbf{scorer đề xuất} \\
+\bottomrule
+\end{tabular}
+\column{0.42\textwidth}
+\begin{tabular}{L{2.0cm}L{3.6cm}}
+\toprule
+Cách đưa vào ASR & Là gì \\
+\midrule
+prompt top-50 & như Hou25: 50 từ vào prompt \\
+nhắc mọi lúc & cộng $\lambda$ vào xác suất các từ được chọn ở \textbf{mọi bước} viết \\
+\rowcolor{Accent!15}\textbf{nhắc đúng lúc} & chỉ cộng khi Whisper đang nghe trong đoạn của từ; mỗi từ nhắc một lần \\
+trần & biết đúng từ + đúng chỗ (MFA): mức tốt nhất cách nhắc này đạt được \\
+\bottomrule
+\end{tabular}
+\vspace{0.15cm}
+
+{\scriptsize Mọi scorer dùng chung encoder Whisper-large-v3 \textbf{đóng băng}, cửa sổ trượt 30 s.}
+\end{columns}
+\end{frame}
+
+% ==================================================================
+\section{Đặt câu hỏi}
+\begin{frame}{Đặt câu hỏi: 3 quyết định cần ra, luật viết trước khi chạy}
+\begin{columns}[T]
+\column{0.58\textwidth}
+\renewcommand{\arraystretch}{1.25}\footnotesize
+\begin{tabular}{L{3.1cm}L{4.9cm}}
+\toprule
+Quyết định & Luật đặt trước \\
+\midrule
+\textbf{D1.} Scorer xây trên nền nào: sửa Hou25 hay âm vị? & Hou25 sửa tốt nhất phải đạt Sạch@1 $\geq$ 85.7 (mức của âm vị khi đó) thì mới giữ \\
+\textbf{D2.} Whisper có cần vị trí không? & Cùng list, nhắc đúng lúc phải tốt hơn nhắc mọi lúc, có ý nghĩa thống kê \\
+\textbf{D3.} Nhắc thế nào cho hợp lý? & Chọn ngưỡng, $\lambda$, biên trên \textbf{dev-other}, không chọn trên test \\
+\bottomrule
+\end{tabular}
+\vspace{0.15cm}
+
+{\footnotesize Viết luật trước để không ``thấy kết quả rồi mới chọn luật''. Kế hoạch: \texttt{scorer/PLAN-2011.md}.}
+\column{0.40\textwidth}
+\renewcommand{\arraystretch}{1.15}\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{L{1.45cm}L{3.9cm}}
+\toprule
+Khi nào & Làm gì \\
+\midrule
+13--14/11 CPU & phân tích lại checkpoint cũ: từ bị sót, đo ở R nhỏ, ASR có nhầm chỗ không \\
+14/11 đêm GPU & cửa sổ 30 s; train lại 3 bản Hou25; list nghe giống; train pmaxsim, pmono; đưa vào Whisper \\
+15/11 sáng GPU & dạy vị trí; cộng điểm; một model hai nhánh; list 100--2000 \\
+15/11 & báo cáo, slide; xoá container \\
+\bottomrule
+\end{tabular}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Thước đo mới: ``lọt top-50'' quá dễ, nên đo ``từ đúng có đứng đầu không''}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\nbox[block body alerted]{\textbf{Vì sao bỏ top-50?} Giống chấm trắc nghiệm mà cho khoanh 50 đáp án: hệ nào cũng 95--98\%. Mình chỉ đưa 2--3 từ cho ASR, nên \textbf{từ đúng phải đứng đầu}.}
+\vspace{0.15cm}
+\nbox{\textbf{Sạch@K} = \% từ đúng có \textbf{ít hơn K từ nhiễu} đứng trên nó.\\[3pt]
+Ví dụ: câu có \texttt{pileser} và \texttt{assyria}. Xếp hạng: \texttt{assyria}, \texttt{pileser}, \texttt{flauve}, \ldots\\
+\ra{} \texttt{pileser} vẫn \good{Sạch@1}, vì đứng trên nó chỉ là một từ đúng khác, không phải nhiễu.}
+\column{0.47\textwidth}
+\renewcommand{\arraystretch}{1.2}\scriptsize
+\begin{tabular}{L{2.0cm}L{3.9cm}}
+\toprule
+Thước đo khác & Nghĩa \\
+\midrule
+Đúng@chỗ & tại đoạn audio của từ đúng, nó có thắng mọi từ nhiễu đặt cùng chỗ không \\
+Định vị & lệch bao nhiêu giây so với vị trí thật (MFA) \\
+Báo nhầm & số từ nhiễu điểm cao ($p \geq 0.5$) mỗi câu, chia theo độ dài câu \\
+Từ Whisper nghe sai & Sạch@1 chỉ trên từ mà Whisper tự viết sai: nhóm \textbf{cần} scorer nhất \\
+\bottomrule
+\end{tabular}
+\end{columns}
+\end{frame}
+
+% ==================================================================
+\section{Scorer: 6 phát hiện}
+\begin{frame}{Đo lại bằng Sạch@1: khoảng cách thật là 15 điểm, không phải 3}
+\cauhoi{Top-50 có che mất khác biệt giữa Hou25 và scorer âm vị không?}
+\begin{columns}[T]
+\column{0.60\textwidth}
+\centering\includegraphics[width=\linewidth]{imgs/sach_k.pdf}
+\column{0.38\textwidth}
+\renewcommand{\arraystretch}{1.15}\footnotesize
+\begin{tabular}{lcc}
+\toprule
+& top-50 & \textbf{Sạch@1} \\
+\midrule
+Hou25 & 95.4 & \bad{72.6} \\
+âm vị & 98.4 & \good{87.5} \\
+\midrule
+cách nhau & 3 & \textbf{15} \\
+\bottomrule
+\end{tabular}
+\vspace{0.2cm}
+
+\nghiala{thước cũ làm Hou25 trông ngang các hệ khác. Ở thước mới, cứ 4 từ đúng thì Hou25 để \bad{hơn 1 từ} bị nhiễu vượt mặt.}
+\end{columns}
+\src{test-other, list N2000; REPORT-1115 mục 3, 5, 7c; SMALL\_R N1}
+\end{frame}
+
+\begin{frame}{Phát hiện 1: Hou25 sai vì từ nhiễu nổi lên, không phải vì từ đúng bị chìm}
+\cauhoi{Khi từ đúng bị vượt, ai vượt nó, và vì sao?}
+\begin{columns}[T]
+\column{0.53\textwidth}
+\centering\includegraphics[width=0.92\linewidth]{imgs/bao_nham.pdf}\par\vspace{0.05cm}
+\raggedright{\scriptsize \textbf{Lỗi nhặt được trên đường:} encoder Whisper chỉ nhìn 30 s đầu \ra{} từ sau giây 30 bị sót ở mọi hệ (5--6/6). Sửa bằng cửa sổ trượt: \good{0/6}.}
+\column{0.45\textwidth}
+\step{Nghĩ:}{trước đây nhóm tin ``lấy trung bình làm \textbf{từ đúng} bị pha loãng''.}
+\step{Thử:}{xem kỹ mọi lần từ đúng bị vượt.}
+\step{Thấy:}{\textbullet\ 96\% số lần, từ vượt lên là từ \bad{khác hẳn}, không phải từ nghe giống.\\
+\textbullet\ 76\% từ báo nhầm \bad{không giống đoạn âm nào} trong câu.\\
+\textbullet\ Câu càng dài càng báo nhầm: 1.4 \ra{} 12.4 từ/câu.}
+\nghiala{câu dài có nhiều mảng ngẫu nhiên ``trông giống vệt''; trung bình cả bản đồ bị đánh lừa. \bad{Ngược} giả thuyết cũ.}
+\end{columns}
+\src{test-other N2000; SMALL\_R N2--N4; TAIL mục 2}
+\end{frame}
+
+\begin{frame}{Phát hiện 2: giả thuyết của Hoàng đúng: đọc theo vệt chéo, rồi train lại}
+\cauhoi{Nếu Hou25 đọc vệt chéo thay vì lấy trung bình cả bản đồ, rồi train lại, thì có hết báo nhầm không?}
+\begin{columns}[T]
+\column{0.56\textwidth}
+\renewcommand{\arraystretch}{1.15}\scriptsize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{L{2.4cm}cccc}
+\toprule
+Hou25, cách gộp & Sạch@1 & báo nhầm & từ ASR & định vị \\
+ & & câu $\geq$20 s & nghe sai & trúng \\
+\midrule
+trung bình (gốc) & 73.3 & 6.1 & 46.3 & 79\% \\
+ô cao nhất, không cần vệt & 73.8 & 8.0 & 47.2 & 4\% \\
+\rowcolor{Accent!15}\textbf{vệt chéo} & \textbf{82.9} & \textbf{1.9} & \textbf{60.9} & \textbf{99\%} \\
+\bottomrule
+\end{tabular}
+\vspace{0.15cm}
+
+{\footnotesize Cùng dữ liệu, seed, số epoch; \textbf{chỉ khác bước gộp}. $\Delta$Sạch@1 = \good{+9.5 [+7.9; +11.2]}.}
+\column{0.42\textwidth}
+\step{Nghĩ (Hoàng):}{vệt chéo = âm của từ khớp audio theo đúng trình tự. Đọc vệt thì bỏ được mảng ngẫu nhiên.}
+\step{Thử:}{3 bản Hou25 train chung một lượt. ``Ô cao nhất'' là \textbf{đối chứng}: đọc cục bộ, không cần thành vệt.}
+\step{Thấy:}{vệt chéo +9.5, báo nhầm câu dài giảm 3 lần, định vị 99\%. Đối chứng \bad{không} tăng.}
+\end{columns}
+\nghiala{thứ có ích là \hi{hình dạng vệt} (đúng thứ tự, liền nhau), không phải ``đọc chỗ cao nhất''. Lần 09/11 chỉ đổi lúc chấm thì không lợi: model phải được \textbf{train lại} cho cách đọc mới.}
+\src{test-other N2000, 2939 câu; REPORT-1115 mục 5}
+\end{frame}
+
+\begin{frame}{Phát hiện 3: nền tốt nhất là âm vị, không phải giọng máy \ra{} chốt D1}
+\cauhoi{Hou25 sửa xong có đuổi kịp âm vị không? Giọng máy có giỏi hơn với từ nghe giống không?}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\renewcommand{\arraystretch}{1.15}\footnotesize
+\begin{tabular}{L{2.7cm}cc}
+\toprule
+test-other & Sạch@1 & list nghe giống \\
+\midrule
+Hou25 (giọng máy) & 72.6 & 51.4 \\
+Hou25 vệt chéo & 82.9 & -- \\
+\rowcolor{Accent!15}âm vị (pmaxsim) & \textbf{87.5} & \textbf{64.7} \\
+\bottomrule
+\end{tabular}
+\vspace{0.15cm}
+
+{\footnotesize ``List nghe giống'': thay nhiễu bằng nhiều từ gần âm với từ đúng. Ở đây 21\% lần bị vượt là do từ gần âm (list thường: 3--7\%).}
+\column{0.48\textwidth}
+\step{Luật D1:}{Hou25 sửa phải đạt $\geq$ 85.7. Đạt 82.9 \ra{} \bad{không đạt}.}
+\step{Từ nghe giống:}{âm vị vẫn hơn giọng máy \good{9.7 điểm}. Giọng máy không có lợi thế như kỳ vọng.}
+\step{Tốc độ:}{âm vị 4--7 ms/câu; Hou25 $\sim$1200 ms. Nhanh hơn $\sim$\textbf{200 lần}, không cần TTS.}
+\step{Thử và bỏ:}{cho thấy 16 từ nhiễu thay vì 4 lúc train: \bad{82.1} so với 87.7 (dev).}
+\end{columns}
+\vspace{0.1cm}
+\nghiala{\textbf{D1 = nền âm vị.} Hou25 + vệt chéo vẫn có ích: làm \textbf{đối thủ mạnh} (``Hou25 có vị trí'') trong paper.}
+\src{REPORT-1115 mục 3, 5, 6}
+\end{frame}
+
+\begin{frame}{Phát hiện 4: khớp tự do và khớp đúng thứ tự bù nhau}
+\cauhoi{Với âm vị, nên cho âm vị khớp tự do hay ép khớp đúng thứ tự như một vệt?}
+\begin{columns}[T]
+\column{0.47\textwidth}
+\renewcommand{\arraystretch}{1.08}\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{L{1.55cm}L{2.3cm}L{2.3cm}}
+\toprule
+& \textbf{khớp tự do} (pmaxsim): mỗi âm vị tự tìm chỗ giống nhất & \textbf{đúng thứ tự} (pmono): âm vị khớp liền nhau như một vệt \\
+\midrule
+Sạch@1 & \good{87.5} & 85.8 \\
+precision $p \geq 0.5$ & 75.8 & \good{82.3} \\
+định vị lệch & 0.05 s & \good{0.02 s} \\
+mạnh ở & \good{ít sót} & \good{ít nhiễu, biên chuẩn} \\
+\bottomrule
+\end{tabular}
+\column{0.51\textwidth}
+\step{Thử:}{cộng điểm hai kiểu. \textbf{Đối chứng:} cộng hai model \textbf{cùng} kiểu (gộp model nào cũng lợi một chút).}
+\renewcommand{\arraystretch}{1.12}\footnotesize
+\begin{tabular}{L{4.4cm}c}
+\toprule
+test-other & Sạch@1 \\
+\midrule
+pmaxsim riêng & 87.2 \\
+pmaxsim + pmaxsim (cùng kiểu) & 88.3 (+1.1) \\
+pmaxsim + pmaxsim 960h (gấp 9.6 dữ liệu) & 89.7 \\
+\rowcolor{Accent!15}\textbf{pmaxsim + pmono} (khác kiểu) & \textbf{89.8} (\textbf{+2.6}) \\
+\bottomrule
+\end{tabular}
+\end{columns}
+\vspace{0.08cm}
+\nghiala{+1.1 là lợi chung của gộp model; \hi{+1.5 còn lại do hai kiểu nhìn khác nhau}. Thêm nhánh đúng thứ tự lợi ngang thêm 9.6 lần dữ liệu \ra{} thiết kế \textbf{một model hai nhánh}.}
+\end{frame}
+
+\begin{frame}{Phát hiện 5: dạy vị trí lúc train giúp thêm \ra{} scorer đề xuất}
+\cauhoi{Lúc train, chỉ tính điểm từ đúng ở đúng đoạn nó được nói thì scorer có học tốt hơn không?}
+\begin{columns}[T]
+\column{0.44\textwidth}
+\centering
+\begin{tikzpicture}[font=\tiny,>={Stealth},
+  box/.style={draw=Primary,fill=SoftBlue,rounded corners=2pt,minimum height=0.55cm,align=center,inner sep=2pt},
+  acc/.style={draw=Accent,fill=Accent!15,rounded corners=2pt,minimum height=0.55cm,align=center,inner sep=2pt,thick}]
+\node[box,text width=1.5cm] (a) at (0,0) {audio \ra{} encoder Whisper (đóng băng)};
+\node[box,text width=1.5cm] (w) at (0,-1.2) {từ \ra{} âm vị};
+\node[box,text width=1.25cm] (m1) at (2.15,0) {bản đồ 1\\âm vị $\times$ frame};
+\node[box,text width=1.25cm] (m2) at (2.15,-1.2) {bản đồ 2\\âm vị $\times$ frame};
+\node[acc,text width=1.75cm] (b1) at (4.35,0) {\textbf{khớp tự do}\\\ra{} ít sót};
+\node[acc,text width=1.75cm] (b2) at (4.35,-1.2) {\textbf{khớp đúng thứ tự}\\\ra{} ít nhiễu, ra biên};
+\node[box] (o) at (4.35,-2.25) {(từ, $p$, đầu, cuối)};
+\draw[->] (a.east) -- (m1.west); \draw[->] (a.east) -- (m2.west);
+\draw[->] (w.east) -- (m1.west); \draw[->] (w.east) -- (m2.west);
+\draw[->] (m1) -- (b1); \draw[->] (m2) -- (b2);
+\draw[->] (b1.east) -- ++(0.2,0) |- (o.east); \draw[->] (b2.south) -- (o.north);
+\node[text=TextGray,align=center] at (1.0,-2.25) {train: từ đúng chỉ được\\tính điểm trong đoạn MFA};
+\end{tikzpicture}
+\column{0.54\textwidth}
+\renewcommand{\arraystretch}{1.0}\scriptsize
+\begin{tabular}{L{3.3cm}ccc}
+\toprule
+test-other, N2000 & Sạch@1 & nghe giống & ASR sai \\
+\midrule
+Hou25 (tái hiện) & 72.6 & 51.4 & 45.9 \\
+khớp tự do & 87.5 & 64.7 & 64.5 \\
+\quad + dạy vị trí & 88.3 & 65.0 & 65.9 \\
+đúng thứ tự & 85.8 & 60.5 & 64.4 \\
+\quad + dạy vị trí & 88.3 & 65.3 & \good{69.2} \\
+\rowcolor{Accent!15}\textbf{hai nhánh, 1 model, dạy vị trí} & \textbf{89.3} & \textbf{67.7} & \textbf{70.9} \\
+cộng điểm 2 model riêng & 90.8 & 69.6 & -- \\
+\bottomrule
+\end{tabular}
+\vspace{0.05cm}
+
+{\tiny Hai nhánh phải có \textbf{bản đồ riêng}; dùng chung chỉ được 88.3. test-clean: 93.4 \ra{} 94.7. ``ASR sai'' = từ Whisper tự viết sai.}
+\end{columns}
+\vspace{0.05cm}
+\nghiala{dạy vị trí giúp nhánh đúng thứ tự nhiều nhất (+2.5), và giúp nhóm từ Whisper nghe sai nhiều nhất. \textbf{Scorer đề xuất: 89.3}, định vị lệch 0.02 s; kém bản cộng điểm 1.5.}
+\end{frame}
+
+\begin{frame}{Phát hiện 6: có vị trí thì lọc được list (cho các từ tranh nhau tại chỗ)}
+\cauhoi{Hai từ không thể cùng nằm ở một chỗ. Cho chúng tranh nhau thì loại được bao nhiêu nhiễu?}
+\begin{columns}[T]
+\column{0.40\textwidth}
+\step{Nghĩ:}{top-50 của Hou25 đưa $\sim$48 từ nhiễu mỗi câu. Muốn bỏ prompt thì phải lọc còn vài từ.}
+\step{Luật (không train thêm):}{hai từ có đoạn audio trùng nhau (IoU $>$ 0.3) thì chỉ giữ từ điểm cao hơn. Sau đó lấy các từ có $p \geq \tau$.}
+\step{Ví dụ:}{ở 3.0--3.6 s có \texttt{pileser} ($p$ 0.8) và \texttt{pillar} (0.4) \ra{} giữ \texttt{pileser}, loại \texttt{pillar}.}
+\column{0.58\textwidth}
+\renewcommand{\arraystretch}{1.12}\scriptsize
+\begin{tabular}{L{3.4cm}ccc}
+\toprule
+test-other, N2000 & giữ từ đúng & nhiễu/câu & precision \\
+\midrule
+Hou25 top-50 (cách của paper) & 95.4\% & $\sim$48 & \bad{3--4\%} \\
+pmaxsim, $\tau$ 0.5, chưa tranh & 91.2\% & 0.71 & 69.5\% \\
+pmaxsim, $\tau$ 0.5, \textbf{có tranh} & 89.9\% & 0.40 & 80.0\% \\
+\rowcolor{Accent!15}\textbf{cộng điểm có dạy vị trí}, $\tau$ 0.5, có tranh & \textbf{91.1\%} & \textbf{0.16} & \good{91.3\%} \\
+\bottomrule
+\end{tabular}
+\vspace{0.1cm}
+
+{\scriptsize Tranh nhau đổi 1--2 điểm từ đúng lấy +10 điểm precision. Mỗi câu còn $\sim$2 từ được giữ (1--3 từ đúng + rất ít nhiễu).}
+\end{columns}
+\vspace{0.1cm}
+\nghiala{vị trí biến bài ``tìm 1 trong 2000'' thành nhiều bài nhỏ ``tìm 1 trong vài từ cùng chỗ''.}
+\src{REPORT-1115 mục 4, 6c}
+\end{frame}
+
+\begin{frame}{Phát hiện 6 (tiếp): tranh nhau trên hai câu thật}
+\begin{columns}[T]
+\column{0.64\textwidth}
+\centering\includegraphics[width=\linewidth,height=4.9cm,keepaspectratio]{imgs/tranh_nhau.pdf}
+\column{0.34\textwidth}
+\nbox{\textbf{Cách đọc:} mỗi thanh = một từ, đặt ở đoạn scorer đoán. \good{Xanh} đúng, \bad{đỏ} nhiễu, xám bị loại.}
+\vspace{0.08cm}
+\nbox{\textbf{Câu A:} mọi nhiễu trùng chỗ với từ đúng đều \good{bị loại}.}
+\vspace{0.08cm}
+\yeu{\textbf{Câu B, chỗ yếu:} \texttt{flauve} $\approx$ ``fall'', \texttt{emperour} $\approx$ ``empire'' (từ thường). Không từ hiếm nào tranh chỗ nên chúng \bad{lọt}.}
+\vspace{0.08cm}
+\nghiala{cần ô \textbf{``ở đây không có từ nào''} (việc số 1).}
+\end{columns}
+\end{frame}
+
+% ==================================================================
+\section{Whisper}
+\begin{frame}{Nhắc Whisper đúng lúc: làm thế nào}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\nbox{\textbf{Bước 1. Biết Whisper đang nghe giây nào.} Mỗi lần Whisper viết một chữ, đọc các ``đầu chú ý'' (alignment heads) bên trong nó \ra{} ra giây đang nghe.}
+\vspace{0.1cm}
+\nbox{\textbf{Bước 2. Nhắc.} Từ nào có đoạn chứa giây đó ($\pm$ 0.05 s) thì cộng $\lambda$ = 5 vào xác suất token đầu của nó.}
+\vspace{0.1cm}
+\nbox{\textbf{Bước 3. Chặn lặp.} Mỗi từ chỉ nhắc đến khi đã được viết đủ số lần (trước khi chặn: một câu viết ``gordon'' 106 lần). Câu nào Whisper lặp chữ thì decode lại không nhắc, áp cho \textbf{mọi hệ}.}
+\column{0.47\textwidth}
+\nbox[block body alerted]{\textbf{Trước đó đã kiểm (CPU):} khi không có vị trí, Whisper có viết từ vào \textbf{sai chỗ} không?\\[3pt]
+\textbullet\ Viết từ hiếm này vào chỗ từ hiếm khác: \good{$\leq$ 0.36\%}, gần như không. Whisper nghe audio nên tự đặt đúng chỗ.\\
+\textbullet\ Nhưng \bad{viết thêm} ở chỗ không có thì nhiều: nhắc mọi lúc 24\%, prompt 1 từ thì lặp từ đó 68.5\%.\\
+\textbullet\ Nhắc đúng lúc (vị trí MFA): chèn $\approx$ 0.}
+\vspace{0.1cm}
+\nghiala{vị trí cần để biết \textbf{lúc nào im lặng}, hơn là để biết đặt từ ở đâu.}
+\end{columns}
+\src{Cách lấy giây đang nghe: Simul-Whisper (arXiv 2406.10052 §2.1). Tham số chọn trên dev-other 400 câu. Kiểm sai chỗ: SMALL\_R N6}
+\end{frame}
+
+\begin{frame}{Kết quả trên Whisper: thắng Hou25 ở từ hiếm, không cần prompt}
+\begin{columns}[T]
+\column{0.60\textwidth}
+\renewcommand{\arraystretch}{1.12}\footnotesize
+\begin{tabular}{L{4.1cm}cc}
+\toprule
+WER / B-WER & test-other & test-clean \\
+\midrule
+không giúp gì & 4.25 / 17.92 & 2.16 / 8.64 \\
+\textbf{Hou25}: prompt top-50 & 3.39 / 9.69 & 1.66 / 5.15 \\
+scorer mới: prompt top-50 & 3.43 / 10.03 & -- \\
+scorer mới: nhắc \textbf{mọi lúc} & 3.56 / 7.17 & -- \\
+\rowcolor{Accent!15}\textbf{scorer mới: nhắc đúng lúc} & \textbf{3.14} / \textbf{7.53} & \textbf{1.59} / \textbf{3.93} \\
+scorer mới: prompt + nhắc đúng lúc & 3.22 / \textbf{6.76} & \textbf{1.47} / \textbf{3.12} \\
+\midrule
+trần: đúng từ + vị trí MFA & 2.99 / 5.99 & 1.53 / 2.77 \\
+\bottomrule
+\end{tabular}
+\vspace{0.1cm}
+
+{\scriptsize Scorer mới = cộng điểm hai nhánh có dạy vị trí, $\sim$2.3 từ/câu được nhắc. Bản 1 model: 3.22 / 7.65 và 1.58 / 3.83.}
+\column{0.38\textwidth}
+\nbox{\textbf{So với Hou25, B-WER (từ hiếm):}\\
+other \good{$-$2.16 [$-$2.89; $-$1.54]}\\
+clean \good{$-$1.22 [$-$1.76; $-$0.68]}\\
+từ thường (U-WER) không đổi.}
+\vspace{0.1cm}
+\yeu{\textbf{WER tổng:} $-$0.25 [$-$0.47; +0.03] \ra{} \bad{chưa có ý nghĩa}. Khi nói ``thắng Hou25'' phải kèm chữ \textbf{B-WER}.}
+\vspace{0.1cm}
+\nbox{Thêm prompt: B-WER tốt nhất và WER thắng có ý nghĩa, nhưng chèn sai gấp đôi (113 so với 49).}
+\end{columns}
+\src{N2000; REPORT-1115 mục 7b, 7c}
+\end{frame}
+
+\begin{frame}{Đọc bảng Whisper: ba phát hiện về phía ASR}
+\begin{columns}[T]
+\column{0.32\textwidth}
+\nbox[block body alerted]{\textbf{\textcircled{\scriptsize 1} Whisper cần vị trí \ra{} chốt D2.}\\[3pt]
+Cùng list $\sim$2 từ/câu:\\
+nhắc mọi lúc: WER 3.56\\
+nhắc đúng lúc: WER \good{3.14}\\
+$\Delta$ = $-$0.42 [$-$0.51; $-$0.34]\\[3pt]
+Nhắc mọi lúc làm \bad{từ thường hỏng} (U-WER 2.62 \ra{} 3.13): từ hiếm bị viết đè lên chỗ khác.}
+\column{0.32\textwidth}
+\nbox[block body alerted]{\textbf{\textcircled{\scriptsize 2} Kênh prompt đã ``đầy''.}\\[3pt]
+Scorer mới hơn Hou25 \textbf{17 điểm} Sạch@1.\\
+Đưa top-50 vào prompt: B-WER 10.03, \bad{không hơn} Hou25 (9.69).\\[3pt]
+\ra{} Trợ lý giỏi hơn mà đi qua cửa prompt thì vô ích.}
+\column{0.32\textwidth}
+\nbox{\textbf{\textcircled{\scriptsize 3} Còn $\sim$1.5 điểm B-WER tới trần.}\\[3pt]
+Trần 5.99, hiện tại 7.53.\\
+Tách trên dev-other:\\
+trần 3.99\\
+\ra{} vị trí do scorer đoán: 5.61\\
+\ra{} cả list do scorer chọn: 7.22\\[3pt]
+Một nửa do \textbf{vị trí}, một nửa do \textbf{list}.}
+\end{columns}
+\vspace{0.3cm}
+\nghiala{đầu tư vào scorer chỉ có lời khi đầu ra là \hi{(từ, $p$, vị trí)} và được dùng \hi{lúc decode}. Cải thiện thứ hạng rồi đưa vào prompt thì không.}
+\src{test-other N2000 (REPORT-1115 mục 7, 7b)}
+\end{frame}
+
+\begin{frame}{Theo cỡ list: list càng dài precision càng giảm, nhưng B-WER chỉ tăng nhẹ}
+\centering\includegraphics[height=3.6cm]{imgs/theo_N.pdf}\par\vspace{0.1cm}
+\begin{columns}[T]
+\column{0.46\textwidth}
+\renewcommand{\arraystretch}{1.0}\scriptsize
+\begin{tabular}{lcccc}
+\toprule
+List & Sạch@1 & precision & WER & B-WER \\
+\midrule
+N100 & 98.2 & 97.8 & 2.96 & 7.14 \\
+N500 & 94.1 & 89.2 & 3.04 & 7.37 \\
+N1000 & 92.6 & 81.4 & 3.08 & 7.47 \\
+N2000 & 89.0 & 69.9 & 3.22 & 7.65 \\
+\bottomrule
+\end{tabular}
+\column{0.50\textwidth}
+\nghiala{precision 98 \ra{} 70\% mà B-WER chỉ 7.14 \ra{} 7.65: cách làm \good{bền với list lớn}.}
+\vspace{0.08cm}
+\yeu{\bad{Chưa có Hou25} ở N100--1000 trong cùng pipeline.}
+\end{columns}
+\src{test-other; scorer hai nhánh 1 model; $p \geq 0.3$ sau tranh nhau; nhắc đúng lúc, không prompt (REPORT-1115 mục 7c)}
+\end{frame}
+
+% ==================================================================
+\section{Tổng hợp}
+\begin{frame}{Giả thuyết đặt trước so với thực tế}
+\renewcommand{\arraystretch}{1.13}\scriptsize
+\begin{tabular}{L{5.6cm}L{5.4cm}L{2.6cm}}
+\toprule
+Giả thuyết trước khi chạy & Thực tế & Kết luận \\
+\midrule
+Top-50 che khác biệt & 3 điểm ở top-50, 15 điểm ở Sạch@1 & \good{đúng} \\
+Hou25 sai vì từ đúng bị pha loãng & sai vì \textbf{từ nhiễu nổi lên} ở câu dài & \bad{sai}, đổi cách nhìn \\
+Đọc theo vệt + train lại giảm báo nhầm & +9.5 Sạch@1, báo nhầm câu dài giảm 3 lần & \good{đúng} \\
+Hou25 sửa đuổi kịp âm vị ($\geq$ 85.7) & 82.9 & \bad{không} \ra{} nền âm vị \\
+Train với nhiều nhiễu hơn giúp & 82.1 so với 87.7 & \bad{không} \ra{} bỏ \\
+Giọng máy phân biệt từ nghe giống tốt hơn & âm vị hơn 9.7 điểm & \bad{không} \ra{} bỏ 2 tầng \\
+Cửa sổ trượt sửa lỗi 30 s & sót 0/6 & \good{đúng} \\
+Ép khớp đúng thứ tự xếp hạng tốt hơn & $-$1.7, nhưng bù cho khớp tự do (+2.6) & \textbf{một phần} \\
+Whisper cần vị trí & $\Delta$WER $-$0.42, có ý nghĩa & \good{đúng} \\
+Nhắc đúng lúc thắng prompt Hou25 & B-WER thắng; WER tổng chưa & \textbf{một phần} \\
+List toàn nhiễu không làm hại & WER vẫn tệ hơn 0.25 & \bad{chưa đạt} \\
+\bottomrule
+\end{tabular}
+\vspace{0.15cm}
+
+{\footnotesize Kết quả âm cũng được giữ lại: biết cái gì \textbf{không} giúp để khỏi thử lại.}
+\end{frame}
+
+\begin{frame}{Ba quyết định đã ra, và câu chuyện cho paper}
+\begin{columns}[T]
+\column{0.46\textwidth}
+\renewcommand{\arraystretch}{1.25}\footnotesize
+\begin{tabular}{L{1.0cm}L{4.9cm}}
+\toprule
+& Kết quả \\
+\midrule
+\textbf{D1} & \textbf{Âm vị, hai nhánh, dạy vị trí}. Hou25 + vệt chéo làm đối thủ mạnh \\
+\textbf{D2} & Whisper \good{cần} vị trí \\
+\textbf{D3} & tranh nhau tại chỗ + $p \geq 0.3$; $\lambda$ = 5; biên 0.05 s; nhắc một lần; chống lặp. Chọn trên dev, \textbf{chưa tối ưu} \\
+\bottomrule
+\end{tabular}
+\column{0.52\textwidth}
+\centering
+\begin{tikzpicture}[font=\scriptsize,>={Stealth},
+  box/.style={draw=Primary,fill=SoftBlue,rounded corners=2pt,align=center,inner sep=4pt,text width=4.6cm}]
+\node[box,draw=RiskRed,fill=RiskRed!10] (a) at (0,0) {Hou25 bỏ vị trí \ra{} thua 15 điểm Sạch@1, vì báo nhầm ở câu dài};
+\node[box] (b) at (0,-1.35) {\textbf{Scorer giữ vị trí:} vệt chéo / khớp đúng thứ tự / dạy vị trí \ra{} 73 \ra{} 89; lọc 2000 từ còn $\sim$2, precision 91\%};
+\node[box,draw=GoodGreen,fill=GoodGreen!12] (c) at (0,-2.85) {\textbf{ASR dùng vị trí:} prompt đã đầy; nhắc đúng lúc \ra{} B-WER 9.69 \ra{} 7.53, không prompt};
+\draw[->,thick] (a) -- (b); \draw[->,thick] (b) -- (c);
+\end{tikzpicture}
+\end{columns}
+\vspace{0.2cm}
+\nbox[block body alerted]{\textbf{Đóng góp có thể đặt ở:} (a) scorer hai nhánh có vị trí; (b) nhắc logit theo vị trí, không cần prompt; (c) cả hai thành một hệ. \ra{} \textbf{câu hỏi số 1 xin ý kiến thầy}.}
+\end{frame}
+
+% ==================================================================
+\section{Đi tiếp}
+\begin{frame}{Chỗ còn yếu (phải nói thật)}
+\renewcommand{\arraystretch}{1.25}\footnotesize
+\begin{tabular}{L{4.3cm}L{4.6cm}L{4.9cm}}
+\toprule
+Chỗ yếu & Số đo & Hậu quả nếu không sửa \\
+\midrule
+WER tổng chưa thắng Hou25 có ý nghĩa & $-$0.25 [$-$0.47; +0.03] (không prompt) & chỉ được claim B-WER \\
+Audio không có từ nào trong list & WER 4.49 so với 4.25 (không giúp gì) & reviewer sẽ hỏi ngay: ``có viết bừa không?'' \\
+Nhiễu khớp một từ thường trong câu & \texttt{flauve} $\sim$ ``fall'', \texttt{emperour} $\sim$ ``empire'' & luật tranh nhau không loại được \\
+Một model kém bản cộng điểm & 89.3 so với 90.8; điểm dev nhảy 84.8--90.2 giữa các epoch & bản tốt nhất tốn 2 model; chọn checkpoint còn nhiễu \\
+Hou25 là bản nhóm tái hiện & 2 epoch, chưa phải checkpoint của Hoàng & có thể bị chê ``đối thủ yếu'' \\
+Mới có Whisper & cách nhắc dựa vào alignment heads của Whisper & chưa nói được ``dùng cho mọi ASR'' \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Bước tiếp theo, theo thứ tự ưu tiên}
+\renewcommand{\arraystretch}{1.12}\scriptsize
+\begin{tabular}{cL{5.4cm}L{3.9cm}L{3.9cm}}
+\toprule
+\# & Việc & Vì sao & Xong khi \\
+\midrule
+1 & Dạy scorer nói \textbf{``chỗ này không có từ nào''}; tranh nhau học được thay luật IoU & list toàn nhiễu +0.25 WER; ví dụ \texttt{flauve} & list toàn nhiễu gần như không làm WER tệ đi \\
+2 & Nâng \textbf{nhóm từ Whisper nghe sai}: nhiều cách phát âm, nhiễu gần âm khi train & đang 70.9; nhóm quyết định B-WER & +3 điểm trên nhóm này \\
+3 & Một model đuổi kịp bản cộng điểm: loss riêng từng nhánh, trung bình checkpoint, dev lớn hơn & 89.3 so với 90.8 & Sạch@1 $\geq$ 90.5 \\
+4 & Train 960 giờ thay vì 100 giờ & lần trước +1.8 Sạch@1 & bản cuối cho paper \\
+5 & Đủ bảng chính: list 100--2000 $\times$ 2 tập; checkpoint Hou25 của Hoàng; Hou25 vệt chéo & Hou25 mới có N2000 & đủ ô bảng 1 (scorer) + bảng 2 (ASR) \\
+6 & \textbf{Qwen3-ASR}: biết nó đang nghe giây nào mà không cần alignment heads & ``dùng cho mọi ASR'' & có một dòng Qwen3-ASR \\
+7 & Khảo sát các cách chỉnh logit khác (ý của thầy) & chọn đối thủ so sánh & bảng so sánh, chọn 1--2 baseline \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Mốc thời gian và xin ý kiến thầy}
+\centering
+\begin{tikzpicture}[font=\scriptsize,>={Stealth}]
+\draw[->,thick,Primary] (0,0) -- (14.2,0);
+\foreach \xx/\dd/\tt in {0.6/20.11/gặp thầy, 4.0/20.12/scorer cuối (việc 1--4), 8.0/17.01/đủ bảng (việc 5--7), 11.6/05.02/bản nộp}{
+  \fill[Accent] (\xx,0) circle (3pt);
+  \node[above,font=\scriptsize\bfseries] at (\xx,0.12) {\dd};
+  \node[below,font=\scriptsize] at (\xx,-0.12) {\tt};}
+\node[above,font=\scriptsize\bfseries,text=RiskRed] at (13.6,0.12) {09.02 hạn};
+\end{tikzpicture}
+\raggedright
+\vspace{0.1cm}
+\nbox[block body alerted]{\normalsize\textcircled{\scriptsize 1}\enspace\textbf{Đóng góp chính đặt ở đâu?}\\[2pt]
+\small scorer hai nhánh có vị trí (phía chọn từ) \quad / \quad nhắc logit theo vị trí, không cần prompt (phía ASR) \quad / \quad gộp cả hai thành một hệ}
+\vspace{0.12cm}
+\nbox{\normalsize\textcircled{\scriptsize 2}\enspace\textbf{Mốc so sánh?}\\[2pt]
+\small chỉ Hou25, hay thêm PTC-Bias (2609.28727) và cách nhắc không theo vị trí (Liu 2508.17796)?}
+\vspace{0.12cm}
+\nbox{\normalsize\textcircled{\scriptsize 3}\enspace\textbf{Phạm vi model?}\\[2pt]
+\small Whisper + Qwen3-ASR đã đủ cho Interspeech, hay cần thêm một SpeechLLM?}
+\end{frame}
+
+% ==================================================================
+\section{Dự phòng}
+\begin{frame}{Dự phòng 1: định nghĩa thước đo}
+\renewcommand{\arraystretch}{1.25}\footnotesize
+\begin{tabular}{L{3.0cm}L{10.6cm}}
+\toprule
+Thước đo & Nghĩa \\
+\midrule
+Sạch@K & \% từ đúng có ít hơn K từ \textbf{nhiễu} đứng trên nó (không tính từ đúng khác, để câu nhiều từ hiếm không bị phạt oan) \\
+Đúng@chỗ & tại đoạn audio của từ đúng (MFA), nó có đứng trên mọi từ nhiễu được scorer đặt cùng chỗ không \\
+Định vị & sai số tâm (giây) và \% tâm nằm trong đoạn thật $\pm$ 0.1 s \\
+Báo nhầm & số từ nhiễu có $p \geq 0.5$ mỗi câu, chia theo độ dài câu \\
+WER / U-WER / B-WER & scorer IS21 chính thức (thay = 4, chèn/xoá = 3), chuẩn hoá Whisper; B-WER tính trên từ hiếm của reference \\
+CI 95\% & bootstrap ghép cặp theo câu, 1000 lần \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Dự phòng 2: liên quan và điểm mới (đã tra, chưa đủ để khẳng định ``chưa ai làm'')}
+\renewcommand{\arraystretch}{1.18}\scriptsize
+\begin{tabular}{L{3.5cm}L{3.5cm}L{6.4cm}}
+\toprule
+Công trình & Dùng vị trí? & Khác với nhóm \\
+\midrule
+CB-Whisper (2309.09552) & bản đồ TTS $\times$ audio + CNN & chỉ đưa \textbf{chữ} vào prompt; Hou25 dựa trên ý này \\
+CTC-WS (2406.07096), Spike-triggered (2310.04657) & có, theo frame & chỉ cho ASR \textbf{CTC / transducer}; không dùng cho decoder tự hồi quy \\
+PTC-Bias (2609.28727) & có khoảng [a, b] & dùng để lọc list và \textbf{sửa sau} khi decode xong \\
+Liu et al. (2508.17796) & không & boost cây tiền tố trên Whisper, \textbf{không gate} theo thời gian \\
+IBM (2604.12398) & nhãn trên chữ, loss phụ & bỏ đi lúc inference; fine-tune ASR \\
+\midrule
+\textbf{Nhóm} & \textbf{có, từ scorer} & nhắc logit \textbf{đúng lúc} cho decoder tự hồi quy \textbf{đóng băng}, không prompt; scorer hai nhánh ra vị trí \\
+\bottomrule
+\end{tabular}
+\vspace{0.15cm}
+
+{\footnotesize Nguồn: \texttt{related-work/novelty-gate.md}. Một số mục mới đọc tóm tắt; cần đọc toàn văn trước khi viết bài.}
+\end{frame}
+
+\begin{frame}{Dự phòng 3: file và cách tái lập}
+\renewcommand{\arraystretch}{1.18}\footnotesize
+\begin{tabular}{L{4.2cm}L{9.4cm}}
+\toprule
+Thứ & Ở đâu \\
+\midrule
+Bảng đầy đủ + khoảng tin cậy & \texttt{scorer/analysis/REPORT-1115.md} \\
+Giải thích từng thí nghiệm & \texttt{scorer/analysis/TIEN-DO-1115.md}; bản đọc nhanh \texttt{meetings/2026-11-20/doc-30-phut.md} \\
+Phân tích CPU & \texttt{SMALL\_R.md} (đo R nhỏ, sai chỗ), \texttt{TAIL.md} (từ bị sót) \\
+Code scorer & \texttt{scorer/models.py} (Hou25 pool, MaxSim, MonoSim, DualSim), \texttt{training/train.py} (\texttt{--loc}) \\
+Nhắc logit vào Whisper & \texttt{bench/gate\_boost.py} (\texttt{--once}, \texttt{--fallback}) \\
+Script chạy GPU & \texttt{scorer/runs/2026-11-14/run\_e.sh}, \texttt{scripts/} \\
+Output, checkpoint & \texttt{scorer/runs/2026-11-14/out/}, \texttt{ckpt/} (không có trong git); server \texttt{\textasciitilde/model\_tmp} \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\end{document}
