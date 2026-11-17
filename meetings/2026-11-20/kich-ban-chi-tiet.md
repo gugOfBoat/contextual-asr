@@ -28,24 +28,25 @@
 
 **Trang 1 – Bìa.** "Em báo cáo 3 ngày 13–15/11. Câu hỏi chính: scorer biết từ nằm ở giây nào thì có lợi gì?"
 
-**Trang 2 – Tóm tắt.** Đây là trang quan trọng nhất. Đọc cột trái là câu hỏi, cột phải là câu trả lời; chỉ cần nhấn 3 dòng:
-- Đo kỹ hơn thì Hou25 chỉ đạt **72.6**, scorer âm vị đạt 87.5.
-- Scorer đề xuất đạt **89.3**, lọc 2000 từ còn khoảng 2 từ mỗi câu, precision 91%.
-- Đưa vào Whisper, không cần prompt: **B-WER 9.69 → 7.53**, có ý nghĩa thống kê. WER tổng **mới ngang**.
-- Dòng cuối: Hou25 ở đây là bản nhóm tái hiện, train 2 epoch.
+**Trang 2 – Tóm tắt.** Trang quan trọng nhất.
+- **Insight:** "Giữ lại từ nằm ở giây nào có lợi ở cả hai phía: scorer chọn đúng từ hơn, Whisper viết đúng từ hiếm hơn, không cần prompt."
+- Đọc 3 số to: Recall@1 (lọc) **72.6 → 89.3**; lọc 2000 từ còn **~2 từ/câu**, precision 91%; B-WER **9.69 → 7.53**, có ý nghĩa.
+- Dòng đỏ: WER tổng mới ngang Hou25; list toàn nhiễu vẫn làm WER tệ hơn một chút.
+- Dòng nhỏ cuối: Hou25 ở đây là bản nhóm tái hiện, train 2 epoch.
 
-**Trang 3 – Mạch trình bày.** "Em đi 6 phần: đặt câu hỏi, rồi **vì sao lại là vị trí**, rồi scorer, Whisper, tổng hợp, đi tiếp. Mỗi phát hiện có cùng một khung: câu hỏi, nghĩ gì, thử gì, thấy gì, nghĩa là gì. Màu xanh là tốt, màu đỏ là xấu. Khoảng trong ngoặc vuông là khoảng tin cậy 95%; khoảng nào không chứa 0 là có ý nghĩa."
+**Trang 3 – Mạch trình bày.** "Em đi 6 phần: đặt câu hỏi, rồi **vì sao lại là vị trí**, rồi scorer, Whisper, tổng hợp, đi tiếp. Mỗi trang có một ô xanh đậm là điều rút ra. Màu xanh là tốt, màu đỏ là xấu. Khoảng trong ngoặc vuông là khoảng tin cậy 95%; khoảng nào không chứa 0 là có ý nghĩa."
 
 ## Phần 0: Đặt câu hỏi (trang 4–7, ~4 phút)
 
 Thầy đã biết bài toán và Hou25 từ các buổi trước, nên phần này đi nhanh.
 
-**Trang 4 – Từ điển tên gọi.** Không đọc hết bảng. "Đây là tên các hệ em sẽ nhắc. Hệ đề xuất là dòng tô vàng **pdual2_dl**: một model, hai nhánh, có dạy vị trí. Cách đưa vào ASR được đề xuất là **nhắc đúng lúc**."
+**Trang 4 – Từ điển tên gọi.** Không đọc hết bảng.
+- **Insight:** "Chỉ cần nhớ 2 cặp: scorer Hou25 là đối thủ, scorer đề xuất là của nhóm; đưa vào Whisper bằng prompt top-50 như Hou25, hoặc nhắc đúng lúc như nhóm."
+- Tên trong code (pmaxsim, pmono, pdual2_dl) để ở dòng nhỏ cuối trang, chỉ nói khi thầy hỏi.
 
-**Trang 5 – 3 quyết định, luật viết trước.**
-- D1 chọn nền cho scorer, D2 hỏi Whisper có cần vị trí không, D3 chọn cách nhắc.
-- Nhấn mạnh: "Em viết luật trước khi chạy, để không thấy kết quả rồi mới chọn luật. Ví dụ ở D1: Hou25 sửa xong phải đạt ≥ 85.7 thì mới giữ."
-- Bảng bên phải là lịch chạy.
+**Trang 5 – Ba câu hỏi, luật viết trước.**
+- **Insight:** "Mỗi câu hỏi có luật đặt trước: qua ngưỡng thì chọn A, không qua thì chọn B. Để không thấy số rồi mới chọn luật."
+- Đọc D1 làm ví dụ: Hou25 sửa xong phải đạt ≥ 85.7 thì mới giữ. Cột phải cho biết câu trả lời nằm ở trang nào (10, 18, 21).
 
 **Trang 6 – Thước đo Recall@1 (lọc).** Đọc ô xanh đậm trước, rồi mới giải thích.
 - **Điều cần nhấn:** "Bọn em chỉ đưa 1–3 từ cho ASR. Vậy điều quan trọng là từ đúng có đứng trên mọi từ nhiễu không. Nên đo ở hạng 1."
@@ -124,22 +125,25 @@ Mỗi trang có **một ô xanh đậm = một insight**. Đọc ô đó trướ
 - Nói thật: chưa có Hou25 ở N100–1000.
 ## Tổng hợp (trang 20–21, ~2 phút)
 
-**Trang 20 – Giả thuyết so với thực tế.** Không đọc hết bảng. Nhấn 3 dòng đỏ:
-- Ý "từ đúng bị pha loãng" là sai.
-- Train với nhiều nhiễu hơn không giúp.
-- List toàn nhiễu vẫn làm hại.
+**Trang 20 – Giả thuyết so với thực tế.** Không đọc hết bảng.
+- **Insight:** "Giả thuyết sai có ích nhất: Hou25 sai vì từ nhiễu nổi lên, không phải vì từ đúng bị loãng. Nhờ đó chuyển sang giữ thứ tự và vị trí."
+- Chỉ thêm dòng cuối: list toàn nhiễu vẫn làm hại, chưa đạt.
+- "Em giữ cả kết quả âm, để biết cái gì không giúp mà khỏi thử lại." Hai dòng bỏ cho gọn ghi ở chân trang.
 
-"Em giữ cả kết quả âm, để biết cái gì không giúp mà khỏi thử lại."
-
-**Trang 21 – Câu chuyện cho paper.** Đọc hình bên phải từ trên xuống, ba ô: Hou25 bỏ vị trí → scorer giữ vị trí → ASR dùng vị trí. Ô dưới cùng là 3 cách đặt đóng góp, cũng là **câu hỏi số 1 xin ý kiến thầy**.
+**Trang 21 – Ba quyết định đã ra.**
+- **Insight, câu chuyện một dòng:** "Hou25 bỏ vị trí nên thua; scorer giữ vị trí lên 89.3 và lọc list còn khoảng 2 từ; Whisper dùng vị trí thì không cần prompt."
+- Bảng: mỗi quyết định có luật đặt trước và kết quả. D3 nói rõ là **chưa tối ưu**.
+- Câu nối: "Đóng góp đặt ở đâu là câu hỏi số 1 em xin ý kiến thầy ở trang 24."
 
 ## Đi tiếp (trang 22–24, ~3 phút + thảo luận)
 
-**Trang 22 – Chỗ còn yếu.** Nói thật cả 6 dòng. Nhấn 2 dòng:
-- Audio không có từ nào trong list thì WER vẫn tệ đi (4.49 so với 4.25).
-- Bản một model còn kém bản cộng điểm 1.5.
+**Trang 22 – Chỗ còn yếu.** Nói thật cả 6 dòng.
+- **Insight:** "Chỗ yếu lớn nhất: audio không có từ nào trong list thì vẫn hại WER (4.49 so với 4.25). Reviewer sẽ hỏi ngay: có viết bừa không?"
+- Nhấn thêm: bản một model còn kém bản cộng điểm 1.5.
 
-**Trang 23 – Bước tiếp theo.** Việc 1–4 là phía scorer, xong trước 20/12. Việc 5–7 là bảng chính, Qwen3-ASR và khảo sát cách chỉnh logit (ý thầy đã gợi). Nói "việc 7 là theo ý thầy".
+**Trang 23 – Bước tiếp theo.**
+- **Insight:** "Việc 1 sửa đúng chỗ yếu lớn nhất: dạy scorer nói chỗ này không có từ nào. Việc 1–4 xong trước 20/12."
+- Việc 5–7 là bảng chính, Qwen3-ASR và khảo sát cách chỉnh logit. Nói "việc 7 là theo ý thầy".
 
 **Trang 24 – Mốc và 3 câu hỏi.** Đọc từng câu, rồi **dừng lại chờ thầy trả lời**, ghi lại nguyên văn.
 1. Đóng góp chính đặt ở scorer, ở cách nhắc, hay gộp cả hai?
