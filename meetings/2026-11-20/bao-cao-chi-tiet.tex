@@ -71,7 +71,7 @@ Recall@1 (lọc): Hou25 \ra{} đề xuất}
 \column{0.32\textwidth}
 \nbox{\textbf{Lọc list}\\[4pt]
 {\Large 55\% \ra{} \good{86\%}}\\[3pt]
-precision, cùng ngưỡng; còn $\sim$2 từ/câu}
+precision, cùng ngưỡng;\\ 2000 từ \ra{} 1.9 từ/câu}
 \column{0.32\textwidth}
 \nbox{\textbf{Whisper (từ hiếm)}\\[4pt]
 {\Large 9.69 \ra{} \good{7.65}}\\[3pt]
@@ -91,9 +91,8 @@ B-WER test-other, có ý nghĩa}
 \node[hl] (b) at (2.45,0) {\textbf{1. Vì sao vị trí}\\Hou25 sai ở cách gộp};
 \node[hl] (c) at (4.9,0) {\textbf{2. Scorer}\\chọn + lọc từ};
 \node[hl] (d) at (7.35,0) {\textbf{3. Whisper}\\nhắc đúng lúc};
-\node[st] (e) at (9.8,0) {\textbf{4. Tổng hợp}\\trả lời + chưa chắc};
-\node[st] (f) at (12.25,0) {\textbf{5. Đi tiếp}\\việc + câu hỏi thầy};
-\foreach \u/\v in {a/b,b/c,c/d,d/e,e/f}{\draw[->,thick,Primary] (\u) -- (\v);}
+\node[st] (e) at (9.8,0) {\textbf{4. Đúc kết}\\trả lời + chưa chắc};
+\foreach \u/\v in {a/b,b/c,c/d,d/e}{\draw[->,thick,Primary] (\u) -- (\v);}
 \end{tikzpicture}
 \vspace{0.5cm}
 
@@ -148,42 +147,44 @@ trần & biết sẵn đúng từ + đúng chỗ: mức tốt nhất có thể \
 \toprule
 Câu hỏi & Luật đặt trước & Trả lời ở \\
 \midrule
-\textbf{D1.} Scorer xây trên nền nào: sửa Hou25 hay âm vị? & Hou25 sửa xong phải đạt Recall@1 $\geq$ 85.7 (mức của âm vị khi đó) mới giữ & trang 11 \\
-\textbf{D2.} Whisper có cần vị trí không? & Cùng list, nhắc đúng lúc phải tốt hơn nhắc mọi lúc, có ý nghĩa thống kê & trang 23 \\
-\textbf{D3.} Chọn ngưỡng, độ mạnh nhắc thế nào? & Chọn trên \textbf{dev-other}, không chọn trên test & trang 25 \\
+\textbf{D1.} Scorer xây trên nền nào: sửa Hou25 hay âm vị? & Hou25 sửa xong phải đạt Recall@1 $\geq$ 85.7 (mức của âm vị khi đó) mới giữ & trang 13 \\
+\textbf{D2.} Whisper có cần vị trí không? & Cùng list, nhắc đúng lúc phải tốt hơn nhắc mọi lúc, có ý nghĩa thống kê & trang 30 \\
+\textbf{D3.} Chọn ngưỡng, độ mạnh nhắc thế nào? & Chọn trên \textbf{dev-other}, không chọn trên test & trang 32 \\
 \bottomrule
 \end{tabular}
 \src{Kế hoạch: scorer/PLAN-2011.md. Chạy 13--15/11 (CPU phân tích lại, rồi 2 đêm GPU).}
 \end{frame}
 
 \begin{frame}{Thước đo: Recall@1 (lọc)}
-\insight{Nhóm chỉ đưa \nb{1--3 từ} cho ASR. Vậy câu cần hỏi là: \nb{từ đúng có đứng trên mọi từ nhiễu không?} \ra{} đo ở hạng 1, không đo top-50.}
+\insight{Cuối cùng chỉ \nb{vài từ điểm cao nhất} tới ASR. Nên hỏi: trong 2000 từ, \nb{từ đúng có đứng đầu không?} Từ nhiễu nào đứng trên nó = một từ sai tới ASR.}
 \begin{columns}[T]
-\column{0.50\textwidth}
-{\footnotesize\textbf{Cách tính}, cho từng từ đúng:\par
-1.\ Xếp 2000 từ theo điểm.\par
-2.\ Bỏ các \textbf{từ đúng khác} của câu ra.\par
-3.\ Từ đúng đứng hạng 1 \ra{} trúng.\par\vspace{0.05cm}
-\textbf{Recall@1 (lọc)} = \% từ đúng trúng.\par}
-\vspace{0.1cm}
-\renewcommand{\arraystretch}{1.05}\scriptsize\setlength{\tabcolsep}{3pt}
-\begin{tabular}{cll}
+\column{0.55\textwidth}
+{\scriptsize\textbf{Ví dụ.} Câu có 2 từ hiếm: \texttt{assyria}, \texttt{pileser}. List = 2 từ đúng + 1998 từ nhiễu. Scorer chấm cả 2000 từ rồi xếp:\par}
+\vspace{0.05cm}
+\renewcommand{\arraystretch}{1.0}\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{clcl}
 \toprule
-Hạng & Từ & \\
+Hạng & Từ & Điểm & \\
 \midrule
-1 & assyria (đúng) & \\
-2 & \textbf{pileser} (đúng) & \ra{} lọc bỏ assyria: hạng 1, \good{trúng}\\
-3 & flauve (nhiễu) & \\
+1 & assyria \good{(đúng)} & 0.97 & \\
+2 & \textbf{pileser} \good{(đúng)} & 0.91 & trên nó chỉ có từ đúng \\
+3 & flauve \bad{(nhiễu)} & 0.40 & \\
+\ldots & 1997 từ nhiễu khác & $<$0.40 & \\
 \bottomrule
 \end{tabular}
-\column{0.47\textwidth}
-\nbox[block body alerted]{\textbf{Vì sao không top-50 như Hou25?}\\[3pt]
-\textbullet\ Hou25 đo top-50 vì họ \textbf{nhét 50 từ vào prompt}. Nhóm thì không.\\[2pt]
+\par\vspace{0.08cm}
+{\scriptsize\textbf{Xét \texttt{pileser}:} hạng 2, nhưng đứng trên là \texttt{assyria}, cũng đúng \ra{} bỏ qua (``lọc'') \ra{} coi là hạng 1 \ra{} \good{trúng}.\par
+\textbf{Nếu} \texttt{flauve} được 0.95 \ra{} đứng trên \texttt{pileser} \ra{} \bad{trượt}.\par\vspace{0.04cm}
+\textbf{Recall@1 (lọc)} = số lượt trúng / \textbf{5248} lượt từ hiếm (2939 câu test-other).\par}
+\column{0.43\textwidth}
+\nbox[block body alerted]{\textbf{Vì sao không đo top-50 như Hou25?}\\[2pt]
+\scriptsize\textbullet\ Hou25 \textbf{nhét 50 từ vào prompt}, nên hỏi ``từ đúng có trong 50 không''.\\[1pt]
+\textbullet\ Nhóm chỉ giữ $\sim$2 từ/câu. Từ đúng ở hạng 30 \ra{} \bad{không bao giờ tới ASR}.\\[1pt]
 \textbullet\ Top-50 đã \textbf{bão hoà}: hệ nào cũng 95--98\%.}
-\vspace{0.12cm}
-\nbox{\textbf{Không tự chế:} cách ``lọc'' là \textit{filtered} của Bordes et al.\ 2013 (TransE, NeurIPS, mục 4.2): đáp án đúng khác đứng trên không tính là lỗi.}
+\vspace{0.1cm}
+\nbox{\scriptsize\textbf{Không tự chế:} ``lọc'' = \textit{filtered} của Bordes et al.\ 2013 (TransE, NeurIPS, mục 4.2).}
 \end{columns}
-\src{Thước đo phụ: Dự phòng 1. Chưa tra bài contextual ASR nào dùng Recall@1 lọc cho bias list.}
+\src{Điểm trong bảng là ví dụ minh hoạ. Chưa tra bài contextual ASR nào dùng Recall@1 lọc cho bias list.}
 \end{frame}
 
 \begin{frame}{Hai scorer đem ra so: Hou25 và scorer âm vị}
@@ -212,31 +213,35 @@ Hạng & Từ & \\
 \src{Cả hai dùng chung encoder Whisper-large-v3 đóng băng cho audio câu, cùng train trên train-clean-100. Tên trong code: hou25, pmaxsim. REPORT-1115 mục 3.}
 \end{frame}
 
-\begin{frame}{Đo lại ở hạng 1}
-\insight{Top-50 \nb{che mất} khác biệt: Hou25 chỉ kém 3 điểm ở top-50, nhưng kém \nb{15 điểm} ở hạng 1. Cứ 4 từ đúng, hơn 1 từ bị nhiễu vượt.}
+\begin{frame}{Đo lại ở hạng 1: cùng hai scorer, chỉ đổi thước đo}
+\insight{Top-50: hai scorer gần bằng nhau (95.4 / 98.4). Hạng 1: Hou25 còn \nb{72.6}. Cứ 100 từ đúng, \nb{23 từ} lọt top-50 nhưng có nhiễu đứng trên.}
 \begin{columns}[T]
-\column{0.58\textwidth}
-\centering\includegraphics[width=\linewidth,height=3.6cm,keepaspectratio]{imgs/sach_k.pdf}
-\column{0.40\textwidth}
-\renewcommand{\arraystretch}{1.15}\footnotesize\setlength{\tabcolsep}{4pt}
-\begin{tabular}{lcc}
+\column{0.48\textwidth}
+\centering\includegraphics[width=\linewidth,height=3.1cm,keepaspectratio]{imgs/sach_k.pdf}
+\par\raggedright
+{\tiny Recall@1 / @5 / @10 của 4 scorer. @$K$ = \% từ đúng nằm trong $K$ từ điểm cao nhất (lọc).\par}
+\column{0.50\textwidth}
+\renewcommand{\arraystretch}{1.05}\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{L{2.6cm}cc}
 \toprule
 & top-50 & \textbf{hạng 1} \\
 \midrule
-Hou25 & 95.4 & \bad{72.6} \\
-âm vị & 98.4 & \good{87.5} \\
+\textbf{Hou25} & 95.4 & \bad{72.6} \\
+\textbf{âm vị, khớp tự do} & 98.4 & \good{87.5} \\
 \midrule
-cách nhau & 3 & \textbf{15} \\
+cách nhau & 3.0 & \textbf{14.9} \\
 \bottomrule
 \end{tabular}
-\par\vspace{0.2cm}
-{\footnotesize Câu hỏi tiếp theo: \hi{ai đã vượt từ đúng?} \ra{} phần 1.\par}
+\par\vspace{0.08cm}
+{\scriptsize\textbf{Hou25}: nhóm tái hiện paper Interspeech 2025: máy đọc từ \ra{} so 2 đoạn audio \ra{} CNN \ra{} \textbf{trung bình} (trang 10).\par\vspace{0.03cm}
+\textbf{Khớp tự do} (code \texttt{pmaxsim}): scorer âm vị bản đầu; mỗi âm vị tìm chỗ giống nhất (trang 17).\par\vspace{0.03cm}
+Hou25: 95.4 $-$ 72.6 = 22.8 điểm bị nhiễu vượt. Âm vị: 10.9.\par\vspace{0.04cm}}
+{\tiny\color{RiskRed}\textbf{Chưa đo:} Recall@1 cao hơn có chắc làm B-WER thấp hơn không.\par}
 \end{columns}
-\vspace{0.05cm}
-{\scriptsize\color{RiskRed}\textbf{Chưa đo:} Recall@1 cao hơn có chắc làm B-WER thấp hơn không (mới có vài điểm so).\par}
-\src{test-other, list N2000, 2939 câu; REPORT-1115 mục 3, 5, 7c; SMALL\_R N1.}
+\src{test-other, list N2000, 2939 câu, 5248 lượt từ hiếm; REPORT-1115 mục 3; SMALL\_R N1.}
 \end{frame}
 
+% ==================================================================
 \section{Vì sao vị trí}
 \begin{frame}{Phần 1. Hou25 thua 15 điểm vì đâu?}
 \insight{Hou25 thua vì \nb{chấm cao từ nhiễu}, không phải vì chấm thấp từ đúng. Câu càng dài càng nặng.}
@@ -253,42 +258,93 @@ cách nhau & 3 & \textbf{15} \\
 \src{test-other N2000; Hou25 nhóm tái hiện (Recall@1 72.6); SMALL\_R N2--N4. Từ nhiễu điểm cao = $p \geq 0.5$.}
 \end{frame}
 
-\begin{frame}{Vì sao? Vì Hou25 lấy trung bình, bỏ mất thứ tự}
-\insight{Bắt các ô sáng phải \nb{nối nhau đúng thứ tự} (vệt chéo) \ra{} \nb{+9.5} Recall@1, nhiễu ở câu dài \nb{giảm 3 lần}, và \nb{biết luôn từ nằm ở đâu}.}
+\begin{frame}{Hou25 chấm một từ thế nào}
+\insight{Điểm Hou25 = \nb{trung bình điểm của từng ô} trong bảng giống nhau. Mỗi ô chỉ nhìn \nb{9$\times$9 ô quanh nó} (0.18 s) \ra{} không ô nào biết các mảnh sáng có nối nhau không.}
+\centering
+\begin{tikzpicture}[font=\tiny,>={Stealth},
+  b/.style={draw=Primary,fill=SoftBlue,rounded corners=2pt,align=center,inner sep=2pt,minimum height=0.6cm},
+  k/.style={draw=Accent,fill=Accent!15,rounded corners=2pt,align=center,inner sep=2pt,minimum height=0.6cm,thick}]
+\node[b,text width=1.2cm] (w) at (0,0.4) {từ \texttt{pileser}};
+\node[b,text width=1.3cm] (tts) at (1.6,0.4) {máy đọc (TTS)};
+\node[b,text width=1.2cm] (a) at (0.8,-0.4) {audio câu};
+\node[b,text width=2.4cm] (enc) at (4.0,0) {encoder Whisper đóng băng, 20 ms/khung \ra{} chiếu 368 số};
+\node[b,text width=1.5cm] (xa) at (6.45,0) {cross-attention hai chiều};
+\node[b,text width=2.0cm] (S) at (8.55,0) {4 bảng cos: hàng = khung câu ($T_s$), cột = khung từ ($T_b$)};
+\node[b,text width=1.5cm] (cnn) at (10.65,0) {CNN 4 lớp 3$\times$3: mỗi ô 256 số};
+\node[k,text width=1.1cm] (mean) at (12.35,0) {\textbf{trung bình mọi ô}};
+\node[b,text width=0.9cm] (o) at (13.75,0) {Linear \ra{} điểm};
+\draw[->] (w)--(tts); \draw[->] (tts.east)--(enc.west|-tts.east); \draw[->] (a.east)--(enc.west|-a.east);
+\draw[->] (enc)--(xa); \draw[->] (xa)--(S); \draw[->] (S)--(cnn); \draw[->] (cnn)--(mean); \draw[->] (mean)--(o);
+\end{tikzpicture}
+\vspace{0.12cm}
+
 \begin{columns}[T]
-\column{0.34\textwidth}
+\column{0.52\textwidth}
+\nbox{\textbf{Công thức.} $h_{ij}$ = 256 số CNN ra ở ô $(i,j)$; Linear cuối: $w\cdot x + b$.\\[2pt]
+\centerline{$\text{điểm} = w\cdot\Big(\frac{1}{T_sT_b}\sum_{i,j} h_{ij}\Big) + b = \frac{1}{T_sT_b}\sum_{i,j} c_{ij} + b$}
+với $c_{ij} = w\cdot h_{ij}$ = \textbf{điểm của ô} $(i,j)$. Điểm cả từ = trung bình $c_{ij}$.}
+\column{0.45\textwidth}
+\nbox[block body alerted]{\textbf{Mỗi ô nhìn bao xa?} 4 lớp tích chập 3$\times$3 \ra{} $c_{ij}$ chỉ phụ thuộc 9$\times$9 ô quanh nó = 0.18 s.\\[2pt]
+\ra{} Mảnh sáng ở giây 1 và mảnh ở giây 7 được cộng \textbf{như nhau}, đúng hay sai thứ tự.}
+\end{columns}
+\src{scorer/models.py, class Hou25 (pool=mean). Cross-attention có nhìn cả câu, nhưng bước gộp cuối vẫn là trung bình từng ô. Paper không có code, nhóm tự cài.}
+\end{frame}
+
+\begin{frame}{Trung bình bỏ mất thứ tự: ví dụ số}
+\insight{Trung bình chỉ thấy \nb{tổng các ô}: 4 ô sáng rải rác (\nb{0.23}) thắng 3 ô nối chéo (\nb{0.20}). Vệt chéo cộng \nb{dọc đường chéo}: đúng 2.7, nhiễu 1.1.}
+\begin{columns}[T]
+\column{0.30\textwidth}
 \centering
 \begin{tikzpicture}[font=\scriptsize]
-\def\cs{0.28}
-\foreach \gx/\ttl in {0/{từ ĐÚNG},1.6/{từ NHIỄU}}{
-  \node[font=\scriptsize\bfseries] at (\gx+1.5*\cs,0.22) {\ttl};
+\def\cs{0.25}
+\foreach \gx/\ttl in {0/{ĐÚNG},1.3/{NHIỄU}}{
+  \node[font=\scriptsize\bfseries] at (\gx+1.5*\cs,0.2) {\ttl};
   \foreach \rr in {0,...,7}{\foreach \cc in {0,1,2}{\draw[gray!45] (\gx+\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs);}}
 }
 \foreach \rr/\cc in {3/0,4/1,5/2}{\fill[GoodGreen!60] (\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs);}
-\draw[GoodGreen,very thick,dashed] (0,-3*\cs) -- (3*\cs,-6*\cs);
-\foreach \rr/\cc in {1/2,2/0,5/0,7/1}{\fill[RiskRed!50] (1.6+\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs);}
-\node[text=GoodGreen,anchor=north,font=\scriptsize\bfseries] at (1.5*\cs,-8*\cs-0.03) {nối chéo};
-\node[text=RiskRed,anchor=north,font=\scriptsize\bfseries] at (1.6+1.5*\cs,-8*\cs-0.03) {rải rác};
+\draw[GoodGreen!70!black,very thick,dashed] (0,-3*\cs) -- (3*\cs,-6*\cs);
+\foreach \rr/\cc in {1/2,2/0,5/0,7/1}{\fill[RiskRed!50] (1.3+\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs);}
+\foreach \rr in {0,...,7}{\node[font=\tiny,anchor=east] at (-0.02,-\rr*\cs-0.5*\cs) {\rr};}
 \end{tikzpicture}
-\par\vspace{0.05cm}\raggedright
-{\scriptsize Hàng = thời gian câu, cột = thời gian từ. Ô màu = nghe giống.\par}
-\column{0.64\textwidth}
-\renewcommand{\arraystretch}{1.2}\footnotesize\setlength{\tabcolsep}{4pt}
-\begin{tabular}{lccc}
+\par\raggedright
+{\tiny 8 hàng = khung câu, 3 cột = khung từ. Ô màu: $c$ = 0.9; ô trắng: 0.1.\par}
+\column{0.68\textwidth}
+\renewcommand{\arraystretch}{1.1}\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{L{3.2cm}L{2.4cm}L{2.4cm}}
 \toprule
-Gộp bảng thành 1 điểm & Recall@1 & nhiễu, câu $\geq$20 s & định vị \\
+& từ đúng & từ nhiễu \\
 \midrule
-Trung bình (Hou25) & 73.3 & 6.1 & 79\% \\
-Chỗ sáng nhất & 73.8 & 8.0 & 4\% \\
-\rowcolor{Accent!15}\textbf{Vệt chéo} (Hoàng) & \good{82.9} & \good{1.9} & \good{99\%} \\
+\textbf{Trung bình} 24 ô & (3$\times$.9 + 21$\times$.1)/24 = \textbf{0.20} & (4$\times$.9 + 20$\times$.1)/24 = \bad{0.23} \\
+\textbf{Vệt chéo}: $\max_{t_0}\sum_j c_{t_0+j,\,j}$ & $t_0$=3: .9+.9+.9 = \good{2.7} & $t_0$=2: .9+.1+.1 = 1.1 \\
 \bottomrule
 \end{tabular}
-\par\vspace{0.15cm}
-{\footnotesize\textbullet\ Trung bình chỉ đếm \textbf{tổng ô sáng}: nhiễu có 4 ô rải rác \bad{thắng} đúng có 3 ô nối nhau.\par
-\textbullet\ ``Chỗ sáng nhất'' \textbf{không tăng} \ra{} cái giúp là \hi{thứ tự}, không phải chỗ sáng.\par
-\textbullet\ Phải \textbf{train lại}; chỉ đổi lúc chấm thì tệ đi.\par}
+\par\vspace{0.1cm}
+{\scriptsize\textbf{Chứng minh:} trung bình = (tổng mọi ô)/24. Đổi chỗ các ô, tổng không đổi \ra{} điểm không đổi. Vậy ``3 ô nối chéo'' và ``3 ô rải rác'' \textbf{luôn bằng điểm}: điểm không chứa thứ tự. (Hou25 thật: đổi chỗ được các mảnh cách nhau $>$ 9 ô.)\par\vspace{0.05cm}
+\textbf{Câu dài} \ra{} nhiều hàng \ra{} nhiều ô sáng ngẫu nhiên để cộng \ra{} nhiễu điểm cao tăng theo độ dài (trang 9: 1.4 \ra{} 12.4).\par\vspace{0.05cm}
+\textbf{Vệt chéo} (ý của Hoàng): chỉ cộng các ô trên một đường chéo, lấy đường tốt nhất; đường đó cho luôn \textbf{chỗ} của từ: hàng $t_0$ tới $t_0+T_b$.\par}
 \end{columns}
-\src{3 bản Hou25 train cùng lượt, chỉ khác cách gộp; +9.5 [+7.9; +11.2]. test-other N2000; REPORT-1115 mục 5; A1\_REPORT mục 3.1.}
+\src{Ví dụ đồ chơi. Code: models.py, Hou25 pool=mean và pool=diag (diag\_sum). Đường chéo dốc 1: từ máy đọc và từ trong câu phải cùng tốc độ.}
+\end{frame}
+
+\begin{frame}{Đo thật: chỉ đổi cách gộp, train lại Hou25}
+\insight{Cùng Hou25, cùng lượt train, chỉ đổi bước gộp: vệt chéo \nb{73.3 \ra{} 82.9}. ``Chỗ sáng nhất'' (không đòi thứ tự) chỉ \nb{73.8} \ra{} cái giúp là \nb{thứ tự}.}
+\renewcommand{\arraystretch}{1.12}\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{L{2.4cm}L{4.4cm}ccc}
+\toprule
+Cách gộp bảng & Làm gì & Recall@1 & nhiễu/câu, câu $\geq$20 s & \% tâm trúng \\
+\midrule
+Trung bình (Hou25) & trung bình mọi ô (trang 10) & 73.3 & 6.1 & 79\% \\
+Chỗ sáng nhất & giữ $T_b$ hàng sáng nhất, \textbf{không cần liền nhau} & 73.8 & 8.0 & 4\% \\
+\rowcolor{Accent!15}\textbf{Vệt chéo} (Hoàng) & cộng dọc đường chéo tốt nhất & \good{82.9} & \good{1.9} & \good{99\%} \\
+\bottomrule
+\end{tabular}
+\par\vspace{0.12cm}
+{\scriptsize
+\textbullet\ \textbf{Recall@1}: \% trong 5248 lượt từ hiếm có từ đúng đứng đầu (trang 6). +9.5 [+7.9; +11.2] \ra{} khác biệt thật.\par
+\textbullet\ \textbf{Nhiễu/câu}: số từ nhiễu có $p \geq 0.5$ trung bình mỗi câu dài $\geq$ 20 s (40 câu). Giảm 3 lần: hết ``cộng dồn ô sáng''.\par
+\textbullet\ \textbf{\% tâm trúng}: tâm đoạn scorer chỉ ra nằm trong đoạn MFA $\pm$0.1 s. Chỗ sáng nhất 4\%: các hàng sáng nhất \textbf{rải khắp câu}, tâm rơi vào chỗ không có gì.\par
+\textbullet\ Chỉ đổi lúc chấm, không train lại \ra{} tệ đi (CNN đã học theo kiểu trung bình).\par}
+\src{3 bản Hou25 train cùng lượt (2 epoch), chỉ khác cách gộp; test-other N2000; REPORT-1115 mục 5; A1\_REPORT mục 3.1. Bản Hou25 72.6 ở trang khác là lượt train trước.}
 \end{frame}
 
 \begin{frame}{Quyết định D1: sửa Hou25 rồi vẫn thua scorer âm vị}
@@ -329,355 +385,11 @@ Chỗ sáng nhất & 73.8 & 8.0 & 4\% \\
 \end{tikzpicture}
 \vspace{0.25cm}
 
-{\small Hai cách khớp, ví dụ số và số đo: trang 13--14. Cách chấm của scorer đề xuất: trang 15. Vị trí đúng tới đâu: trang 16.\par}
+{\small Tổng quan: trang 15. Từng bước (bảng $M$, tự do, thứ tự, ra $p$, train): trang 16--21. Số đo: trang 22--27.\par}
 \src{REPORT-1115 mục 5, 6, 6b, 7c. Tên trong code: khớp tự do = pmaxsim, đúng thứ tự = pmono, đề xuất = pdual2\_dl (scorer/models.py, DualSim).}
 \end{frame}
 
-\begin{frame}{Scorer 2. Hai cách khớp âm vị: kiến trúc và ví dụ số}
-\insight{\nb{Tự do}: mỗi âm vị lấy ô sáng nhất \ra{} nhiễu rời rạc vẫn được \nb{0.75}. \nb{Đúng thứ tự}: ô phải nối thành đường \ra{} nhiễu còn \nb{0.20}, và đường đi cho luôn \nb{đầu--cuối của từ}.}
-\centering
-\begin{tikzpicture}[font=\scriptsize,>={Stealth},
-  b/.style={draw=Primary,fill=SoftBlue,rounded corners=2pt,align=center,inner sep=1.5pt,minimum height=0.45cm,font=\tiny},
-  m/.style={draw=Accent,fill=Accent!15,rounded corners=2pt,align=center,inner sep=1.5pt,thick,minimum height=0.9cm,font=\tiny}]
-% kiến trúc chung
-\node[b,text width=1.3cm] (au) at (0.65,0.3) {audio câu};
-\node[b,text width=3.9cm] (ea) at (3.95,0.3) {encoder Whisper đóng băng (1280 chiều, 20 ms/khung)};
-\node[b,text width=2.9cm] (pa) at (7.85,0.3) {chiếu 256 + 1 lớp Transformer};
-\node[b,text width=1.3cm] (wd) at (0.65,-0.3) {từ \ra{} âm vị};
-\node[b,text width=3.9cm] (eb) at (3.95,-0.3) {nhúng âm vị + vị trí trong từ};
-\node[b,text width=2.9cm] (pb) at (7.85,-0.3) {2 lớp Transformer (256), tính sẵn cả kho};
-\node[m,text width=3.0cm] (map) at (11.9,0) {\textbf{bảng giống nhau}\\cos(âm vị, khung)};
-\draw[->] (au)--(ea); \draw[->] (ea)--(pa); \draw[->] (wd)--(eb); \draw[->] (eb)--(pb);
-\draw[->] (pa.east)--(map.west|-pa.east); \draw[->] (pb.east)--(map.west|-pb.east);
-\draw[gray!60,dashed] (6.95,-0.7)--(6.95,-3.9);
-\node[anchor=north west,text width=6.6cm,font=\tiny,inner sep=0] at (0.00,-0.72) {{\scriptsize\textbf{Nhánh tự do}}\enspace mỗi âm vị (hàng) lấy \textcolor{Accent!80!black}{\textbf{ô sáng nhất}}, ở đâu cũng được; điểm = trung bình các ô đó.};
-\fill[Primary!17] (0.25,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.25,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (0.45,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.45,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!76] (0.65,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.65,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (0.85,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.85,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (1.05,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.05,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (1.25,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.25,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (1.45,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.45,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (1.65,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.65,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (0.25,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.25,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (0.45,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.45,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!25] (0.65,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.65,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!68] (0.85,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.85,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (1.05,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.05,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (1.25,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.25,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (1.45,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.45,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (1.65,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.65,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (0.25,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.25,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (0.45,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.45,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (0.65,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.65,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (0.85,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.85,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!76] (1.05,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.05,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!25] (1.25,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.25,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (1.45,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.45,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (1.65,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.65,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (0.25,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.25,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (0.45,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.45,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (0.65,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.65,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (0.85,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (0.85,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (1.05,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.05,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (1.25,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.25,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!68] (1.45,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.45,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (1.65,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (1.65,-2.40) rectangle ++(0.20,-0.20);
-\draw[Accent,line width=1.3pt] (0.65,-1.80) rectangle ++(0.20,-0.20);
-\draw[Accent,line width=1.3pt] (0.85,-2.00) rectangle ++(0.20,-0.20);
-\draw[Accent,line width=1.3pt] (1.05,-2.20) rectangle ++(0.20,-0.20);
-\draw[Accent,line width=1.3pt] (1.45,-2.40) rectangle ++(0.20,-0.20);
-\node[font=\tiny\bfseries,anchor=south] at (1.05,-1.79) {từ đúng};
-\fill[Primary!17] (2.25,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.25,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (2.45,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.45,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (2.65,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.65,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (2.85,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.85,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (3.05,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.05,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!68] (3.25,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.25,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (3.45,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.45,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (3.65,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.65,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!59] (2.25,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.25,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (2.45,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.45,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (2.65,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.65,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (2.85,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.85,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (3.05,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.05,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (3.25,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.25,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (3.45,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.45,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (3.65,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.65,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (2.25,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.25,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (2.45,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.45,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (2.65,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.65,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (2.85,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.85,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (3.05,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.05,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (3.25,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.25,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (3.45,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.45,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!68] (3.65,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.65,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (2.25,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.25,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!59] (2.45,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.45,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (2.65,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.65,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (2.85,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (2.85,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (3.05,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.05,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (3.25,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.25,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (3.45,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.45,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (3.65,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (3.65,-2.40) rectangle ++(0.20,-0.20);
-\draw[Accent,line width=1.3pt] (3.25,-1.80) rectangle ++(0.20,-0.20);
-\draw[Accent,line width=1.3pt] (2.25,-2.00) rectangle ++(0.20,-0.20);
-\draw[Accent,line width=1.3pt] (3.65,-2.20) rectangle ++(0.20,-0.20);
-\draw[Accent,line width=1.3pt] (2.45,-2.40) rectangle ++(0.20,-0.20);
-\node[font=\tiny\bfseries,anchor=south] at (3.05,-1.79) {từ nhiễu};
-\node[anchor=north west,text width=2.3cm,font=\tiny,inner sep=0] at (4.15,-1.75) {đúng: (.9+.8+.9+.8)/4 = \textbf{0.85}\\[2pt]nhiễu: (.8+.7+.8+.7)/4 = \bad{0.75}\ (gần bằng)};
-\node[anchor=north west,text width=6.6cm,font=\tiny,inner sep=0] at (0.00,-3.22) {\textbf{Vị trí:} tâm = trung vị các khung được chọn; độ rộng đoán theo số âm vị ($\approx$80 ms/âm vị). Với từ nhiễu, khung chọn 0, 1, 5, 7 \ra{} tâm rơi vào chỗ chẳng có gì.};
-\node[anchor=north west,text width=6.6cm,font=\tiny,inner sep=0] at (7.15,-0.72) {{\scriptsize\textbf{Nhánh đúng thứ tự}}\enspace \textcolor{GoodGreen!80!black}{\textbf{đường đi}} từ âm vị đầu tới cuối, mỗi bước sang phải 1--$G$ khung; điểm = tổng ô trên đường / số âm vị.};
-\fill[Primary!17] (7.40,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (7.40,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (7.60,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (7.60,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!76] (7.80,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (7.80,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (8.00,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.00,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (8.20,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.20,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (8.40,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.40,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (8.60,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.60,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (8.80,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.80,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (7.40,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (7.40,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (7.60,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (7.60,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!25] (7.80,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (7.80,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!68] (8.00,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.00,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (8.20,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.20,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (8.40,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.40,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (8.60,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.60,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (8.80,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.80,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (7.40,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (7.40,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (7.60,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (7.60,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (7.80,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (7.80,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (8.00,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.00,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!76] (8.20,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.20,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!25] (8.40,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.40,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (8.60,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.60,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (8.80,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.80,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (7.40,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (7.40,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (7.60,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (7.60,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (7.80,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (7.80,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (8.00,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.00,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (8.20,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.20,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (8.40,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.40,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!68] (8.60,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.60,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (8.80,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (8.80,-2.40) rectangle ++(0.20,-0.20);
-\draw[GoodGreen!80!black,line width=1.6pt] (7.90,-1.90) -- (8.10,-2.10) -- (8.30,-2.30) -- (8.70,-2.50);
-\fill[GoodGreen!80!black] (7.90,-1.90) circle (1.4pt);
-\fill[GoodGreen!80!black] (8.10,-2.10) circle (1.4pt);
-\fill[GoodGreen!80!black] (8.30,-2.30) circle (1.4pt);
-\fill[GoodGreen!80!black] (8.70,-2.50) circle (1.4pt);
-\node[font=\tiny\bfseries,anchor=south] at (8.20,-1.79) {từ đúng};
-\fill[Primary!17] (9.40,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (9.40,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (9.60,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (9.60,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (9.80,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (9.80,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (10.00,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.00,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (10.20,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.20,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!68] (10.40,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.40,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (10.60,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.60,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (10.80,-1.80) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.80,-1.80) rectangle ++(0.20,-0.20);
-\fill[Primary!59] (9.40,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (9.40,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (9.60,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (9.60,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (9.80,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (9.80,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (10.00,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.00,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (10.20,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.20,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (10.40,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.40,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (10.60,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.60,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (10.80,-2.00) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.80,-2.00) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (9.40,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (9.40,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (9.60,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (9.60,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (9.80,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (9.80,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (10.00,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.00,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (10.20,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.20,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (10.40,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.40,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (10.60,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.60,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!68] (10.80,-2.20) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.80,-2.20) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (9.40,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (9.40,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!59] (9.60,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (9.60,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (9.80,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (9.80,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (10.00,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.00,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (10.20,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.20,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (10.40,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.40,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!8] (10.60,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.60,-2.40) rectangle ++(0.20,-0.20);
-\fill[Primary!17] (10.80,-2.40) rectangle ++(0.20,-0.20);
-\draw[gray!40] (10.80,-2.40) rectangle ++(0.20,-0.20);
-\draw[GoodGreen!80!black,line width=1.6pt] (9.50,-1.90) -- (9.70,-2.10) -- (9.90,-2.30) -- (10.10,-2.50);
-\fill[GoodGreen!80!black] (9.50,-1.90) circle (1.4pt);
-\fill[GoodGreen!80!black] (9.70,-2.10) circle (1.4pt);
-\fill[GoodGreen!80!black] (9.90,-2.30) circle (1.4pt);
-\fill[GoodGreen!80!black] (10.10,-2.50) circle (1.4pt);
-\node[font=\tiny\bfseries,anchor=south] at (10.20,-1.79) {từ nhiễu};
-\node[anchor=north west,text width=2.3cm,font=\tiny,inner sep=0] at (11.30,-1.75) {đúng: (.9+.8+.9+.8)/4 = \textbf{0.85}\\[2pt]nhiễu: không có đường qua ô sáng \ra{} \good{0.20}\ (bị loại)};
-\node[anchor=north west,text width=6.6cm,font=\tiny,inner sep=0] at (7.15,-3.22) {\textbf{Vị trí:} lần ngược đường đi \ra{} \textbf{đầu} = khung của âm vị đầu, \textbf{cuối} = khung của âm vị cuối (ở đây khung 2--6). Thật: $G$ = 15 khung = 0.3 s; ví dụ: $G$ = 2.};
-\end{tikzpicture}
-\src{scorer/models.py: MaxSim (tự do), MonoSim (đúng thứ tự). Bảng đồ chơi 4 âm vị x 8 khung, ô càng đậm càng giống; $p$ = sigmoid($a\cdot$điểm + $c$).}
-\end{frame}
-
-\begin{frame}{Scorer 3. Hai cách khớp đo thật: mỗi con số nghĩa là gì}
-\insight{Tự do \nb{ít sót} hơn; đúng thứ tự \nb{ít nhận nhầm} và \nb{định vị chuẩn} hơn. Sai ở chỗ khác nhau \ra{} cộng lại \nb{+2.6}, gấp đôi gộp hai model cùng kiểu.}
-\begin{columns}[T]
-\column{0.62\textwidth}
-\renewcommand{\arraystretch}{1.1}\scriptsize\setlength{\tabcolsep}{3pt}
-\begin{tabular}{L{2.6cm}ccL{2.0cm}}
-\toprule
-test-other, N2000 & tự do & thứ tự & Nghĩa là \\
-\midrule
-Recall@1 & \good{87.5} & 85.8 & thứ tự sót hơn \\
-\quad list nghe giống & \good{64.7} & 60.5 & \\
-Precision ($p \geq 0.5$) & 75.8 & \good{82.3} & ít nhận nhầm \\
-Recall ($p \geq 0.5$) & \good{91.7} & 88.4 & \\
-Nhiễu/câu, câu $\geq$ 20 s & 1.3 & \good{0.9} & \\
-\midrule
-Sai số tâm (trung vị) & 0.05 s & \good{0.02 s} & 2.5 \ra{} 1 khung \\
-Lệch đầu từ, 10--90\% & $-$.12; +.08 & \good{+.03; +.10} & \textbf{không mở sớm} \\
-\bottomrule
-\end{tabular}
-\par\vspace{0.05cm}
-{\tiny Lệch = đầu đoán $-$ đầu thật (MFA), giây; dương = mở muộn. ``Nghĩa là'' là diễn giải.\par}
-\column{0.36\textwidth}
-\renewcommand{\arraystretch}{1.1}\scriptsize\setlength{\tabcolsep}{3pt}
-\textbf{Có bù nhau không?} Cộng điểm hai model:\par\vspace{0.05cm}
-\begin{tabular}{lc}
-\toprule
-& Recall@1 \\
-\midrule
-tự do một mình & 87.2 \\
-tự do + tự do & 88.3 (+1.1) \\
-\rowcolor{Accent!15}\textbf{tự do + thứ tự} & \textbf{89.8 (+2.6)} \\
-\bottomrule
-\end{tabular}
-\par\vspace{0.1cm}
-{\scriptsize +1.1 là lợi chung của gộp model; \textbf{+1.5 còn lại} chỉ có khi hai cách khác nhau. Ngang train thêm 9.6 lần dữ liệu (89.7).\par}
-\end{columns}
-\src{REPORT-1115 mục 6, 6b; hai model train cùng điều kiện. Recall@1 thứ tự $-$ tự do: $-$1.7 [$-$2.7; $-$0.7].}
-\end{frame}
-
-\begin{frame}{Scorer 4. Scorer đề xuất: chấm từ \texttt{pileser} thế nào}
+\begin{frame}{Scorer 2. Tổng quan: chấm từ \texttt{pileser} thế nào}
 \insight{Lập \nb{bảng giống nhau: âm vị $\times$ thời gian}, rồi đọc bằng \nb{hai nhánh}: nhánh tự do để \nb{không sót}, nhánh đúng thứ tự để \nb{không nhận nhầm} và \nb{ra luôn vị trí}.}
 \centering
 \begin{tikzpicture}[font=\scriptsize,>={Stealth},
@@ -716,7 +428,436 @@ tự do + tự do & 88.3 (+1.1) \\
 \src{scorer/models.py: DualSim(two=True). 5.4 M tham số, chấm 4--7 ms/câu. Train 6 epoch trên train-clean-100, chọn checkpoint trên dev-other.}
 \end{frame}
 
-\begin{frame}{Scorer 5. Vị trí lấy ra đúng tới đâu}
+\begin{frame}{Scorer 3. Bước 1: từ \ra{} âm vị, audio \ra{} khung, rồi lập bảng $M$}
+\insight{Từ thành \nb{dãy âm vị}, mỗi 20 ms audio thành \nb{một khung}. $M$[âm vị, khung] = \nb{độ giống} (cos). Mọi bước sau chỉ là \nb{đọc bảng này}.}
+\begin{columns}[T]
+\column{0.55\textwidth}
+\scriptsize
+\textcolor{Primary}{\textbf{1. Từ \ra{} âm vị (G2P).}} \texttt{g2p\_en} tra từ điển phát âm CMUdict; không có thì mạng seq2seq đoán. \texttt{pileser} \ra{} P AY1 L IY0 Z ER0 \ra{} bỏ số trọng âm \ra{} \textbf{P AY L IY Z ER} ($P$ = 6; bộ $\sim$40 âm vị).\par\vspace{0.05cm}
+\textcolor{Primary}{\textbf{2. Âm vị \ra{} vector.}} Mỗi âm vị 1 vector 256 số + vector ``vị trí trong từ'' \ra{} 2 lớp Transformer \ra{} $e_1..e_P$. Không phụ thuộc câu \ra{} \textbf{tính sẵn một lần cho kho 209k từ}.\par\vspace{0.05cm}
+\textcolor{Primary}{\textbf{3. Audio \ra{} vector.}} Encoder Whisper-large-v3 (đóng băng): 20 ms một vector 1280 số \ra{} chiếu 256 + 1 lớp Transformer \ra{} $s_1..s_T$. Câu 10 s: $T$ = 500.\par\vspace{0.05cm}
+\textcolor{Primary}{\textbf{4. Bảng.}} Chuẩn hoá độ dài 1 \ra{} $M[p,t] = e_p \cdot s_t$ = cos, từ $-1$ tới 1.\par
+\column{0.43\textwidth}
+\centering
+\begin{tikzpicture}[font=\tiny]
+\def\cs{0.22}
+\foreach \rr in {0,...,5}{\foreach \cc in {0,...,15}{\draw[gray!40] (\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs);}}
+\foreach \rr/\cc in {0/3,1/4,2/6,3/7,4/9,5/10}{\fill[Primary!70] (\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs);}
+\foreach \rr/\cc in {1/13,3/1,0/14}{\fill[Primary!35] (\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs);}
+\foreach \ph [count=\i from 0] in {P,AY,L,IY,Z,ER}{\node[anchor=east] at (-0.02,-\i*\cs-0.5*\cs) {\ph};}
+\node[anchor=south] at (8*\cs,0.02) {khung câu (20 ms) \ra};
+\node[anchor=north] at (8*\cs,-6*\cs-0.03) {bảng $M$ của \texttt{pileser}: ô đậm = giống};
+\end{tikzpicture}
+\par\vspace{0.1cm}\raggedright
+{\scriptsize\textbf{Câu 10 s, list 2000 từ:} mỗi từ một bảng $\sim$6$\times$500 ô; cả list = \textbf{1 phép nhân ma trận}, 4--7 ms/câu (Hou25 $\sim$1200 ms).\par\vspace{0.05cm}
+Đề xuất có \textbf{hai bộ chiếu riêng} \ra{} hai bảng $M^{\text{tự do}}$, $M^{\text{thứ tự}}$ (trang 20).\par}
+\end{columns}
+\src{scorer/data/g2p.py; scorer/models.py: PhoneEnc (256 chiều, 2 lớp, 4 head), DualSim. Hou25 chậm vì phải đọc TTS từng từ rồi qua encoder.}
+\end{frame}
+
+\begin{frame}{Scorer 4. Khớp tự do: mỗi âm vị lấy ô sáng nhất}
+\insight{Điểm tự do = trung bình \nb{ô sáng nhất mỗi hàng}, không hỏi các ô đó \nb{có theo thứ tự không} \ra{} nhiễu rải rác vẫn được \nb{0.75}, gần từ đúng \nb{0.85}.}
+\begin{columns}[T]
+\column{0.46\textwidth}
+\nbox{\centering$\text{tự do} = \dfrac{1}{P}\sum_{p=1}^{P}\ \max_{t}\ M[p,t]$\\[2pt]
+\raggedright\scriptsize mỗi âm vị $p$ (hàng): tìm khung $t$ giống nhất, ở đâu cũng được; rồi trung bình $P$ số đó.}
+\vspace{0.1cm}
+{\scriptsize\textbf{Ví dụ} 4 âm vị $\times$ 8 khung (viền vàng = ô được chọn):\par
+\textbullet\ Đúng: khung 2, 3, 4, 6 \ra{} (.9+.8+.9+.8)/4 = \textbf{0.85}.\par
+\textbullet\ Nhiễu: khung \textbf{5, 0, 7, 1} (lộn xộn) \ra{} (.8+.7+.8+.7)/4 = \bad{0.75}.\par\vspace{0.06cm}
+\textbf{Vị trí:} tâm = trung vị các khung được chọn; rộng 4 khung mỗi âm vị ($\approx$80 ms).\par
+Đúng: trung vị(2,3,4,6) = 3.5. Nhiễu: trung vị(0,1,5,7) = 3, \textbf{giữa hai cụm}, chỗ không có gì.\par}
+\column{0.52\textwidth}
+\centering
+\begin{tikzpicture}
+\fill[Primary!14] (0.00,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.00,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.14,-0.14) {.2};
+\fill[Primary!7] (0.29,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.29,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.43,-0.14) {.1};
+\fill[Primary!63] (0.58,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.58,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=white] at (0.72,-0.14) {.9};
+\fill[Primary!14] (0.87,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.87,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.01,-0.14) {.2};
+\fill[Primary!7] (1.16,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.16,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.30,-0.14) {.1};
+\fill[Primary!14] (1.45,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.45,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.59,-0.14) {.2};
+\fill[Primary!7] (1.74,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.74,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.88,-0.14) {.1};
+\fill[Primary!14] (2.03,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (2.03,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (2.17,-0.14) {.2};
+\fill[Primary!7] (0.00,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.00,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.14,-0.43) {.1};
+\fill[Primary!14] (0.29,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.29,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.43,-0.43) {.2};
+\fill[Primary!21] (0.58,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.58,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.72,-0.43) {.3};
+\fill[Primary!56] (0.87,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.87,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=white] at (1.01,-0.43) {.8};
+\fill[Primary!14] (1.16,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.16,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.30,-0.43) {.2};
+\fill[Primary!7] (1.45,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.45,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.59,-0.43) {.1};
+\fill[Primary!14] (1.74,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.74,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.88,-0.43) {.2};
+\fill[Primary!7] (2.03,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (2.03,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (2.17,-0.43) {.1};
+\fill[Primary!14] (0.00,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.00,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.14,-0.72) {.2};
+\fill[Primary!7] (0.29,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.29,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.43,-0.72) {.1};
+\fill[Primary!14] (0.58,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.58,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.72,-0.72) {.2};
+\fill[Primary!14] (0.87,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.87,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.01,-0.72) {.2};
+\fill[Primary!63] (1.16,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.16,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=white] at (1.30,-0.72) {.9};
+\fill[Primary!21] (1.45,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.45,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.59,-0.72) {.3};
+\fill[Primary!7] (1.74,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.74,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.88,-0.72) {.1};
+\fill[Primary!14] (2.03,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (2.03,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (2.17,-0.72) {.2};
+\fill[Primary!7] (0.00,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.00,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.14,-1.01) {.1};
+\fill[Primary!14] (0.29,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.29,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.43,-1.01) {.2};
+\fill[Primary!7] (0.58,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.58,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.72,-1.01) {.1};
+\fill[Primary!14] (0.87,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.87,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.01,-1.01) {.2};
+\fill[Primary!14] (1.16,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.16,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.30,-1.01) {.2};
+\fill[Primary!14] (1.45,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.45,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.59,-1.01) {.2};
+\fill[Primary!56] (1.74,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.74,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=white] at (1.88,-1.01) {.8};
+\fill[Primary!7] (2.03,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (2.03,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (2.17,-1.01) {.1};
+\draw[Accent,line width=1.4pt] (0.58,0.00) rectangle ++(0.29,-0.29);
+\draw[Accent,line width=1.4pt] (0.87,-0.29) rectangle ++(0.29,-0.29);
+\draw[Accent,line width=1.4pt] (1.16,-0.58) rectangle ++(0.29,-0.29);
+\draw[Accent,line width=1.4pt] (1.74,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=TextGray] at (0.14,0.15) {0};
+\node[font=\tiny,text=TextGray] at (0.43,0.15) {1};
+\node[font=\tiny,text=TextGray] at (0.72,0.15) {2};
+\node[font=\tiny,text=TextGray] at (1.01,0.15) {3};
+\node[font=\tiny,text=TextGray] at (1.30,0.15) {4};
+\node[font=\tiny,text=TextGray] at (1.59,0.15) {5};
+\node[font=\tiny,text=TextGray] at (1.88,0.15) {6};
+\node[font=\tiny,text=TextGray] at (2.17,0.15) {7};
+\node[font=\scriptsize\bfseries,anchor=south] at (1.16,0.28) {từ đúng: khung 2, 3, 4, 6};
+\begin{scope}[yshift=-2.05cm]
+\fill[Primary!14] (0.00,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.00,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.14,-0.14) {.2};
+\fill[Primary!7] (0.29,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.29,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.43,-0.14) {.1};
+\fill[Primary!14] (0.58,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.58,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.72,-0.14) {.2};
+\fill[Primary!7] (0.87,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.87,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.01,-0.14) {.1};
+\fill[Primary!14] (1.16,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.16,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.30,-0.14) {.2};
+\fill[Primary!56] (1.45,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.45,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=white] at (1.59,-0.14) {.8};
+\fill[Primary!7] (1.74,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.74,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.88,-0.14) {.1};
+\fill[Primary!14] (2.03,0.00) rectangle ++(0.29,-0.29);
+\draw[gray!40] (2.03,0.00) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (2.17,-0.14) {.2};
+\fill[Primary!49] (0.00,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.00,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=white] at (0.14,-0.43) {.7};
+\fill[Primary!14] (0.29,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.29,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.43,-0.43) {.2};
+\fill[Primary!7] (0.58,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.58,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.72,-0.43) {.1};
+\fill[Primary!14] (0.87,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.87,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.01,-0.43) {.2};
+\fill[Primary!7] (1.16,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.16,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.30,-0.43) {.1};
+\fill[Primary!14] (1.45,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.45,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.59,-0.43) {.2};
+\fill[Primary!14] (1.74,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.74,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.88,-0.43) {.2};
+\fill[Primary!7] (2.03,-0.29) rectangle ++(0.29,-0.29);
+\draw[gray!40] (2.03,-0.29) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (2.17,-0.43) {.1};
+\fill[Primary!7] (0.00,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.00,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.14,-0.72) {.1};
+\fill[Primary!14] (0.29,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.29,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.43,-0.72) {.2};
+\fill[Primary!14] (0.58,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.58,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.72,-0.72) {.2};
+\fill[Primary!7] (0.87,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.87,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.01,-0.72) {.1};
+\fill[Primary!14] (1.16,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.16,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.30,-0.72) {.2};
+\fill[Primary!7] (1.45,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.45,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.59,-0.72) {.1};
+\fill[Primary!14] (1.74,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.74,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.88,-0.72) {.2};
+\fill[Primary!56] (2.03,-0.58) rectangle ++(0.29,-0.29);
+\draw[gray!40] (2.03,-0.58) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=white] at (2.17,-0.72) {.8};
+\fill[Primary!14] (0.00,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.00,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.14,-1.01) {.2};
+\fill[Primary!49] (0.29,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.29,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=white] at (0.43,-1.01) {.7};
+\fill[Primary!7] (0.58,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.58,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (0.72,-1.01) {.1};
+\fill[Primary!14] (0.87,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (0.87,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.01,-1.01) {.2};
+\fill[Primary!7] (1.16,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.16,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.30,-1.01) {.1};
+\fill[Primary!14] (1.45,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.45,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.59,-1.01) {.2};
+\fill[Primary!7] (1.74,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (1.74,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (1.88,-1.01) {.1};
+\fill[Primary!14] (2.03,-0.87) rectangle ++(0.29,-0.29);
+\draw[gray!40] (2.03,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=black] at (2.17,-1.01) {.2};
+\draw[Accent,line width=1.4pt] (1.45,0.00) rectangle ++(0.29,-0.29);
+\draw[Accent,line width=1.4pt] (0.00,-0.29) rectangle ++(0.29,-0.29);
+\draw[Accent,line width=1.4pt] (2.03,-0.58) rectangle ++(0.29,-0.29);
+\draw[Accent,line width=1.4pt] (0.29,-0.87) rectangle ++(0.29,-0.29);
+\node[font=\tiny,text=TextGray] at (0.14,0.15) {0};
+\node[font=\tiny,text=TextGray] at (0.43,0.15) {1};
+\node[font=\tiny,text=TextGray] at (0.72,0.15) {2};
+\node[font=\tiny,text=TextGray] at (1.01,0.15) {3};
+\node[font=\tiny,text=TextGray] at (1.30,0.15) {4};
+\node[font=\tiny,text=TextGray] at (1.59,0.15) {5};
+\node[font=\tiny,text=TextGray] at (1.88,0.15) {6};
+\node[font=\tiny,text=TextGray] at (2.17,0.15) {7};
+\node[font=\scriptsize\bfseries,anchor=south] at (1.16,0.28) {từ nhiễu: khung 5, 0, 7, 1};
+\end{scope}
+\end{tikzpicture}
+\end{columns}
+\src{scorer/models.py: MaxSim. Số thật của khớp tự do (\texttt{pmaxsim}): trang 22. Ví dụ đồ chơi, không phải số đo.}
+\end{frame}
+
+\begin{frame}{Scorer 5. Khớp đúng thứ tự: tính bảng $D$ từng bước}
+\insight{$D[p,t]$ = điểm \nb{đường tốt nhất} qua âm vị 1..$p$, \nb{kết thúc ở khung $t$}. Từ đúng: hàng cuối đạt 3.4 \ra{} 3.4/4 = \nb{0.85}.}
+\begin{columns}[T]
+\column{0.42\textwidth}
+\nbox{\centering$D[1,t] = M[1,t]$\\[1pt]
+$D[p,t] = M[p,t] + \max\limits_{1\le g\le G} D[p-1,\,t-g]$\\[1pt]
+$\text{thứ tự} = \max_t D[P,t]\ /\ P$}
+\vspace{0.06cm}
+{\scriptsize\textbf{Đọc:} âm vị $p$ ở khung $t$ thì âm vị trước phải ở \textbf{trước đó} 1..$G$ khung. Thật: $G$ = 15 khung (0.3 s); ví dụ: $G$ = 2.\par\vspace{0.05cm}
+\textbf{Ba ô tính tay} (ô xanh):\par
+$D[2,3]$ = .8 + max(.9, .1) = \textbf{1.7}\par
+$D[3,4]$ = .9 + max(1.7, .5) = \textbf{2.6}\par
+$D[4,6]$ = .8 + max(2.0, 2.6) = \textbf{3.4}\par
+{\tiny (hai số trong max = $D$ của hàng trên, 1 và 2 khung trước)\par}}
+\column{0.56\textwidth}
+\renewcommand{\arraystretch}{1.0}\scriptsize\setlength{\tabcolsep}{3.2pt}
+\textbf{Bảng $M$ (từ đúng)}\par
+\begin{tabular}{c|cccccccc}
+khung & 0&1&2&3&4&5&6&7\\\hline
+âm vị 1 & .2&.1&\cellcolor{GoodGreen!35}.9&.2&.1&.2&.1&.2\\
+âm vị 2 & .1&.2&.3&\cellcolor{GoodGreen!35}.8&.2&.1&.2&.1\\
+âm vị 3 & .2&.1&.2&.2&\cellcolor{GoodGreen!35}.9&.3&.1&.2\\
+âm vị 4 & .1&.2&.1&.2&.2&.2&\cellcolor{GoodGreen!35}.8&.1\\
+\end{tabular}
+\par\vspace{0.08cm}
+\textbf{Bảng $D$} ($-$ = chưa đủ khung phía trước, không có đường)\par
+\begin{tabular}{c|cccccccc}
+khung & 0&1&2&3&4&5&6&7\\\hline
+$p$=1 & .2&.1&\cellcolor{GoodGreen!35}.9&.2&.1&.2&.1&.2\\
+$p$=2 & $-$&.4&.5&\cellcolor{GoodGreen!35}1.7&1.1&.3&.4&.3\\
+$p$=3 & $-$&$-$&.6&.7&\cellcolor{GoodGreen!35}2.6&2.0&1.2&.6\\
+$p$=4 & $-$&$-$&$-$&.8&.9&2.8&\cellcolor{GoodGreen!35}\textbf{3.4}&2.1\\
+\end{tabular}
+\par\vspace{0.05cm}
+{\tiny Tự do cũng 0.85: ở từ đúng, các ô sáng nhất \textbf{đã} theo thứ tự.\par}
+\end{columns}
+\src{scorer/models.py: MonoSim. Cài bằng max\_pool1d cỡ $G$ trượt theo thời gian: mỗi hàng 1 phép.}
+\end{frame}
+
+\begin{frame}{Scorer 6. Từ nhiễu bị chặn, và lần ngược ra vị trí}
+\insight{Nhiễu có ô sáng nhưng \nb{sai thứ tự} \ra{} chỉ còn \nb{0.20} (tự do: 0.75). Lần ngược đường của từ đúng \ra{} \nb{khung 2--6}.}
+\begin{columns}[T]
+\column{0.52\textwidth}
+\renewcommand{\arraystretch}{0.95}\tiny\setlength{\tabcolsep}{3.2pt}
+\textbf{Từ nhiễu: bảng $M$} (ô sáng ở khung 5, 0, 7, 1)\par
+\begin{tabular}{c|cccccccc}
+khung & 0&1&2&3&4&5&6&7\\\hline
+âm vị 1 & .2&.1&.2&.1&.2&\cellcolor{RiskRed!25}.8&.1&.2\\
+âm vị 2 & \cellcolor{RiskRed!25}.7&.2&.1&.2&.1&.2&.2&.1\\
+âm vị 3 & .1&.2&.2&.1&.2&.1&.2&\cellcolor{RiskRed!25}.8\\
+âm vị 4 & .2&\cellcolor{RiskRed!25}.7&.1&.2&.1&.2&.1&.2\\
+\end{tabular}
+\par\vspace{0.06cm}
+\textbf{Bảng $D$}\par
+\begin{tabular}{c|cccccccc}
+khung & 0&1&2&3&4&5&6&7\\\hline
+$p$=1 & .2&.1&.2&.1&.2&\cellcolor{Accent!30}.8&.1&.2\\
+$p$=2 & $-$&.4&.3&.4&.3&.4&\cellcolor{Accent!30}1.0&.9\\
+$p$=3 & $-$&$-$&.6&.5&.6&.5&.6&\cellcolor{Accent!30}1.8\\
+$p$=4 & $-$&$-$&$-$&\textbf{.8}&.7&.8&.7&.8\\
+\end{tabular}
+\par\vspace{0.04cm}
+{\tiny Vàng: đường qua ô sáng tới 1.8 ở khung 7; âm vị 4 phải ở \textbf{sau} khung 7 \ra{} hết chỗ. Tốt nhất: 0.8/4 = 0.20.\par}
+\column{0.46\textwidth}
+\nbox{\textbf{Lần ngược ra vị trí} (từ đúng, trang 18)\\[2pt]
+\scriptsize
+Khi tính $D$, nhớ mỗi ô lấy max từ ô nào.\\
+$p$=4: max hàng cuối 3.4 ở \textbf{khung 6} = \textbf{cuối từ}\\
+$p$=3: 3.4 lấy từ $D[3,4]$ = 2.6 \ra{} khung 4\\
+$p$=2: 2.6 lấy từ $D[2,3]$ = 1.7 \ra{} khung 3\\
+$p$=1: 1.7 lấy từ $D[1,2]$ = .9 \ra{} \textbf{khung 2 = đầu từ}\\[2pt]
+\ra{} từ ở khung \textbf{2--6} = 0.04--0.14 s.}
+\vspace{0.08cm}
+{\scriptsize\textbf{Vì sao chuẩn hơn tự do?} Tự do lấy trung vị các ô chọn: một âm vị phổ biến (vd.\ ER) khớp chỗ khác sẽ \textbf{kéo tâm lệch}. Thứ tự buộc mọi âm vị nằm \textbf{liền một đoạn} (diễn giải; số đo trang 22--23).\par}
+\end{columns}
+\src{Ví dụ đồ chơi, $G$ = 2. Code: MonoSim lưu khung bắt đầu của đường qua chỉ số của max\_pool1d.}
+\end{frame}
+
+\begin{frame}{Scorer 7. Từ hai điểm ra xác suất $p$}
+\insight{$\text{logit} = a\cdot\text{thứ tự} + a_2\cdot\text{tự do} + c$, $p$ = sigmoid(logit). Nhiễu rải rác: chỉ tự do cho \nb{$p$ = 0.92} (lọt ngưỡng 0.5); thêm thứ tự còn \nb{0.38} (bị loại).}
+\begin{columns}[T]
+\column{0.52\textwidth}
+\renewcommand{\arraystretch}{1.1}\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{L{3.3cm}L{1.6cm}L{1.6cm}}
+\toprule
+Ví dụ trang 17--19 & \textbf{từ đúng} & \textbf{từ nhiễu} \\
+\midrule
+điểm tự do / thứ tự & .85 / .85 & .75 / .20 \\
+\midrule
+& \multicolumn{2}{l}{logit \ra{} $p$} \\
+\midrule
+\textbf{chỉ tự do}: $10\cdot$tự do $- 5$ & 3.5 \ra{} .97 & 2.5 \ra{} \bad{.92} \\
+\rowcolor{Accent!15}\textbf{hai nhánh}: $10\cdot$th.tự $+ 10\cdot$tự do $- 10$ & 7.0 \ra{} .999 & $-$0.5 \ra{} \good{.38} \\
+\bottomrule
+\end{tabular}
+\par\vspace{0.06cm}
+{\tiny $a, a_2, c$ là tham số học; các số 10, $-$10, $-$5 là \textbf{giá trị khởi tạo}, chỉ để minh hoạ, không phải giá trị sau train.\par}
+\vspace{0.08cm}
+\nbox[block body alerted]{\scriptsize\textbf{Ra cho ASR:} (từ, $p$, đầu, cuối); đầu--cuối từ nhánh thứ tự (trang 19); giữ từ có $p \geq$ ngưỡng chọn trên dev.}
+\column{0.46\textwidth}
+\nbox{\textbf{Vì sao cần cả hai nhánh?}\\[2pt]\scriptsize
+\textbf{Luôn có: tự do $\geq$ thứ tự} (max một hàng $\geq$ ô của hàng đó trên đường).\\[1pt]
+\textbullet\ Tự do \textbf{cao}, thứ tự \textbf{cao} \ra{} từ đúng.\\
+\textbullet\ Tự do \textbf{cao}, thứ tự \textbf{thấp} \ra{} ô sáng sai thứ tự \ra{} nhiễu.\\
+\textbullet\ Chỉ thứ tự: một âm vị khớp kém (G2P sai, nuốt âm) kéo cả đường xuống \ra{} \textbf{sót}. Tự do chịu được: mỗi hàng tính riêng.}
+\end{columns}
+\src{scorer/models.py: DualSim(two=True). ``Chỉ thứ tự thì sót'' là diễn giải, khớp số đo trang 22 (thứ tự Recall@1 $-$1.7).}
+\end{frame}
+
+\begin{frame}{Scorer 8. Train: dạy chấm đúng từ, và dạy đúng chỗ}
+\insight{Mỗi câu: từ hiếm của câu là \nb{đúng}, thêm \nb{4 lần} số đó từ nhiễu. Từ đúng chỉ được khớp \nb{trong đoạn nó được nói} \ra{} model học chấm \nb{đúng chỗ}.}
+\begin{columns}[T]
+\column{0.52\textwidth}
+\scriptsize
+\textcolor{Primary}{\textbf{Dữ liệu.}} LibriSpeech train-clean-100 (100 giờ). Đoạn thật của từ: căn chỉnh MFA.\par\vspace{0.05cm}
+\textcolor{Primary}{\textbf{Mỗi câu.}} Đúng = từ hiếm trong câu (tối đa 8). Nhiễu = 4 $\times$ số đó: 40\% từ \textbf{gần âm} (khoảng cách sửa nhỏ, vd.\ \texttt{pillar} cho \texttt{pileser}), 60\% ngẫu nhiên trong kho 209k.\par\vspace{0.05cm}
+\textcolor{Primary}{\textbf{Loss BCE}} cho từng cặp (câu, từ): $\ell = -[\,y\log p + (1-y)\log(1-p)\,]$.\par
+Vd.\ \texttt{pileser} ($y$=1, $p$=.9) \ra{} $\ell$ = 0.11. Nhiễu ($y$=0, $p$=.38) \ra{} $\ell$ = 0.48: bị phạt, đẩy $p$ xuống.\par\vspace{0.05cm}
+\column{0.46\textwidth}
+\nbox[block body alerted]{\textbf{Dạy vị trí}\\[2pt]\scriptsize
+Từ đúng: mọi ô của $M$ \textbf{ngoài} đoạn MFA $\pm$5 khung ($\pm$0.1 s) bị đặt $-1$ \ra{} điểm cao chỉ có được nếu khớp \textbf{đúng đoạn đó}.\\[1pt]
+Từ nhiễu: không đặt gì \ra{} ô sáng ở đâu cũng bị phạt.}
+\vspace{0.08cm}
+\centering
+\begin{tikzpicture}[font=\tiny]
+\def\cs{0.18}
+\foreach \rr in {0,...,3}{\foreach \cc in {0,...,19}{\draw[gray!40] (\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs);}}
+\fill[gray!55] (0,0) rectangle (7*\cs,-4*\cs); \fill[gray!55] (14*\cs,0) rectangle (20*\cs,-4*\cs);
+\foreach \rr/\cc in {0/8,1/9,2/11,3/12}{\fill[GoodGreen!60] (\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs);}
+\fill[Accent] (2*\cs,-1*\cs) rectangle ++(\cs,-\cs); \fill[Accent] (17*\cs,-3*\cs) rectangle ++(\cs,-\cs);
+\draw[thick,Primary] (7*\cs,0.05) -- (7*\cs,-4*\cs-0.05); \draw[thick,Primary] (14*\cs,0.05) -- (14*\cs,-4*\cs-0.05);
+\node[anchor=south] at (10.5*\cs,0.05) {đoạn MFA $\pm$0.1 s};
+\node[anchor=north] at (10*\cs,-4*\cs-0.03) {xám = đặt $-1$: ô vàng ngoài đoạn hết tác dụng};
+\end{tikzpicture}
+\end{columns}
+\src{scorer/training/train.py. 6 epoch, AdamW, chọn checkpoint theo Recall@1 dev-other. Hou25: cùng dữ liệu, 2 epoch, chọn trên dev-clean (trang 24).}
+\end{frame}
+
+\begin{frame}{Scorer 9. Hai cách khớp đo thật: số nào, vì sao ra vậy}
+\insight{Đúng như ví dụ: thứ tự \nb{ít nhận nhầm} (precision 75.8 \ra{} 82.3) nhưng \nb{sót hơn} (Recall@1 87.5 \ra{} 85.8). Sai ở chỗ khác nhau \ra{} cộng hai model \nb{+2.6}.}
+\renewcommand{\arraystretch}{1.0}\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{L{2.9cm}ccL{8.4cm}}
+\toprule
+test-other, N2000 & tự do & thứ tự & Vì sao (diễn giải) \\
+\midrule
+Recall@1 & \good{87.5} & 85.8 & một âm vị khớp kém (G2P sai, nuốt âm) kéo cả đường xuống \\
+\quad list nghe giống & \good{64.7} & 60.5 & nhiễu nghe giống \textbf{có} đường đúng thứ tự \ra{} không chặn được \\
+Precision ($p \geq 0.5$) & 75.8 & \good{82.3} & nhiễu rải rác bị chặn, như ví dụ 0.75 \ra{} 0.20 \\
+Recall ($p \geq 0.5$) & \good{91.7} & 88.4 & tự do $\geq$ thứ tự với mọi từ \ra{} luôn giữ nhiều hơn \\
+Nhiễu/câu, câu $\geq$ 20 s & 1.3 & \good{0.9} & câu dài nhiều ô sáng rời, không nối thành đường được \\
+\midrule
+Sai số tâm (trung vị) & 0.05 s & \good{0.02 s} & trung vị các ô chọn bị âm vị phổ biến (khớp chỗ khác) kéo lệch \\
+Lệch đầu từ, 10--90\% & $-$.12; +.08 & \good{+.03; +.10} & đầu = khung khớp \textbf{tốt nhất} của âm vị đầu \ra{} mở hơi muộn \\
+\bottomrule
+\end{tabular}
+\par
+{\tiny Precision = đúng có $p\ge0.5$ / mọi từ có $p\ge0.5$. Recall = đúng có $p\ge0.5$ / 5248. Lệch = đầu đoán $-$ đầu MFA (giây), dương = mở muộn.\par}
+\vspace{0.03cm}
+\nbox{\scriptsize\textbf{Bù nhau?} Cộng điểm 2 model: tự do 87.2; tự do + tự do 88.3 (+1.1); \textbf{tự do + thứ tự 89.8 (+2.6)}. \textbf{+1.5} chỉ có khi hai cách khác nhau \ra{} gộp thành \textbf{một model hai nhánh}.}
+\src{REPORT-1115 mục 6, 6b. Thứ tự $-$ tự do: $-$1.7 [$-$2.7; $-$0.7]. 87.2 = tự do chấm lại trong lượt cộng điểm.}
+\end{frame}
+
+\begin{frame}{Scorer 10. Vị trí lấy ra đúng tới đâu}
 \insight{So với căn chỉnh MFA: đề xuất đặt tâm từ lệch \nb{0.02 s} (1 khung), \nb{99.1\%} tâm nằm trong đoạn thật. Hou25 gốc chỉ \nb{44\%}.}
 \begin{columns}[T]
 \column{0.40\textwidth}
@@ -751,43 +892,46 @@ khớp đúng thứ tự & 0.02 s & 98.9 & 95.6 \\
 \end{tabular}
 \par\vspace{0.06cm}
 {\tiny \textbf{Đúng@chỗ}: tại đoạn thật, từ đúng đứng trên mọi từ nhiễu bị đặt chồng lên đó (câu có 2--4 từ hiếm).\par\vspace{0.08cm}}
-{\scriptsize\textbf{Dùng ở:} lọc list (trang 19); nhắc Whisper đúng lúc, $-$0.44 WER (trang 23).\par\vspace{0.06cm}}
+{\scriptsize\textbf{Dùng ở:} lọc list (trang 26); nhắc Whisper đúng lúc, $-$0.44 WER (trang 30).\par\vspace{0.06cm}}
 {\tiny\color{RiskRed}\textbf{Chưa đo:} chỉ đo trên từ đúng (từ nhiễu không có đoạn thật); 0.9\% trượt chưa xem từng ca; lệch đầu/cuối của đề xuất chưa tách riêng; MFA cũng là ước lượng.\par}
 \end{columns}
 \src{e\_dual\_other.md mục 4--5; REPORT-1115 mục 3, 5. Hou25 lượt train lại cùng đợt với vệt chéo: 0.06 s / 79.3\%.}
 \end{frame}
 
-\begin{frame}{Scorer 6. Kết quả: mỗi bước cộng thêm bao nhiêu}
-\insight{Scorer đề xuất (một model) đạt \nb{89.3} Recall@1, hơn mốc mạnh nhất là Hou25 vệt chéo (82.9) \nb{6.4 điểm}. Với từ Whisper tự nghe sai: \nb{60.9 \ra{} 70.9}.}
+\begin{frame}{Scorer 11. Kết quả: mỗi bước cộng thêm bao nhiêu}
+\insight{Khớp tự do \ra{} đề xuất: \nb{+1.8} Recall@1. Lợi lớn nhất ở \nb{từ Whisper tự nghe sai}: \nb{64.5 \ra{} 70.9}, chỗ scorer cần nhất. So với Hou25 vệt chéo: \nb{+6.4} và \nb{+10.0}.}
 \begin{columns}[T]
-\column{0.55\textwidth}
-\renewcommand{\arraystretch}{1.1}\scriptsize\setlength{\tabcolsep}{3pt}
-\begin{tabular}{lcc}
+\column{0.58\textwidth}
+\renewcommand{\arraystretch}{1.02}\scriptsize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{L{5.2cm}cc}
 \toprule
-test-other, N2000 & Recall@1 & ASR nghe sai \\
+test-other, N2000 & Recall@1 & nghe sai \\
 \midrule
-Hou25 (tái hiện) & 72.6 & 45.9 \\
-Hou25 vệt chéo & 82.9 & 60.9 \\
+Hou25 (trang 10) & 72.6 & 45.9 \\
+Hou25 vệt chéo (trang 11) & 82.9 & 60.9 \\
 \midrule
-khớp tự do & 87.5 & 64.5 \\
-\quad + dạy vị trí & 88.3 & 65.9 \\
-hai nhánh chung bảng + vị trí & 88.3 & 68.8 \\
-\rowcolor{Accent!15}\textbf{đề xuất} (bảng riêng + vị trí) & \textbf{89.3} & \textbf{70.9} \\
+khớp tự do (trang 17) & 87.5 & 64.5 \\
+\quad + dạy vị trí (trang 21) & 88.3 & 65.9 \\
+hai nhánh \textbf{chung} một bảng + vị trí & 88.3 & 68.8 \\
+\rowcolor{Accent!15}\textbf{đề xuất}: hai nhánh \textbf{hai bảng} + vị trí & \textbf{89.3} & \textbf{70.9} \\
 \midrule
-\textcolor{TextGray}{cộng điểm 2 model riêng} & \textcolor{TextGray}{90.8} & \textcolor{TextGray}{--} \\
+\textcolor{TextGray}{cộng 2 model riêng (trang 22)} & \textcolor{TextGray}{90.8} & \textcolor{TextGray}{--} \\
 \bottomrule
 \end{tabular}
-\column{0.43\textwidth}
-{\footnotesize\textbf{Cách tính:} 5248 lượt từ hiếm trong 2939 câu; mỗi lượt xem từ đúng có đứng trên cả 2000 từ nhiễu không.\par\vspace{0.15cm}
-Đề xuất hơn khớp tự do: +1.8 [+0.9; +2.6].\par\vspace{0.15cm}}
-{\scriptsize\color{RiskRed}\textbf{Lệch có lợi cho nhóm:}\par
-\textbullet\ Hou25 train 2 epoch, chọn checkpoint trên dev-clean; scorer âm vị 6 epoch, chọn trên dev-other (gần test hơn).\par
-\textbullet\ ``Đề xuất'' là bản tốt nhất trong 4 bản hai nhánh, xếp theo điểm test (88.3--89.3).\par}
+\par\vspace{0.04cm}
+{\tiny\textbf{Nghe sai}: Recall@1 chỉ trên các lượt từ hiếm mà Whisper \textbf{không list} viết sai (từ list phải cứu).\par}
+\column{0.38\textwidth}
+{\scriptsize\textbf{Đọc từng bước:}\par
+\textbullet\ Dạy vị trí: +0.8, nhóm nghe sai +1.4.\par
+\textbullet\ Thêm nhánh thứ tự, chung bảng: Recall@1 \textbf{đứng yên} (88.3), nghe sai +2.9.\par
+\textbullet\ Tách hai bảng: +1.0 và +2.1 (chung bảng: một vector phục vụ hai cách đọc).\par
+\textbullet\ Đề xuất $-$ tự do: +1.8 [+0.9; +2.6].\par\vspace{0.03cm}}
+{\tiny\color{RiskRed}\textbf{Lệch có lợi cho nhóm:} Hou25 2 epoch, chọn trên dev-clean; âm vị 6 epoch, dev-other. ``Đề xuất'' là bản tốt nhất trong 4 bản hai nhánh xếp theo \textbf{test} (88.3--89.3).\par}
 \end{columns}
 \src{REPORT-1115 mục 3, 5, 6c, 7c; e\_dual\_other.md. Hou25 vệt chéo là lượt train khác (bản trung bình cùng lượt: 73.3 / 46.3). test-clean: 93.4 \ra{} 94.7.}
 \end{frame}
 
-\begin{frame}{Scorer 7. Lỗi ``câu dài'' của Hou25 không còn}
+\begin{frame}{Scorer 12. Lỗi ``câu dài'' của Hou25 không còn}
 \insight{Chỉ Hou25 (\nb{lấy trung bình}) mới báo nhầm tăng theo độ dài câu. Scorer đề xuất thấp nhất: \nb{0.9} từ nhiễu/câu ở câu dài, so với \nb{12.4}.}
 \begin{columns}[T]
 \column{0.58\textwidth}
@@ -807,40 +951,42 @@ khớp tự do & 1.3 \\
 \par\vspace{0.15cm}
 {\scriptsize\color{RiskRed}\textbf{Chưa tách được:} ``khớp tự do'' không đòi thứ tự mà vẫn thấp, nhưng nó khác Hou25 hai chỗ cùng lúc (âm vị; max thay trung bình).\par}
 \end{columns}
-\src{test-other N2000, từ nhiễu $p \geq 0.5$; câu $\geq$ 20 s chỉ có 40 câu. Hou25 ở đây là bản 72.6 (bản train cùng lượt ở trang 10: 6.1).}
+\src{test-other N2000, từ nhiễu $p \geq 0.5$; câu $\geq$ 20 s chỉ có 40 câu. Hou25 ở đây là bản 72.6 (bản train cùng lượt ở trang 12: 6.1).}
 \end{frame}
 
-\begin{frame}{Scorer 8. Biết vị trí thì lọc được list}
-\insight{Cùng ngưỡng $p \geq 0.5$, cùng luật ``trùng chỗ thì giữ từ điểm cao hơn'': đề xuất giữ \nb{92\%} từ đúng, precision \nb{86\%}; Hou25 chỉ \nb{73\%} và \nb{55\%}, vì nó không biết từ nằm đâu.}
+\begin{frame}{Scorer 13. Lọc list: 2000 từ \ra{} 1.9 từ/câu}
+\insight{Vào 2000 từ, ra trung bình \nb{1.92 từ/câu} = \nb{1.65 đúng + 0.27 nhiễu}. Câu thật có 1.79 từ hiếm \ra{} list sau lọc \nb{gần bằng} danh sách thật. Hou25: 1.30 đúng + 1.06 nhiễu.}
 \begin{columns}[T]
-\column{0.40\textwidth}
-{\footnotesize\textbf{Cách tính}, trên cả 2939 câu:\par
-1.\ Mỗi câu: chấm 2000 từ, lấy top-50.\par
-2.\ Hai từ trùng chỗ (chồng nhau $>$ 30\%) \ra{} giữ từ điểm cao hơn.\par
-3.\ Giữ các từ có $p \geq 0.5$.\par\vspace{0.05cm}
-\textbf{Giữ từ đúng} = từ đúng còn lại / 5248.\par
-\textbf{Precision} = từ đúng còn lại / mọi từ còn lại.\par\vspace{0.12cm}
-Ví dụ: \texttt{pileser} ($p$ 0.8) và \texttt{pillar} (0.4) cùng ở giây 3.0--3.6 \ra{} \bad{loại} \texttt{pillar}.\par}
-\column{0.58\textwidth}
-\renewcommand{\arraystretch}{1.15}\footnotesize\setlength{\tabcolsep}{4pt}
-\begin{tabular}{lccc}
+\column{0.42\textwidth}
+{\scriptsize\textbf{Cách lọc}, mỗi câu:\par
+1.\ Chấm 2000 từ, lấy top-50.\par
+2.\ Hai từ \textbf{trùng chỗ} (chồng nhau $>$ 30\%) \ra{} giữ từ $p$ cao hơn. Vd.\ \texttt{pileser} (.8) và \texttt{pillar} (.4) cùng ở giây 3.0--3.6 \ra{} \bad{loại} \texttt{pillar}.\par
+3.\ Giữ từ có $p \geq 0.5$.\par\vspace{0.08cm}
+\textbf{Tính 1.92} (đề xuất; 2939 câu, 5248 lượt từ hiếm):\par
+đúng còn = 92.4\% $\times$ 5248 = 4849 (1.65/câu)\par
+nhiễu còn = 0.27 $\times$ 2939 = 794\par
+tổng = 5643 / 2939 = \textbf{1.92 từ/câu}\par
+precision = 4849 / 5643 = \textbf{85.9\%}\par}
+\column{0.56\textwidth}
+\renewcommand{\arraystretch}{1.05}\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcccc}
 \toprule
-$p \geq 0.5$, có tranh nhau & giữ từ đúng & nhiễu/câu & precision \\
+$p \geq 0.5$ & giữ đúng & nhiễu/câu & từ/câu & precision \\
 \midrule
-Hou25 & 73.0\% & 1.06 & \bad{55.2\%} \\
-Hou25 vệt chéo & 88.3\% & 0.59 & 72.9\% \\
-\rowcolor{Accent!15}\textbf{đề xuất} & \textbf{92.4\%} & \textbf{0.27} & \good{85.9\%} \\
+Hou25 & 73.0\% & 1.06 & 2.36 & \bad{55.2\%} \\
+Hou25 vệt chéo & 88.3\% & 0.59 & 2.17 & 72.9\% \\
+\rowcolor{Accent!15}\textbf{đề xuất} & \textbf{92.4\%} & \textbf{0.27} & \textbf{1.92} & \good{85.9\%} \\
 \bottomrule
 \end{tabular}
-\par\vspace{0.15cm}
-{\scriptsize \textbullet\ Còn lại $\sim$1.9 từ/câu (câu có trung bình 1.8 từ hiếm).\par
-\textbullet\ Tranh nhau làm Hou25 \textbf{mất} 14 điểm từ đúng (87.0 \ra{} 73.0): vị trí của nó sai, nên nó loại nhầm từ đúng.\par
-\textbullet\ Ở cùng mức giữ $\sim$91\% từ đúng (không tranh, $p \geq 0.3$), Hou25 chỉ có precision 21\%.\par}
+\par\vspace{0.06cm}
+{\scriptsize\textbullet\ \textbf{Giữ đúng} = đúng còn / 5248. \textbf{Nhiễu/câu} = nhiễu còn / 2939. \textbf{Từ/câu} = tổng còn / 2939.\par
+\textbullet\ Bước 2 làm Hou25 \textbf{mất} 14 điểm từ đúng (87.0 \ra{} 73.0): vị trí của nó sai (44\% tâm trúng), nên từ đúng bị coi là ``trùng chỗ'' với một nhiễu điểm cao hơn và bị loại nhầm.\par
+\textbullet\ Bỏ bước 2, hạ ngưỡng 0.3 để giữ $\sim$91\% từ đúng \ra{} Hou25 precision chỉ \bad{21\%}.\par}
 \end{columns}
-\src{Tính lại 17/11: scorer/analysis/nms\_fair\_other.md. Số cũ ``3--4\% \ra{} 91\%'' đã bỏ: 3--4\% là top-50 không cắt (chọn 50 từ thì precision tối đa $\sim$3.6\%), 91\% là bản cộng điểm 2 model.}
+\src{scorer/analysis/nms\_fair\_other.md (tính lại 17/11). Từ/câu tính từ hai cột trước, vd.\ Hou25: 0.730$\times$5248/2939 + 1.06 = 2.36.}
 \end{frame}
 
-\begin{frame}{Scorer 9. Chỗ yếu: từ nhiễu nghe như một từ thường}
+\begin{frame}{Scorer 14. Chỗ yếu: từ nhiễu nghe như một từ thường}
 \insight{Từ nhiễu nghe giống \nb{một từ thường} trong câu thì \nb{không có từ hiếm nào tranh chỗ} nên nó lọt \ra{} cần thêm lựa chọn ``\nb{chỗ này không có từ nào}''.}
 \centering\includegraphics[width=0.92\linewidth,height=4.6cm,keepaspectratio]{imgs/tranh_nhau.pdf}\par
 \raggedright{\footnotesize \textbf{Câu A:} nhiễu trùng chỗ đều \good{bị loại}. \quad \textbf{Câu B:} \texttt{flauve} $\approx$ ``fall'', \texttt{emperour} $\approx$ ``empire'' \ra{} \bad{lọt}.\par}
@@ -915,177 +1061,57 @@ Scorer hơn Hou25 \textbf{17 điểm} Recall@1, đưa top-50 vào prompt vẫn \
 \src{test-other N2000 (REPORT-1115 mục 7, 7b). Tách tới trần đo trên dev-other.}
 \end{frame}
 
-\begin{frame}{Whisper 4. List dài hơn 20 lần, B-WER chỉ tăng nhẹ}
-\insight{List từ 100 lên 2000 từ: precision \nb{98 \ra{} 70\%}, nhưng B-WER chỉ \nb{7.14 \ra{} 7.65}. Cách làm \nb{bền với list lớn}.}
-\centering\includegraphics[height=3.7cm]{imgs/theo_N.pdf}
-\par\vspace{0.05cm}
-{\scriptsize\color{RiskRed}\textbf{Chưa có:} Hou25 ở N100--1000 trong cùng pipeline.\par}
-\src{test-other; scorer hai nhánh 1 model; $p \geq 0.3$ sau tranh nhau; nhắc đúng lúc, không prompt (REPORT-1115 mục 7c).}
-\end{frame}
-
-% ==================================================================
-\section{Tổng hợp}
-\begin{frame}{Tổng hợp: ba câu hỏi đã có trả lời, còn gì chưa chắc}
-\insight{Hou25 \nb{bỏ vị trí} nên thua. Scorer \nb{giữ vị trí}: 89.3, lọc còn $\sim$2 từ/câu. Whisper \nb{dùng vị trí}: B-WER 7.65, không cần prompt. Trước khi viết paper còn \nb{4 việc} phải sửa.}
+\begin{frame}{Whisper 4. List dài hơn 20 lần, B-WER chỉ tăng 0.5}
+\insight{N100 \ra{} N2000: nhiễu lọt qua scorer \nb{0.04 \ra{} 0.73 từ/câu}, nhưng B-WER chỉ \nb{7.14 \ra{} 7.65}, WER \nb{2.96 \ra{} 3.22}. Từ nhiễu \nb{chỉ được nhắc ở đoạn của nó}.}
 \begin{columns}[T]
-\column{0.50\textwidth}
-\renewcommand{\arraystretch}{1.2}\scriptsize\setlength{\tabcolsep}{3pt}
-\begin{tabular}{L{0.55cm}L{2.3cm}L{3.9cm}}
-\toprule
-& Luật đặt trước & Kết quả \\
-\midrule
-\textbf{D1} & Hou25 sửa $\geq$ 85.7 thì giữ & 82.9 \ra{} \good{nền âm vị}, hai nhánh \\
-\textbf{D2} & nhắc đúng lúc phải hơn nhắc mọi lúc & $-$0.44 WER, có ý nghĩa \ra{} \good{cần vị trí} \\
-\textbf{D3} & chọn tham số trên dev & ngưỡng, $\lambda$ chọn trên dev; \bad{nhưng} biến thể scorer chọn theo test \\
-\bottomrule
-\end{tabular}
-\column{0.48\textwidth}
-\yeu{\textbf{Chưa chắc / phải sửa} \hfill \textit{\ra{} việc số}\\[3pt]
-\scriptsize
-1.\ List toàn nhiễu vẫn làm WER tệ đi: 4.49 so với 4.25 \hfill \textbf{1}\\[2pt]
-2.\ So chưa công bằng hẳn: Hou25 2 epoch; chọn biến thể theo test; thiếu ``Hou25 vệt chéo + nhắc đúng lúc'' (Dự phòng 1) \hfill \textbf{4}\\[2pt]
-3.\ WER tổng chưa thắng có ý nghĩa: $-$0.17 [$-$0.39; +0.12] \ra{} chỉ claim B-WER \hfill \textbf{4}\\[2pt]
-4.\ Mới có Whisper \hfill \textbf{5}}
-\end{columns}
-\src{Giả thuyết đặt trước so với thực tế: Dự phòng 2.}
-\end{frame}
-
-% ==================================================================
-\section{Đi tiếp}
-\begin{frame}{Bước tiếp theo}
-\insight{Việc 1--3 cho ra \nb{scorer cuối} (20/12). Việc 4--6 làm \nb{đủ bảng cho paper} (17/01).}
-\renewcommand{\arraystretch}{1.15}\scriptsize
-\begin{tabular}{cL{4.6cm}L{4.4cm}L{3.8cm}}
-\toprule
-\# & Việc & Vì sao & Xong khi \\
-\midrule
-1 & Dạy scorer nói \textbf{``chỗ này không có từ nào''} & list toàn nhiễu làm hại; \texttt{flauve} $\approx$ ``fall'' lọt & list toàn nhiễu không làm WER tệ đi \\
-2 & Nâng nhóm \textbf{từ Whisper nghe sai} & chỗ cần scorer nhất, đang 70.9 & +3 điểm \\
-3 & Train 960 giờ; một model đuổi kịp bản cộng điểm & 89.3 so với 90.8 & Recall@1 $\geq$ 90.5 \\
-\midrule
-4 & \textbf{So công bằng} + đủ list 100--2000 & ba chỗ lệch (Dự phòng 1) & không còn lệch \\
-5 & \textbf{Qwen3-ASR} & mới có Whisper & có một dòng Qwen3-ASR \\
-6 & Khảo sát cách chỉnh logit khác (ý của thầy) & cần baseline phía ASR & chọn 1--2 baseline \\
-\bottomrule
-\end{tabular}
-\end{frame}
-
-\begin{frame}{Mốc thời gian và xin ý kiến thầy}
-\centering
-\begin{tikzpicture}[font=\scriptsize,>={Stealth}]
-\draw[->,thick,Primary] (0,0) -- (14.2,0);
-\foreach \xx/\dd/\tt in {0.6/20.11/gặp thầy, 4.0/20.12/scorer cuối (việc 1--3), 8.0/17.01/đủ bảng (việc 4--6), 11.6/05.02/bản nộp}{
-  \fill[Accent] (\xx,0) circle (3pt);
-  \node[above,font=\scriptsize\bfseries] at (\xx,0.12) {\dd};
-  \node[below,font=\scriptsize] at (\xx,-0.12) {\tt};}
-\node[above,font=\scriptsize\bfseries,text=RiskRed] at (13.6,0.12) {09.02 hạn};
-\end{tikzpicture}
-\raggedright
-\vspace{0.1cm}
-\nbox[block body alerted]{\normalsize\textcircled{\scriptsize 1}\enspace\textbf{Đóng góp chính đặt ở đâu?}\\[2pt]
-\small scorer hai nhánh có vị trí (phía chọn từ) \quad / \quad nhắc logit theo vị trí, không cần prompt (phía ASR) \quad / \quad gộp cả hai thành một hệ}
-\vspace{0.12cm}
-\nbox{\normalsize\textcircled{\scriptsize 2}\enspace\textbf{Mốc so sánh?}\\[2pt]
-\small chỉ Hou25, hay thêm PTC-Bias (2609.28727) và cách nhắc không theo vị trí (Liu 2508.17796)?}
-\vspace{0.12cm}
-\nbox{\normalsize\textcircled{\scriptsize 3}\enspace\textbf{Phạm vi model?}\\[2pt]
-\small Whisper + Qwen3-ASR đã đủ cho Interspeech, hay cần thêm một SpeechLLM?}
-\end{frame}
-
-% ==================================================================
-\section{Dự phòng}
-\begin{frame}{Dự phòng 1. Các con số ``lợi thế'': tính thế nào, so có công bằng không}
-\insight{Mọi số chính so trên \nb{cùng câu, cùng list, cùng ngưỡng}. Còn \nb{ba chỗ lệch có lợi cho nhóm}, phải sửa trước khi viết paper.}
+\column{0.58\textwidth}
 \renewcommand{\arraystretch}{1.05}\scriptsize\setlength{\tabcolsep}{3pt}
-\begin{tabular}{L{2.2cm}L{3.9cm}L{3.0cm}L{4.7cm}}
+\begin{tabular}{lccccc}
 \toprule
-Con số & Tính thế nào & Đã công bằng & \textcolor{RiskRed}{Còn lệch} \\
+List & Recall@1 & nhiễu/câu & precision & WER & B-WER \\
 \midrule
-Recall@1\newline 72.6 \ra{} 89.3 & \% lượt từ hiếm (5248) đứng trên cả 2000 từ nhiễu & cùng câu, list, encoder, dữ liệu train & Hou25 2 epoch, scorer nhóm 6 epoch; chọn bản đề xuất theo điểm test \\
-Precision\newline 55\% \ra{} 86\% & $p \geq 0.5$ + tranh nhau; từ đúng giữ lại / mọi từ giữ lại & cùng ngưỡng, cùng luật lọc & $p$ của hai scorer chưa hiệu chỉnh như nhau (ở cùng mức giữ từ đúng, Hou25 còn kém hơn: 21\%) \\
-B-WER\newline 9.69 \ra{} 7.65 & lỗi trên từ hiếm của câu đúng, script IS21 & cùng Whisper, list; tham số chọn trên dev & so cả hệ (prompt với nhắc); thiếu Hou25 vệt chéo + nhắc đúng lúc \\
-Nhiễu câu dài\newline 12.4 \ra{} 0.9 & từ nhiễu $p \geq 0.5$ mỗi câu $\geq$ 20 s & cùng ngưỡng & chỉ \textbf{40 câu}; bản Hou25 cùng lượt chỉ 6.1 \\
+N100 & 98.2 & 0.04 & 97.8\% & 2.96 & 7.14 \\
+N500 & 94.1 & 0.21 & 89.2\% & 3.04 & 7.37 \\
+N1000 & 92.6 & 0.39 & 81.4\% & 3.08 & 7.47 \\
+N2000 & 89.0 & 0.73 & 69.9\% & 3.22 & 7.65 \\
+\midrule
+\textcolor{TextGray}{không list} & -- & -- & -- & \textcolor{TextGray}{4.25} & \textcolor{TextGray}{17.92} \\
 \bottomrule
 \end{tabular}
-\vspace{0.1cm}
-
-{\scriptsize\textbf{Đã sửa:} precision cũ ``3--4\% \ra{} 91\%'' (top-50 không cắt so với bản 2 model) và B-WER cũ 7.53 (bản 2 model). Giờ mọi số ``đề xuất'' là \textbf{cùng một model}.\par}
-\src{Sửa ba chỗ lệch: việc số 4 ở trang Bước tiếp theo.}
+\par\vspace{0.06cm}
+{\tiny N$x$ = từ hiếm đúng + $x$ từ nhiễu. Ngưỡng ở đây $p \geq 0.3$ (chọn trên dev cho Whisper) nên precision N2000 là 70\%, thấp hơn 86\% ở trang 26 (ngưỡng 0.5). Giữ từ đúng 95--96\% ở mọi N.\par}
+\column{0.40\textwidth}
+{\scriptsize\textbf{Đọc số:}\par
+\textbullet\ Mỗi câu thêm 0.7 từ nhiễu được nhắc, mà B-WER +0.51, WER +0.26 \ra{} phần lớn nhiễu được nhắc nhưng \textbf{Whisper không viết ra}: audio không ủng hộ.\par
+\textbullet\ N2000: B-WER vẫn giảm \textbf{57\%} so với không list, (17.92 $-$ 7.65)/17.92.\par
+\textbullet\ Phần mất khi list dài có thể do \textbf{sót từ đúng} (Recall@1 98.2 \ra{} 89.0) hơn là do viết thêm nhiễu (diễn giải, chưa tách).\par\vspace{0.06cm}}
+{\tiny\color{RiskRed}\textbf{Chưa có:} Hou25 ở N100--1000 trong cùng pipeline \ra{} chưa nói được ``bền hơn Hou25''.\par}
+\end{columns}
+\src{test-other; scorer đề xuất (một model); tranh nhau tại chỗ; nhắc đúng lúc, không prompt. REPORT-1115 mục 7c (Recall@1 bản lọc lại: 89.0).}
 \end{frame}
 
-\begin{frame}{Dự phòng 2. Giả thuyết đặt trước so với thực tế}
-\insight{Giả thuyết sai có ích nhất: Hou25 sai vì \nb{từ nhiễu nổi lên}, không phải vì từ đúng bị loãng \ra{} chuyển sang giữ \nb{thứ tự} và \nb{vị trí}.}
-\renewcommand{\arraystretch}{1.1}\scriptsize
-\begin{tabular}{L{5.6cm}L{5.4cm}L{2.6cm}}
-\toprule
-Giả thuyết trước khi chạy & Thực tế & Kết luận \\
-\midrule
-Top-50 che khác biệt & 3 điểm ở top-50, 15 điểm ở Recall@1 & \good{đúng} \\
-\rowcolor{Accent!15}Hou25 sai vì từ đúng bị pha loãng & sai vì \textbf{từ nhiễu nổi lên} ở câu dài & \bad{sai}, đổi cách nhìn \\
-Đọc theo vệt chéo + train lại giảm báo nhầm & +9.5 Recall@1, nhiễu câu dài giảm 3 lần & \good{đúng} \\
-Hou25 sửa đuổi kịp âm vị ($\geq$ 85.7) & 82.9 & \bad{không} \ra{} nền âm vị \\
-Giọng máy phân biệt từ nghe giống tốt hơn & âm vị hơn 9.7 điểm & \bad{không} \\
-Ép khớp đúng thứ tự xếp hạng tốt hơn & $-$1.7, nhưng bù cho khớp tự do (+2.6) & \textbf{một phần} \\
-Whisper cần vị trí & $\Delta$WER $-$0.44, có ý nghĩa & \good{đúng} \\
-Nhắc đúng lúc thắng prompt Hou25 & B-WER thắng; WER tổng chưa & \textbf{một phần} \\
-List toàn nhiễu không làm hại & WER vẫn tệ hơn 0.25 & \bad{chưa đạt} \\
-\bottomrule
-\end{tabular}
-\src{Bỏ khỏi bảng cho gọn: train với nhiều nhiễu hơn (82.1 so với 87.7, không giúp); cửa sổ trượt sửa lỗi 30 s (sót 0/6, đúng). REPORT-1115.}
-\end{frame}
-
-\begin{frame}{Dự phòng 3: định nghĩa thước đo}
-\renewcommand{\arraystretch}{1.25}\footnotesize
-\begin{tabular}{L{3.0cm}L{10.6cm}}
-\toprule
-Thước đo & Nghĩa \\
-\midrule
-Recall@K (lọc) & \% từ đúng lọt top-K sau khi bỏ các từ đúng khác của câu khỏi bảng xếp hạng (``filtered'', Bordes et al.\ 2013, mục 4.2) \\
-Từ ASR nghe sai & Recall@1 chỉ trên từ mà Whisper tự viết sai khi không có list: nhóm \textbf{cần} scorer nhất \\
-Đúng@chỗ & tại đoạn audio của từ đúng (MFA), nó có đứng trên mọi từ nhiễu được scorer đặt cùng chỗ không \\
-Định vị & sai số tâm (giây) và \% tâm nằm trong đoạn thật $\pm$ 0.1 s \\
-Báo nhầm & số từ nhiễu có $p \geq 0.5$ mỗi câu, chia theo độ dài câu \\
-WER / U-WER / B-WER & scorer IS21 chính thức (thay = 4, chèn/xoá = 3), chuẩn hoá Whisper; B-WER tính trên từ hiếm của reference \\
-CI 95\% & bootstrap ghép cặp theo câu, 1000 lần \\
-\bottomrule
-\end{tabular}
-\end{frame}
-
-\begin{frame}{Dự phòng 4: liên quan và điểm mới (đã tra, chưa đủ để khẳng định ``chưa ai làm'')}
-\renewcommand{\arraystretch}{1.18}\scriptsize
-\begin{tabular}{L{3.5cm}L{3.5cm}L{6.4cm}}
-\toprule
-Công trình & Dùng vị trí? & Khác với nhóm \\
-\midrule
-CB-Whisper (2309.09552) & bản đồ TTS $\times$ audio + CNN & chỉ đưa \textbf{chữ} vào prompt; Hou25 dựa trên ý này \\
-CTC-WS (2406.07096), Spike-triggered (2310.04657) & có, theo frame & chỉ cho ASR \textbf{CTC / transducer}; không dùng cho decoder tự hồi quy \\
-PTC-Bias (2609.28727) & có khoảng [a, b] & dùng để lọc list và \textbf{sửa sau} khi decode xong \\
-Liu et al. (2508.17796) & không & boost cây tiền tố trên Whisper, \textbf{không gate} theo thời gian \\
-IBM (2604.12398) & nhãn trên chữ, loss phụ & bỏ đi lúc inference; fine-tune ASR \\
-\midrule
-\textbf{Nhóm} & \textbf{có, từ scorer} & nhắc logit \textbf{đúng lúc} cho decoder tự hồi quy \textbf{đóng băng}, không prompt; scorer hai nhánh ra vị trí \\
-\bottomrule
-\end{tabular}
-\vspace{0.15cm}
-
-{\footnotesize Nguồn: \texttt{related-work/novelty-gate.md}. Một số mục mới đọc tóm tắt; cần đọc toàn văn trước khi viết bài.}
-\end{frame}
-
-\begin{frame}{Dự phòng 5: file và cách tái lập}
-\renewcommand{\arraystretch}{1.18}\footnotesize
-\begin{tabular}{L{4.2cm}L{9.4cm}}
-\toprule
-Thứ & Ở đâu \\
-\midrule
-Bảng đầy đủ + khoảng tin cậy & \texttt{scorer/analysis/REPORT-1115.md} \\
-Giải thích từng thí nghiệm & \texttt{scorer/analysis/TIEN-DO-1115.md}; bản đọc nhanh \texttt{meetings/2026-11-20/doc-30-phut.md} \\
-Phân tích CPU & \texttt{SMALL\_R.md} (đo R nhỏ, sai chỗ), \texttt{TAIL.md} (từ bị sót) \\
-Code scorer & \texttt{scorer/models.py} (Hou25 pool, MaxSim, MonoSim, DualSim), \texttt{training/train.py} (\texttt{--loc}) \\
-Nhắc logit vào Whisper & \texttt{bench/gate\_boost.py} (\texttt{--once}, \texttt{--fallback}) \\
-Script chạy GPU & \texttt{scorer/runs/2026-11-14/run\_e.sh}, \texttt{scripts/} \\
-Output, checkpoint & \texttt{scorer/runs/2026-11-14/out/}, \texttt{ckpt/} (không có trong git); server \texttt{\textasciitilde/model\_tmp} \\
-\bottomrule
-\end{tabular}
+% ==================================================================
+\section{Đúc kết}
+\begin{frame}{Đúc kết}
+\insight{Biết \nb{từ nằm ở đâu} làm scorer \nb{chọn đúng} và Whisper \nb{viết đúng}. Hou25 bỏ mất nó ở bước trung bình; scorer âm vị giữ nó bằng đường đi đúng thứ tự.}
+\begin{columns}[T]
+\column{0.32\textwidth}
+\nbox{\textbf{1. Vì sao Hou25 thua}\\[2pt]\scriptsize
+Trung bình mọi ô \ra{} không biết thứ tự \ra{} nhiễu rải rác thắng; câu dài càng nặng (1.4 \ra{} 12.4 nhiễu/câu).\\[1pt]
+Chỉ đổi sang vệt chéo: \textbf{73.3 \ra{} 82.9}.}
+\column{0.32\textwidth}
+\nbox{\textbf{2. Scorer đề xuất}\\[2pt]\scriptsize
+Bảng âm vị $\times$ khung, đọc hai nhánh: tự do (không sót) + thứ tự (không nhầm, ra vị trí); dạy vị trí lúc train.\\[1pt]
+Recall@1 \textbf{89.3} (Hou25 72.6); tâm lệch \textbf{0.02 s}; 2000 \ra{} \textbf{1.9 từ/câu}, precision 86\%.}
+\column{0.32\textwidth}
+\nbox{\textbf{3. Whisper dùng vị trí}\\[2pt]\scriptsize
+Nhắc đúng lúc thay prompt: B-WER \textbf{9.69 \ra{} 7.65} [$-$2.76; $-$1.37].\\[1pt]
+Có vị trí so với không: WER $-$0.44.\\[1pt]
+N100 \ra{} N2000: B-WER chỉ +0.5.}
+\end{columns}
+\vspace{0.02cm}
+\yeu{\scriptsize\textbf{Chưa chắc:} WER tổng mới ngang Hou25 ($-$0.17 [$-$0.39; +0.12]); list toàn nhiễu làm WER tệ đi (4.25 \ra{} 4.51); Hou25 mới 2 epoch; mới có Whisper.}
+\src{test-other, N2000 trừ khi ghi khác.}
 \end{frame}
 
 \end{document}
