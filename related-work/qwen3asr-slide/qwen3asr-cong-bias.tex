@@ -1,0 +1,1066 @@
+\documentclass[aspectratio=169,xcolor=table]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1,T5]{fontenc}
+\usepackage{amsmath,amssymb,booktabs,array,graphicx,tikz,fancyvrb}
+\usetikzlibrary{positioning,arrows.meta,fit,calc,decorations.pathreplacing}
+
+\definecolor{Primary}{HTML}{111B88}
+\definecolor{Secondary}{HTML}{101659}
+\definecolor{Accent}{HTML}{F2A900}
+\definecolor{SoftBlue}{HTML}{EAF2F8}
+\definecolor{TextGray}{HTML}{4D5966}
+\definecolor{RiskRed}{HTML}{A23B3B}
+\definecolor{GoodGreen}{HTML}{26734D}
+\mode<presentation>{\usetheme{Madrid}\usecolortheme{default}\setbeamertemplate{navigation symbols}{}}
+\setbeamercolor{structure}{fg=Primary}
+\setbeamercolor{frametitle}{fg=white,bg=Primary}
+\setbeamercolor{title}{fg=white,bg=Primary}
+\setbeamercolor{block body}{fg=black,bg=SoftBlue}
+\setbeamercolor{block body alerted}{fg=black,bg=Accent!12}
+\setbeamercolor{qbox}{fg=black,bg=Accent!22}
+\setbeamercolor{kbox}{fg=black,bg=GoodGreen!13}
+\setbeamercolor{rbox}{fg=black,bg=RiskRed!10}
+\setbeamercolor{section in head/foot}{fg=white,bg=Primary}
+\setbeamercolor{author in head/foot}{fg=white,bg=Secondary}
+\setbeamercolor{date in head/foot}{fg=white,bg=Primary}
+\setbeamerfont{section in head/foot}{size=\tiny,series=\bfseries}
+\setbeamerfont{author in head/foot}{size=\scriptsize}
+\setbeamerfont{date in head/foot}{size=\scriptsize,series=\bfseries}
+\setbeamerfont{frametitle}{series=\bfseries,size=\normalsize}
+\setbeamerfont{title}{series=\bfseries}
+\newcommand{\decklabel}{Qwen3-ASR -- cổng bias}
+\setbeamertemplate{itemize item}{\color{Secondary}$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\color{Accent}$\bullet$}
+\setbeamertemplate{headline}{\leavevmode\begin{beamercolorbox}[wd=\paperwidth,ht=2.7ex,dp=1.1ex,leftskip=.35cm,rightskip=.35cm]{section in head/foot}\insertsectionnavigationhorizontal{\dimexpr\paperwidth-.70cm\relax}{}{}\end{beamercolorbox}}
+\setbeamertemplate{footline}{\leavevmode\hbox{\begin{beamercolorbox}[wd=.55\paperwidth,ht=2.6ex,dp=1ex,leftskip=.35cm,rightskip=.20cm]{section in head/foot}\usebeamerfont{section in head/foot}\insertsectionhead\end{beamercolorbox}\begin{beamercolorbox}[wd=.27\paperwidth,ht=2.6ex,dp=1ex,center]{author in head/foot}\usebeamerfont{author in head/foot}\decklabel\end{beamercolorbox}\begin{beamercolorbox}[wd=.18\paperwidth,ht=2.6ex,dp=1ex,rightskip=.35cm plus1fil]{date in head/foot}\usebeamerfont{date in head/foot}\hfill\insertframenumber\,/\,\inserttotalframenumber\end{beamercolorbox}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcommand{\slab}[6]{% x y w h label sub
+ \foreach \oo in {2,1,0}{\draw[Primary,fill=SoftBlue] (#1+\oo*0.07,#2+\oo*0.07) rectangle (#1+#3+\oo*0.07,#2+#4+\oo*0.07);}
+ \node[anchor=north,align=center] at (#1+#3/2,#2-0.05) {\textbf{#5}\\#6};}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcommand{\hi}[1]{\textcolor{Primary}{\textbf{#1}}}
+\newcommand{\bad}[1]{\textcolor{RiskRed}{\textbf{#1}}}
+\newcommand{\good}[1]{\textcolor{GoodGreen}{\textbf{#1}}}
+\newcommand{\src}[1]{\par\vfill{\tiny\color{TextGray}[#1]}}
+\newcommand{\ra}{$\rightarrow$}
+\newcommand{\bsz}{\footnotesize}% các trang mổ xẻ đổi thành \scriptsize
+\newcommand{\nbox}[2][block body]{\begin{beamercolorbox}[sep=0.45em,rounded=true]{#1}\bsz #2\end{beamercolorbox}}
+\newcommand{\cauhoi}[1]{\begin{beamercolorbox}[sep=0.30em,rounded=true]{qbox}\bsz\textbf{Câu hỏi:} #1\end{beamercolorbox}\vspace{0.08cm}}
+\newcommand{\nghiala}[1]{\begin{beamercolorbox}[sep=0.32em,rounded=true]{kbox}\bsz\textbf{Nghĩa là:} #1\end{beamercolorbox}}
+\newcommand{\yeu}[1]{\begin{beamercolorbox}[sep=0.40em,rounded=true]{rbox}\bsz #1\end{beamercolorbox}}
+% nhãn nguồn
+\newcommand{\tagbox}[2]{{\scriptsize\colorbox{#1}{\textcolor{white}{\textbf{#2}}}}}
+\newcommand{\DO}{\tagbox{GoodGreen}{đo}}
+\newcommand{\PA}{\tagbox{Primary}{paper}}
+\newcommand{\CODE}{\tagbox{Secondary}{code}}
+\newcommand{\TA}{\tagbox{TextGray}{ta}}
+\newcommand{\YT}{\tagbox{Accent!85!black}{ý tưởng}}
+
+\title{Qwen3-ASR bên trong, và cắm scorer vào đâu}
+\subtitle{Tìm hiểu kiến trúc + tra paper về cách bias SpeechLLM (16/11/2026)}
+\author{Nhóm Contextual ASR}
+\institute{}
+\date{16/11/2026}
+\setbeamertemplate{title page}{\begin{centering}\vspace*{0.10cm}\includegraphics[height=1.08cm]{../../meetings/2026-10-23/imgs/logo.png}\par\vspace{0.32cm}\begin{beamercolorbox}[sep=0.50em,center,rounded=true]{title}\usebeamerfont{title}\inserttitle\par\vspace{0.14cm}{\small\insertsubtitle\par}\end{beamercolorbox}\vspace{0.42cm}{\usebeamerfont{author}\insertauthor\par}\vspace{0.10cm}{\usebeamerfont{institute}\insertinstitute\par}\vfill{\usebeamerfont{date}\insertdate\par}\end{centering}}
+
+\begin{document}
+\begin{frame}[plain]\titlepage\end{frame}
+
+% ==================================================================
+\section{Tóm tắt}
+\begin{frame}{Tóm tắt: Qwen3-ASR giữ được thời gian, nhưng chưa ai dùng nó để bias}
+\renewcommand{\arraystretch}{1.05}\footnotesize
+\begin{tabular}{L{5.4cm}L{8.8cm}}
+\toprule
+Câu hỏi & Trả lời ngắn \\
+\midrule
+Qwen3-ASR xử lý audio thế nào? & Encoder biến audio thành \hi{13 vector/giây}, mỗi vector là một lát thời gian cố định \CODE \\
+Audio vào LLM bằng đường nào? & \hi{Nằm thẳng trong chuỗi prompt}, giữa system prompt và câu trả lời. Không có cross-attention \CODE \\
+List bias đặt ở đâu? & Trong system prompt, \bad{đứng trước audio}. List 2000 từ làm B-WER tệ hơn không có list \DO \\
+Có những cổng nào để đưa bias vào? & 6 cổng: prompt, chuỗi audio, attention, logits, sửa sau, train lại \\
+Đã có paper nào dùng vị trí để bias SpeechLLM lúc decode? & \bad{Chưa thấy} trong khoảng 15 lượt tra. Gần nhất: LOGIC (logits, không vị trí), PTC-Bias (vị trí, nhưng sửa sau) \PA \\
+Nên cắm scorer thế nào? & \good{Prompt vài từ p cao + boost logits có gate theo vị trí}. Ablation: gate attention tới chữ trong prompt \YT \\
+Việc đầu tiên cần làm? & \hi{Bước 0}: đo xem attention của Qwen có cho biết đang nghe giây nào không. Không train, 1 GPU \\
+\bottomrule
+\end{tabular}
+\vspace{0.1cm}
+
+{\scriptsize Nhãn: \CODE{} code \texttt{qwen\_asr} 0.0.6 + config 1.7B \enspace \DO{} nhóm đã chạy \enspace \PA{} paper nói \enspace \TA{} mình diễn giải \enspace \YT{} chưa chạy}
+\end{frame}
+
+\begin{frame}{Mạch đọc: từ ``model chạy thế nào'' đến ``cắm vào đâu''}
+\centering
+\begin{tikzpicture}[font=\footnotesize,>={Stealth},
+  st/.style={draw=Primary,fill=SoftBlue,rounded corners=3pt,minimum height=1.35cm,text width=2.05cm,align=center,inner sep=3pt},
+  hl/.style={draw=Accent,fill=Accent!15,rounded corners=3pt,minimum height=1.35cm,text width=2.05cm,align=center,inner sep=3pt,thick}]
+\node[st] (a) at (0,0) {\textbf{1. Bối cảnh}\\scorer cho ra gì, ta cần gì};
+\node[st] (b) at (2.75,0) {\textbf{2. Bên trong Qwen3-ASR}\\audio đi từ tai tới miệng};
+\node[hl] (c) at (5.5,0) {\textbf{3. Sáu cổng}\\chỗ nào chạm được, ai đã chạm};
+\node[hl] (d) at (8.25,0) {\textbf{4. Đề xuất}\\adaptive = 4 thứ, 3 cách cắm};
+\node[st] (e) at (11.0,0) {\textbf{5. Đi tiếp}\\bước 0 -- 1 -- 2};
+\foreach \u/\v in {a/b,b/c,c/d,d/e}{\draw[->,thick,Primary] (\u) -- (\v);}
+\end{tikzpicture}
+\vspace{0.45cm}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\nbox{\textbf{Vì sao phải hiểu kiến trúc trước?}\\[2pt]
+Muốn ``đẩy từ đúng lúc'' thì phải biết: thời gian nằm ở đâu trong model, model đọc list ở đâu, và lúc sinh chữ nó nhìn vào đâu. Mỗi câu trả lời mở ra hoặc đóng lại một cách cắm.}
+\column{0.48\textwidth}
+\nbox{\textbf{Bản text đầy đủ:} thư mục \texttt{related-work/}, file \texttt{qwen3asr-kien-truc-va-cong-bias.md}\\[2pt]
+Slide này kể lại cùng nội dung theo thứ tự đọc từ trên xuống, có thêm hình và ví dụ.}
+\end{columns}
+\end{frame}
+
+% ==================================================================
+\section{Bối cảnh}
+\begin{frame}{Scorer cho ra (p, vị trí); trên Whisper, ``nhắc đúng lúc'' đã thắng prompt}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\cauhoi{Scorer đưa cho ASR thứ gì?}
+\nbox{Với mỗi từ trong list 2000 từ, scorer nghe audio và trả lời:\\[3pt]
+\textbf{p} = xác suất từ này thật sự được nói trong câu\\
+\textbf{[t\_đầu, t\_cuối]} = từ đó nằm ở giây nào\\[4pt]
+Ví dụ: \texttt{bertolucci}: p = 0.93, 2.10--2.80 s\\
+\hspace*{3.6em}\texttt{bertolini}: p = 0.41, cùng đoạn\\
+{\scriptsize\color{TextGray}(ví dụ minh hoạ, số giả định)}}
+\vspace{0.1cm}
+\nbox[block body alerted]{\textbf{Mục tiêu đã chốt 11/11:} một scorer, train một lần, cắm vào \textbf{mọi} SpeechLLM, đẩy từ đúng lúc mà không cần biết bên trong model.}
+\column{0.47\textwidth}
+\cauhoi{Trên Whisper, dùng vị trí có lợi không?}
+\renewcommand{\arraystretch}{1.15}\footnotesize
+\begin{tabular}{L{3.6cm}C{1.5cm}}
+\toprule
+Test-other, list 2000 từ & B-WER \\
+\midrule
+Hou25: top-50 vào prompt & 9.69 \\
+Scorer + nhắc đúng lúc, \textbf{không prompt} & \good{7.53} \\
+\bottomrule
+\end{tabular}
+\DO
+\vspace{0.15cm}
+
+\nghiala{Trên Whisper đã có đường đi. Câu hỏi hôm nay: \textbf{Qwen3-ASR khác Whisper chỗ nào}, và cách ``nhắc đúng lúc'' có mang sang được không?}
+\end{columns}
+\src{Số Whisper: GOAL.md mục 6.9, scorer/analysis/REPORT-1115.md. Whisper-large-v3-turbo đóng băng.}
+\end{frame}
+
+% ==================================================================
+\section{Bên trong Qwen3-ASR}
+\begin{frame}{Một câu 10 giây đi qua Qwen3-ASR: tai (encoder) rồi miệng (LLM)}
+\centering
+\begin{tikzpicture}[font=\scriptsize,>={Stealth},
+  bx/.style={draw=Primary,fill=SoftBlue,rounded corners=2pt,minimum height=1.25cm,text width=2.05cm,align=center,inner sep=2pt},
+  ky/.style={draw=Accent,fill=Accent!15,rounded corners=2pt,minimum height=1.25cm,text width=2.05cm,align=center,inner sep=2pt,thick}]
+\node[bx] (w) at (0,0) {\textbf{Audio}\\10 s, 16 kHz};
+\node[bx] (m) at (2.5,0) {\textbf{Mel}\\128 kênh, 10 ms/khung\\= 1000 khung};
+\node[bx] (e) at (5.0,0) {\textbf{Encoder AuT}\\24 lớp, d=1024\\cắt khúc 1 s};
+\node[bx] (p) at (7.5,0) {\textbf{Projector}\\2 lớp Linear\\1024 \ra{} 2048};
+\node[ky] (v) at (10.0,0) {\textbf{130 vector audio}\\13 vector/giây\\$\approx$ 77 ms/vector};
+\node[ky] (l) at (12.5,0) {\textbf{LLM Qwen3-1.7B}\\28 lớp, d=2048\\sinh từng token};
+\foreach \u/\v in {w/m,m/e,e/p,p/v,v/l}{\draw[->,thick,Primary] (\u) -- (\v);}
+\draw[decorate,decoration={brace,amplitude=5pt,mirror},thick,TextGray] (-1.0,-0.85) -- (8.5,-0.85) node[midway,below=6pt,text width=8cm,align=center]{\textbf{``Tai''}: chạy một lần cho cả câu, ra một dãy vector theo thời gian};
+\draw[decorate,decoration={brace,amplitude=5pt,mirror},thick,TextGray] (9.0,-0.85) -- (13.5,-0.85) node[midway,below=6pt,text width=4.5cm,align=center]{\textbf{``Miệng''}: đọc prompt + audio, viết ra chữ};
+\end{tikzpicture}
+\vspace{0.45cm}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\nbox{\textbf{Khác Whisper ở chỗ quan trọng nhất:} Whisper có decoder riêng, nhìn audio qua \textbf{cross-attention}. Qwen3-ASR \bad{không có}: audio được \textbf{nhét thẳng vào chuỗi token} của LLM, như thể đó là ``chữ''.}
+\column{0.48\textwidth}
+\nbox{\textbf{Projector nằm ngay cuối encoder} (proj1 \ra{} GELU \ra{} proj2). Không có bước nén theo nội dung (như Q-Former), nên \good{mỗi vector vẫn ứng với đúng một lát thời gian}.}
+\end{columns}
+\src{modeling\_qwen3\_asr.py, config.json 1.7B; report 2601.21337 §2.1 ghi 12.5 Hz / 80 ms.}
+\end{frame}
+
+% ---------- MỔ XẺ TỪNG BƯỚC (phần encoder) ----------
+\begin{frame}{Mổ xẻ trang 5 thành 8 bước; mỗi trang sau là một bước, kèm kích thước thật}
+\renewcommand{\bsz}{\scriptsize}
+\centering
+\begin{tikzpicture}[font=\tiny,>={Stealth},
+  e/.style={draw=Primary,fill=SoftBlue,rounded corners=2pt,minimum height=1.05cm,text width=1.5cm,align=center,inner sep=2pt},
+  m/.style={draw=Accent,fill=Accent!15,thick,rounded corners=2pt,minimum height=1.05cm,text width=1.5cm,align=center,inner sep=2pt},
+  l/.style={draw=GoodGreen,fill=GoodGreen!10,rounded corners=2pt,minimum height=1.05cm,text width=1.5cm,align=center,inner sep=2pt}]
+\node[e] (b1) at (0,0) {\textbf{1. Mel}\\sóng \ra{} ảnh phổ};
+\node[e] (b2) at (1.78,0) {\textbf{2. Conv}\\100 khung \ra{} 13 vector};
+\node[e] (b3) at (3.56,0) {\textbf{3. 24 lớp encoder}\\khối 8 s};
+\node[e] (b4) at (5.34,0) {\textbf{4. Projector}\\1024 \ra{} 2048};
+\node[m] (b5) at (7.12,0) {\textbf{5. Ghép chuỗi}\\list + audio + chữ};
+\node[l] (b6) at (8.90,0) {\textbf{6. 1 lớp LLM}\\(lặp 28)};
+\node[l] (b7) at (10.68,0) {\textbf{7. Prefill + KV cache}};
+\node[l] (b8) at (12.46,0) {\textbf{8. Logits \ra{} token}\\lặp tới hết};
+\foreach \u/\v in {b1/b2,b2/b3,b3/b4,b4/b5,b5/b6,b6/b7,b7/b8}{\draw[->,thick,Primary] (\u) -- (\v);}
+\draw[decorate,decoration={brace,amplitude=4pt,mirror},thick,TextGray] (-0.75,-0.7) -- (6.1,-0.7) node[midway,below=5pt]{Encoder AuT: \textbf{317 triệu} tham số, chạy 1 lần};
+\draw[decorate,decoration={brace,amplitude=4pt,mirror},thick,TextGray] (8.15,-0.7) -- (13.2,-0.7) node[midway,below=5pt]{LLM: \textbf{1,72 tỉ} tham số, chạy 1 lần / token};
+\end{tikzpicture}
+\vspace{0.35cm}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\nbox{\textbf{Ví dụ chạy xuyên suốt:} một câu test-other dài 10 s, chứa từ hiếm \texttt{bertolucci} ở khoảng 3.2--3.9 s, kèm list N2000. Mỗi trang ghi \textbf{dữ liệu trông thế nào} sau bước đó.}
+\column{0.48\textwidth}
+\nbox{\textbf{Đọc mỗi trang theo 3 ý:} (1) bước này làm gì, (2) kích thước trước/sau, (3) \textbf{thông tin thời gian còn hay mất} sau bước này (vì scorer của mình cần thời gian).}
+\end{columns}
+\src{Số tham số: tính từ config.json + tên trọng số trong model.safetensors.index.json (có/không bias). \CODE}
+\end{frame}
+
+\begin{frame}{Bước 1. Sóng âm thành ảnh phổ: 160.000 mẫu thành 1000 khung $\times$ 128 kênh}
+\renewcommand{\bsz}{\scriptsize}
+\centering
+\begin{tikzpicture}[font=\scriptsize,>={Stealth}]
+% song am
+\node[font=\scriptsize\bfseries,text=Secondary,anchor=west] at (0,1.25) {Sóng âm 16 kHz (10 s = 160.000 số)};
+\draw[Primary,thick] plot[domain=0:4.2,samples=260,smooth] (\x,{0.45*sin(1500*\x)*(0.35+0.65*abs(sin(140*\x)))});
+\draw[->,TextGray] (0,-0.62) -- (4.4,-0.62) node[right]{t};
+% cua so
+\foreach \ii in {0,1,2}{\draw[Accent!80!black,thick] (0.4+\ii*0.32,-0.5) rectangle (0.4+\ii*0.32+0.8,0.5);}
+\node[Accent!80!black,anchor=north,align=center,text width=3.6cm] at (1.2,-0.7) {cửa sổ 25 ms (400 mẫu), \textbf{trượt 10 ms} (160 mẫu)};
+\draw[->,thick,Primary] (4.6,0) -- node[above,align=center]{FFT 400\\+ 128 bộ lọc mel} (6.75,0);
+% anh pho
+\begin{scope}[shift={(7.35,-0.85)}]
+\foreach \ii in {0,...,24}{\foreach \jj in {0,...,7}{
+ \pgfmathsetmacro{\vv}{int(15+70*abs(sin(37*\ii+61*\jj))*(1-\jj/10))}
+ \fill[Primary!\vv] (\ii*0.16,\jj*0.22) rectangle (\ii*0.16+0.16,\jj*0.22+0.22);}}
+\draw[Primary] (0,0) rectangle (4.0,1.76);
+\node[anchor=north] at (2.0,0) {1000 khung (mỗi khung 10 ms) \ra};
+\node[rotate=90,anchor=south] at (0,0.88) {128 kênh mel};
+\end{scope}
+\end{tikzpicture}
+\vspace{0.25cm}
+
+\begin{columns}[T]
+\column{0.32\textwidth}
+\nbox{\textbf{Làm gì:} cắt sóng thành các đoạn 25 ms chồng nhau, mỗi đoạn lấy năng lượng ở 128 dải tần (thang mel, giống tai người), rồi lấy log và chuẩn hoá.}
+\column{0.32\textwidth}
+\nbox{\textbf{Kích thước:} [160.000] \ra{} \textbf{[128 $\times$ 1000]}. Mỗi cột là ``âm thanh trong 10 ms quanh thời điểm đó''.}
+\column{0.32\textwidth}
+\nbox[kbox]{\textbf{Thời gian:} còn nguyên. Khung thứ j ứng với giây j/100. Từ \texttt{bertolucci} (3.2--3.9 s) = khung 320--390.}
+\end{columns}
+\src{Processor dùng WhisperFeatureExtractor, 16 kHz (processing\_qwen3\_asr.py). 400/160 mẫu là mặc định của lớp này; máy local chưa có preprocessor\_config.json bản 1.7B để đối chiếu. \CODE}
+\end{frame}
+
+\begin{frame}{Bước 2. Mỗi khúc 1 s qua 3 lớp conv, co từ 100 khung còn 13 vector}
+\renewcommand{\bsz}{\scriptsize}
+\centering
+\begin{tikzpicture}[font=\tiny,>={Stealth}]
+\draw[Primary,fill=SoftBlue] (0,0) rectangle (3.0,2.56);
+\foreach \ii in {1,...,9}{\draw[Primary!40] (\ii*0.3,0) -- (\ii*0.3,2.56);}
+\node[anchor=north,align=center] at (1.5,-0.05) {\textbf{1 khúc mel}\\1 kênh $\times$ 128 tần số $\times$ 100 khung};
+\slab{3.7}{0.64}{1.5}{1.28}{Conv 1}{480 $\times$ 64 $\times$ 50}
+\slab{6.0}{0.96}{0.75}{0.64}{Conv 2}{480 $\times$ 32 $\times$ 25}
+\slab{7.85}{1.12}{0.39}{0.32}{Conv 3}{480 $\times$ 16 $\times$ 13}
+\draw[->,thick,Primary] (3.05,1.28) -- (3.65,1.28);
+\draw[->,thick,Primary] (5.4,1.28) -- (5.95,1.28);
+\draw[->,thick,Primary] (6.95,1.28) -- (7.8,1.28);
+\draw[->,thick,Primary] (8.45,1.28) -- node[above,align=center]{gộp 480 $\times$ 16\\= 7680} (9.6,1.28);
+\node[draw=Accent,fill=Accent!15,thick,rounded corners=2pt,align=center,minimum height=0.9cm] (lin) at (10.65,1.28) {Linear\\7680 \ra{} 1024};
+\draw[->,thick,Primary] (lin.east) -- (12.0,1.28);
+\node[draw=Primary,fill=Primary!18,rounded corners=2pt,align=center,minimum height=0.9cm,anchor=west] at (12.0,1.28) {\textbf{13 $\times$ 1024}\\+ vị trí sin 0--12};
+% truong nhin
+\begin{scope}[shift={(0,-1.35)}]
+\foreach \ii in {0,...,19}{\draw[TextGray,fill=white] (\ii*0.3,0) rectangle (\ii*0.3+0.3,0.25);}
+\fill[Accent!60] (0.9,0) rectangle (5.4,0.25);
+\draw[TextGray] (0,0) grid[xstep=0.3,ystep=0.25] (6.0,0.25);
+\node[anchor=west,text width=7.4cm] at (6.2,0.12) {\textbf{Trường nhìn của 1 vector}: 15 khung mel = \textbf{150 ms} (tô vàng); hai vector liền nhau cách \textbf{8 khung = 80 ms}. Các khúc 1 s xử lý \textbf{riêng}: conv không nhìn qua ranh giới khúc.};
+\end{scope}
+\end{tikzpicture}
+\vspace{0.15cm}
+
+\begin{columns}[T]
+\column{0.32\textwidth}
+\nbox{\textbf{Làm gì:} mỗi lớp conv 3$\times$3 bước 2 giảm một nửa cả tần số lẫn thời gian, và tăng số kênh lên 480. Có GELU sau mỗi lớp.}
+\column{0.32\textwidth}
+\nbox{\textbf{Kích thước câu 10 s:} [128 $\times$ 1000] \ra{} 10 khúc \ra{} \textbf{[130 $\times$ 1024]}. Tham số: conv 4,15 triệu + Linear 7,86 triệu.}
+\column{0.32\textwidth}
+\nbox[kbox]{\textbf{Thời gian:} còn, nhưng thô hơn (1 vector $\approx$ 77 ms). \texttt{bertolucci} = vector 41--50. Vị trí sin \bad{đếm lại 0--12 mỗi khúc}.}
+\end{columns}
+\src{conv2d1..3 (kernel 3, stride 2, padding 1), conv\_out, positional\_embedding[:13] cộng cho mọi khúc. Trường nhìn: 1 + 2$\times$(1+2+4) = 15 khung. \CODE}
+\end{frame}
+
+\begin{frame}{Bước 3. 24 lớp encoder: mỗi vector trộn với vector khác, nhưng chỉ trong khối 8 s}
+\renewcommand{\bsz}{\scriptsize}
+\begin{columns}[T]
+\column{0.40\textwidth}
+\centering
+\begin{tikzpicture}[font=\tiny,>={Stealth},
+ lb/.style={draw=Primary,fill=SoftBlue,rounded corners=1.5pt,text width=3.9cm,align=center,inner sep=2pt,minimum height=0.42cm}]
+\node[lb] (x) at (0,0) {x: [130 $\times$ 1024]};
+\node[lb,below=0.17cm of x] (n1) {LayerNorm};
+\node[lb,below=0.17cm of n1,fill=Accent!15,draw=Accent] (at) {Self-attention: 16 head $\times$ 64 chiều\\q, k, v, out đều có bias; \textbf{mask theo khối}};
+\node[lb,below=0.17cm of at] (r1) {+ x (residual)};
+\node[lb,below=0.17cm of r1] (n2) {LayerNorm};
+\node[lb,below=0.17cm of n2] (ff) {FFN: 1024 \ra{} 4096 \ra{} GELU \ra{} 1024};
+\node[lb,below=0.17cm of ff] (r2) {+ residual \ra{} lớp tiếp theo};
+\foreach \u/\v in {x/n1,n1/at,at/r1,r1/n2,n2/ff,ff/r2}{\draw[->,Primary] (\u) -- (\v);}
+\node[draw=Primary,dashed,rounded corners=3pt,fit=(n1)(r2),inner sep=2pt] (g) {};
+\node[anchor=north,rotate=90,font=\tiny\bfseries,text=Primary,fill=white,inner sep=1pt] at (g.east) {lặp 24 lần};
+\end{tikzpicture}
+\column{0.58\textwidth}
+\centering
+\begin{tikzpicture}[font=\tiny]
+\def\sc{0.026}
+\fill[GoodGreen!30] (0,0) rectangle (104*\sc,-104*\sc);
+\fill[GoodGreen!30] (104*\sc,-104*\sc) rectangle (130*\sc,-130*\sc);
+\draw[TextGray] (0,0) rectangle (130*\sc,-130*\sc);
+\fill[Accent!80] (41*\sc,0) rectangle (51*\sc,-130*\sc);
+\fill[Accent!80] (0,-41*\sc) rectangle (130*\sc,-51*\sc);
+\fill[GoodGreen!30] (104*\sc,-41*\sc) rectangle (130*\sc,-51*\sc);
+\fill[GoodGreen!30] (41*\sc,-104*\sc) rectangle (51*\sc,-130*\sc);
+\fill[white] (104*\sc,-41*\sc) rectangle (130*\sc,-51*\sc);
+\fill[white] (41*\sc,-104*\sc) rectangle (51*\sc,-130*\sc);
+\fill[Accent!80] (41*\sc,-41*\sc) rectangle (51*\sc,-51*\sc);
+\draw[TextGray] (0,0) rectangle (104*\sc,-104*\sc);
+\draw[TextGray] (104*\sc,-104*\sc) rectangle (130*\sc,-130*\sc);
+\node[anchor=south] at (52*\sc,0) {vector 0--103 (0--8 s)};
+\node[anchor=south,align=center] at (117*\sc,0) {104--129};
+\node[anchor=west,align=left,text width=3.0cm] at (133*\sc,-40*\sc) {\textbf{Xanh} = được nhìn nhau (hai chiều).\\\textbf{Trắng} = bị chặn.\\\textbf{Vàng} = hàng/cột của \texttt{bertolucci} (41--50): chỉ trộn với vector trong 0--8 s.};
+\end{tikzpicture}
+\end{columns}
+\vspace{0.1cm}
+\begin{columns}[T]
+\column{0.32\textwidth}
+\nbox{\textbf{Làm gì:} mỗi lớp cho từng vector ``hỏi'' các vector khác (attention) để hiểu ngữ cảnh, rồi biến đổi riêng từng vector (FFN). Kiểu pre-norm: LayerNorm đứng trước.}
+\column{0.32\textwidth}
+\nbox{\textbf{Kích thước:} vào [130 $\times$ 1024], ra [130 $\times$ 1024], không đổi. Mỗi lớp 12,6 triệu tham số; 24 lớp = \textbf{302 triệu}.}
+\column{0.32\textwidth}
+\nbox[kbox]{\textbf{Thời gian:} vẫn ``vector k = lát k'', nhưng nội dung đã trộn ngữ cảnh 8 s. Khối \bad{không trượt}: từ vắt qua giây 8 bị cắt ngữ cảnh.}
+\end{columns}
+\src{Qwen3ASRAudioEncoderLayer: self\_attn\_layer\_norm \ra{} attn \ra{} +res \ra{} final\_layer\_norm \ra{} fc1/GELU/fc2 \ra{} +res; cu\_seqlens chia khối 104. \CODE}
+\end{frame}
+
+\begin{frame}{Bước 4. Projector đổi 1024 chiều thành 2048 chiều, cùng ``ngôn ngữ'' với LLM}
+\renewcommand{\bsz}{\scriptsize}
+\centering
+\begin{tikzpicture}[font=\scriptsize,>={Stealth},
+ b/.style={draw=Primary,fill=SoftBlue,rounded corners=2pt,minimum height=1.0cm,text width=2.05cm,align=center,inner sep=2pt}]
+\node[b] (a) at (0,0) {\textbf{Ra từ lớp 24}\\{[130 $\times$ 1024]}};
+\node[b] (b) at (2.75,0) {\textbf{ln\_post}\\LayerNorm};
+\node[b] (c) at (5.5,0) {\textbf{proj1}\\Linear 1024 \ra{} 1024};
+\node[b] (d) at (8.25,0) {\textbf{GELU}};
+\node[b,draw=Accent,fill=Accent!15,thick] (e) at (11.0,0) {\textbf{proj2}\\Linear 1024 \ra{} 2048\\{[130 $\times$ 2048]}};
+\foreach \u/\v in {a/b,b/c,c/d,d/e}{\draw[->,thick,Primary] (\u) -- (\v);}
+\end{tikzpicture}
+\vspace{0.35cm}
+
+\begin{columns}[T]
+\column{0.32\textwidth}
+\nbox{\textbf{Làm gì:} một MLP 2 lớp, áp \textbf{riêng cho từng vector}. Không gộp, không bỏ vector nào. 3,15 triệu tham số.}
+\vspace{0.08cm}
+\nbox{\textbf{Vì sao cần:} LLM đọc mọi thứ ở dạng vector 2048 chiều (giống embedding của chữ). Projector dịch ``tiếng audio'' sang không gian đó.}
+\column{0.32\textwidth}
+\nbox{\textbf{So với model khác:} nhiều SpeechLLM dùng Q-Former hoặc gộp vector để rút ngắn chuỗi (vd. 32 query cố định). Khi đó \bad{một vector không còn ứng với một lát thời gian}.}
+\column{0.32\textwidth}
+\nghiala{Qwen3-ASR \good{không nén}: 130 vector vào LLM vẫn đúng thứ tự thời gian, \textbf{vector k vẫn là giây $\approx$ k/13}. Đây là điều kiện để cổng B, C, D dùng được vị trí của scorer.}
+\end{columns}
+\src{Qwen3ASRAudioEncoder.forward: ln\_post \ra{} proj1 \ra{} act (gelu) \ra{} proj2; output\_dim = 2048. \CODE}
+\end{frame}
+
+% ---------- MỔ XẺ TỪNG BƯỚC (phần LLM) ----------
+\begin{frame}{Bước 5. Ghép chuỗi: chữ tra bảng embedding, 130 ô pad bị thay bằng vector audio}
+\renewcommand{\bsz}{\scriptsize}
+\centering
+\begin{tikzpicture}[font=\tiny,>={Stealth},
+ tk/.style={draw,rounded corners=1pt,minimum height=0.5cm,align=center,inner sep=1pt},
+ gy/.style={tk,draw=TextGray,fill=TextGray!10},
+ rd/.style={tk,draw=RiskRed,fill=RiskRed!12},
+ bl/.style={tk,draw=Primary,fill=Primary!15},
+ gr/.style={tk,draw=GoodGreen,fill=GoodGreen!15}]
+\node[anchor=east,font=\tiny\bfseries,text=Secondary] at (-0.1,0) {(a) id};
+\node[gy,text width=1.2cm] (a0) at (0.7,0) {im\_start system};
+\node[rd,text width=2.6cm,right=0.05cm of a0] (a1) {id của ``bertolucci , bertolini , …''};
+\node[gy,text width=1.6cm,right=0.05cm of a1] (a2) {im\_end user\\audio\_start \textbf{151669}};
+\node[bl,text width=2.5cm,right=0.05cm of a2] (a3) {\textbf{151676} $\times$ 130 lần\\(ô giữ chỗ \texttt{audio\_pad})};
+\node[gy,text width=1.9cm,right=0.05cm of a3] (a4) {audio\_end \textbf{151670}\\im\_end assistant};
+\node[gr,text width=1.65cm,right=0.05cm of a4] (a5) {language English\\\texttt{<asr\_text>}};
+\node[anchor=east,font=\tiny\bfseries,text=Secondary] at (-0.1,-1.0) {(b) vector};
+\node[rd,text width=4.0cm] (b1) at (2.15,-1.0) {tra hàng tương ứng trong bảng\\embedding [151936 $\times$ 2048]};
+\node[bl,text width=2.5cm] (b3) at (a3|-b1) {\textbf{masked\_scatter}: ô thứ k\\nhận vector audio a$_k$};
+\node[gr,text width=3.65cm] (b5) at ($(a4.south)!0.5!(a5.south)+(0,-0.75)$) {tra bảng embedding};
+\draw[->,RiskRed] (a1.south) -- (a1.south|-b1.north);
+\draw[->,Primary] (a3) -- (b3);
+\draw[->,GoodGreen] (a5.south) -- (a5.south|-b5.north);
+\node[draw=Primary,fill=Primary!8,rounded corners=1pt,anchor=north,inner sep=2pt] (enc) at ($(b3.south)+(0,-0.35)$) {từ Bước 4: [130 $\times$ 2048]};
+\draw[->,thick,Primary] (enc) -- (b3);
+% truc vi tri
+\node[anchor=east,font=\tiny\bfseries,text=Secondary] at (-0.1,-2.15) {(c) vị trí};
+\draw[->,TextGray] (0,-2.15) -- (13.4,-2.15);
+\node[below,text=TextGray] at (0.1,-2.15) {0};
+\node[below,text=RiskRed] at (a1|-0,-2.15) {list: $\approx$ 3 \ra{} 4000+};
+\node[below,text=Primary,align=center] at (5.9,-2.15) {audio: S, S+1, …, S+129\\(S $\approx$ 4010 với N2000)};
+\node[below,text=GoodGreen] at (a5|-0,-2.15) {chữ: L, L+1, …};
+\end{tikzpicture}
+\vspace{0.05cm}
+
+\begin{columns}[T]
+\column{0.32\textwidth}
+\nbox{\textbf{Làm gì:} tokenizer đổi prompt ra id. Mỗi id tra 1 hàng 2048 số. Riêng 130 ô id 151676 \textbf{không tra bảng} mà nhận vector audio theo đúng thứ tự.}
+\column{0.32\textwidth}
+\nbox{\textbf{Kích thước:} [L $\times$ 2048]. Không list: L $\approx$ 150; N2000: L $\approx$ 4.150+ (ước lượng, chưa đếm bằng tokenizer \TA). Vị trí RoPE = 0, 1, 2, … liên tục.}
+\column{0.32\textwidth}
+\nbox[kbox]{\textbf{Thời gian:} còn. Vector \texttt{bertolucci} (41--50) nằm ở vị trí \textbf{S+41 … S+50} trong chuỗi. Biết S là biết ngay ô nào.}
+\end{columns}
+\src{audio\_token\_id 151676, audio\_start 151669, audio\_end 151670 (config.json); get\_rope\_index: cumsum, 3 hàng giống nhau nên MRoPE [24,20,20] thành RoPE 1 chiều. \CODE}
+\end{frame}
+
+\begin{frame}{Bước 6. Bên trong 1 lớp LLM: kích thước từng phép nhân, lặp 28 lần}
+\renewcommand{\bsz}{\scriptsize}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\centering
+\begin{tikzpicture}[font=\tiny,>={Stealth},
+ lb/.style={draw=GoodGreen,fill=GoodGreen!10,rounded corners=1.5pt,text width=5.6cm,align=left,inner sep=2pt,minimum height=0.40cm}]
+\node[lb] (x) at (0,0) {\textbf{x} [L $\times$ 2048] \ra{} RMSNorm};
+\node[lb,below=0.12cm of x] (q) {\textbf{q\_proj} 2048 \ra{} 2048 = 16 head $\times$ 128\\\textbf{k\_proj, v\_proj} 2048 \ra{} 1024 = 8 head $\times$ 128 (không bias)};
+\node[lb,below=0.12cm of q] (n) {RMSNorm riêng trên từng head của q, k \ra{} \textbf{RoPE} ($\theta = 10^6$)};
+\node[lb,below=0.12cm of n,fill=Accent!15,draw=Accent] (s) {\textbf{điểm} = q $\cdot$ k / $\sqrt{128}$: [16 $\times$ L $\times$ L]; che phần tương lai\\softmax \ra{} trộn V \ra{} \textbf{o\_proj} 2048 \ra{} 2048};
+\node[lb,below=0.12cm of s] (r) {+ x (residual) \ra{} RMSNorm};
+\node[lb,below=0.12cm of r] (m) {\textbf{MLP SwiGLU}: gate, up 2048 \ra{} 6144;\\silu(gate) $\times$ up \ra{} \textbf{down} 6144 \ra{} 2048 \ra{} + residual};
+\foreach \u/\v in {x/q,q/n,n/s,s/r,r/m}{\draw[->,GoodGreen!70!black] (\u) -- (\v);}
+\end{tikzpicture}
+\column{0.47\textwidth}
+\renewcommand{\arraystretch}{1.08}\scriptsize
+\begin{tabular}{L{3.75cm}R{1.55cm}}
+\toprule
+Một lớp & Tham số \\
+\midrule
+q, o (2 $\times$ 2048 $\times$ 2048) & 8.388.608 \\
+k, v (2 $\times$ 2048 $\times$ 1024) & 4.194.304 \\
+gate, up, down (3 $\times$ 2048 $\times$ 6144) & 37.748.736 \\
+\midrule
+\textbf{1 lớp} & \textbf{50.336.000} \\
+\textbf{28 lớp} & \textbf{1,41 tỉ} \\
+\bottomrule
+\end{tabular}
+\vspace{0.1cm}
+
+\nbox{\textbf{GQA:} 2 head Q dùng chung 1 cặp K/V (Q0, Q1 \ra{} KV0; Q2, Q3 \ra{} KV1; …) \ra{} K/V chỉ tốn \textbf{một nửa}.}
+\vspace{0.06cm}
+\nbox[kbox]{\textbf{Chỗ bước 0 sẽ đọc:} hàng của token chữ t, cột S \ldots{} S+129 trong ma trận điểm = \textbf{130 số / head / lớp} \ra{} 28 $\times$ 16 = \textbf{448 bản đồ} ``chữ t đang nhìn giây nào''.}
+\end{columns}
+\src{Qwen3ASRTextAttention, Qwen3ASRTextMLP; hidden 2048, intermediate 6144, 16/8 head, head\_dim 128, attention\_bias false (config text\_config). Số RMSNorm (vài nghìn tham số) bỏ qua. \CODE}
+\end{frame}
+
+\begin{frame}{Bước 7. Prefill đọc cả chuỗi một lần; mỗi chữ sau đó chỉ tính thêm 1 hàng}
+\renewcommand{\bsz}{\scriptsize}
+\centering
+\begin{tikzpicture}[font=\tiny,>={Stealth}]
+% prefill
+\node[anchor=west,font=\scriptsize\bfseries,text=Secondary] at (0,1.05) {(a) Prefill: 1 lượt qua 28 lớp cho cả L token};
+\fill[RiskRed!25] (0,0.2) rectangle (3.8,0.7);
+\fill[Primary!25] (3.8,0.2) rectangle (5.0,0.7);
+\fill[TextGray!20] (5.0,0.2) rectangle (5.6,0.7);
+\draw[TextGray] (0,0.2) rectangle (5.6,0.7);
+\node at (1.9,0.45) {list $\approx$ 4000 token};
+\node at (4.4,0.45) {audio 130};
+\node[draw=GoodGreen,fill=GoodGreen!10,rounded corners=1.5pt,anchor=west,text width=5.4cm] (kv) at (6.3,0.45) {\textbf{KV cache}: lưu K và V của \textbf{mọi} token ở \textbf{mọi} lớp\\28 lớp $\times$ 2 (K,V) $\times$ 8 head $\times$ 128 $\times$ 2 byte = \textbf{112 KB / token}};
+\draw[->,thick,GoodGreen!70!black] (5.65,0.45) -- (kv.west);
+% decode
+\node[anchor=west,font=\scriptsize\bfseries,text=Secondary] at (0,-0.35) {(b) Decode: mỗi token mới chỉ tính 1 hàng, nhìn lại toàn bộ cache};
+\foreach \ii/\w in {0/he,1/hoped,2/ber,3/tol}{
+  \fill[GoodGreen!30] (5.6+\ii*0.75,-1.15) rectangle (5.6+\ii*0.75+0.7,-0.75);
+  \node at (5.6+\ii*0.75+0.35,-0.95) {\w};}
+\fill[RiskRed!25] (0,-1.15) rectangle (3.8,-0.75);
+\fill[Primary!25] (3.8,-1.15) rectangle (5.0,-0.75);
+\fill[TextGray!20] (5.0,-1.15) rectangle (5.6,-0.75);
+\draw[TextGray] (0,-1.15) rectangle (8.6,-0.75);
+\draw[Accent!80!black,thick,dashed] (8.6+0.05,-1.2) rectangle (9.35,-0.7);
+\node[Accent!80!black] at (9.0,-0.95) {?};
+\foreach \xx in {1.0,2.6,4.3,6.3,7.8}{\draw[->,Accent!80!black] (9.0,-0.68) .. controls (9.0,-0.3) and (\xx,-0.3) .. (\xx,-0.72);}
+\node[anchor=west,text width=3.6cm] at (9.55,-0.95) {token thứ 5 nhìn \textbf{4.000+ K} của list, 130 của audio, 4 của chữ};
+\end{tikzpicture}
+\vspace{0.2cm}
+
+\begin{columns}[T]
+\column{0.32\textwidth}
+\renewcommand{\arraystretch}{1.05}\scriptsize
+\begin{tabular}{L{2.55cm}R{1.25cm}}
+\toprule
+KV cache 1 câu & bf16 \\
+\midrule
+Không list (L $\approx$ 300) & $\approx$ 34 MB \\
+N2000 (L $\approx$ 4.300) & \bad{$\approx$ 493 MB} \\
+16 câu N2000 (bs16) & $\approx$ 7,9 GB \\
+\bottomrule
+\end{tabular}\par
+{\tiny\color{TextGray} tính từ config, chưa đo \TA}
+\column{0.32\textwidth}
+\nbox{\textbf{Làm gì:} prefill chạy cả chuỗi như một khối, giữ lại K, V. Decode: mỗi bước đưa \textbf{1 token} vào, tính q của nó, so với mọi K đã lưu.}
+\column{0.32\textwidth}
+\nbox[rbox]{\textbf{Hệ quả:} list dài làm \textbf{mỗi bước} decode phải nhìn qua 4.000+ token list, không chỉ lúc đầu. Ta đã gặp OOM ở bs16 với N2000 (phải hạ bs4) \DO.}
+\end{columns}
+\src{num\_key\_value\_heads 8, head\_dim 128, 28 lớp; L ước lượng. OOM bs16: AGENTS.md mục 4. Ví dụ ``ber'', ``tol'' là cách cắt token minh hoạ, chưa chạy tokenizer.}
+\end{frame}
+
+\begin{frame}{Bước 8. Từ vector cuối ra chữ: 151.936 điểm, lấy cao nhất, lặp tới hết câu}
+\renewcommand{\bsz}{\scriptsize}
+\centering
+\begin{tikzpicture}[font=\scriptsize,>={Stealth},
+ b/.style={draw=GoodGreen,fill=GoodGreen!10,rounded corners=2pt,minimum height=1.0cm,text width=2.0cm,align=center,inner sep=2pt}]
+\node[b] (h) at (0,0) {\textbf{hàng cuối} sau lớp 28\\{[2048]}};
+\node[b] (n) at (2.6,0) {\textbf{RMSNorm cuối}};
+\node[b] (w) at (5.2,0) {\textbf{LM head}\\2048 \ra{} 151.936};
+\node[b,draw=Accent,fill=Accent!15,thick] (z) at (7.8,0) {\textbf{logits}\\151.936 điểm\\\textcolor{RiskRed}{(cổng D cộng vào đây)}};
+\node[b] (g) at (10.4,0) {\textbf{argmax}\\(greedy) \ra{} 1 id};
+\node[b] (t) at (13.0,0) {nối vào chuỗi\\\ra{} Bước 7 (b)};
+\foreach \u/\v in {h/n,n/w,w/z,z/g,g/t}{\draw[->,thick,GoodGreen!70!black] (\u) -- (\v);}
+\draw[->,dashed,Accent!80!black,thick] (t.south) -- ++(0,-0.35) -| node[pos=0.25,below,font=\tiny]{lặp tới khi ra \texttt{<|im\_end|>}} (h.south);
+\end{tikzpicture}
+\vspace{0.1cm}
+
+\begin{columns}[T]
+\column{0.40\textwidth}
+\cauhoi{Logits trông thế nào lúc viết ``bertolucci''? (minh hoạ)}
+\renewcommand{\arraystretch}{1.02}\scriptsize
+\begin{tabular}{L{1.4cm}R{1.0cm}R{1.9cm}}
+\toprule
+Token & Logit & + boost $\lambda$ = 2 \\
+\midrule
+``bert'' & 11,2 & \good{13,2} \\
+``Bert'' & 11,5 & 11,5 \\
+``bird'' & 9,8 & 9,8 \\
+\bottomrule
+\end{tabular}\par
+{\tiny\color{TextGray}số giả định, chỉ để thấy cơ chế}
+\column{0.56\textwidth}
+\nbox{\textbf{LM head:} ma trận [151.936 $\times$ 2048]. Config ghi \texttt{tie\_word\_embeddings = true} (dùng chung với bảng embedding), nhưng checkpoint \textbf{vẫn lưu riêng} \texttt{lm\_head.weight}; chưa kiểm hai ma trận có giống nhau không \CODE.}
+\vspace{0.06cm}
+\nbox[kbox]{\textbf{Thời gian:} \bad{mất ở đây}. Logits chỉ nói ``token nào'', không nói ``giây nào''. Muốn cộng điểm \textbf{đúng lúc}, phải lấy thời gian từ nơi khác: scorer (giây của từ) + bước 0 (decoder đang nghe giây nào).}
+\end{columns}
+\src{vocab\_size 151936; model.safetensors.index.json có thinker.lm\_head.weight; greedy. Boost kiểu LOGIC Eq.~2 (z' = z + $\lambda$). \CODE}
+\end{frame}
+
+\begin{frame}{Tổng kết 8 bước: tham số nằm ở đâu, và thời gian mất ở bước nào}
+\renewcommand{\bsz}{\scriptsize}
+\renewcommand{\arraystretch}{1.0}\scriptsize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{C{0.6cm}L{2.7cm}L{2.0cm}R{1.75cm}L{5.75cm}}
+\toprule
+Bước & Khối & Ra (câu 10 s) & Tham số & Thời gian sau bước này \\
+\midrule
+1 & Mel & [128 $\times$ 1000] & 0 & \good{còn}, 10 ms / khung \\
+2 & 3 conv + Linear & [130 $\times$ 1024] & 12,0 triệu & \good{còn}, $\approx$ 77 ms/vector; sin đếm lại mỗi khúc \\
+3 & 24 lớp encoder & [130 $\times$ 1024] & 302,3 triệu & \good{còn}, nội dung đã trộn trong khối 8 s \\
+4 & Projector & [130 $\times$ 2048] & 3,2 triệu & \good{còn}, không nén, không đổi thứ tự \\
+5 & Ghép chuỗi + emb. & [L $\times$ 2048] & 311,2 triệu & \good{còn}: vector k ở vị trí S + k \\
+6 & 28 lớp LLM & [L $\times$ 2048] & 1.409,4 triệu & \textbf{chưa biết}: chữ có nhìn đúng giây? \ra{} \hi{bước 0} \\
+7 & KV cache & 112 KB / token & 0 & (chỉ là bộ nhớ đệm) \\
+8 & LM head + argmax & 1 id / bước & chung? & \bad{mất}: logits không có trục thời gian \\
+\midrule
+ & \textbf{Tổng} & & \textbf{$\approx$ 2,04 tỉ} & encoder 317 triệu + LLM 1,72 tỉ (LM head chung) \\
+\bottomrule
+\end{tabular}
+\vspace{0.08cm}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\nghiala{Thời gian đi nguyên vẹn qua bước 1--5. Cổng B (sửa vector audio) chạm ở bước 4--5; cổng C (gate attention) ở bước 6; cổng D (boost logits) ở bước 8.}
+\column{0.48\textwidth}
+\yeu{\textbf{Còn mở:} (1) bước 6 có giữ thời gian không (bước 0 sẽ đo); (2) LM head có thật là chung với embedding không; (3) L chính xác với N2000 (cần chạy tokenizer).}
+\end{columns}
+\src{Số tham số tính tay từ config.json; report 2601.21337 ghi encoder 300M. \TA}
+\end{frame}
+
+\begin{frame}{Toàn cảnh kiến trúc: từng khối bên trong và kích thước dữ liệu sau mỗi khối}
+\centering
+\begin{tikzpicture}[font=\tiny,>={Stealth},
+ en/.style={draw=Primary,fill=SoftBlue,rounded corners=2pt,text width=3.85cm,align=center,inner sep=2pt,minimum height=0.58cm},
+ ll/.style={draw=GoodGreen,fill=GoodGreen!10,rounded corners=2pt,text width=3.85cm,align=center,inner sep=2pt,minimum height=0.58cm},
+ mg/.style={draw=Accent,fill=Accent!15,thick,rounded corners=2pt,text width=3.2cm,align=center,inner sep=2pt,minimum height=0.58cm},
+ sh/.style={font=\tiny\ttfamily,text=RiskRed,right=1pt,inner sep=1pt},
+ ar/.style={->,thick,Primary},
+ hd/.style={font=\scriptsize\bfseries,text=Secondary}]
+\node[hd] at (0,0.62) {ENCODER AuT (chạy 1 lần / câu)};
+\node[hd] at (4.95,0.62) {GHÉP CHUỖI};
+\node[hd] at (9.9,0.62) {LLM Qwen3-1.7B (chạy 1 lần / token)};
+% encoder
+\node[en] (e0) at (0,0) {\textbf{Audio 10 s}, 16 kHz \ra{} \textbf{Mel} 128 kênh, 10 ms/khung};
+\node[en,below=0.30cm of e0] (e1) {\textbf{Cắt khúc 1 s}: 10 khúc $\times$ 100 khung mel};
+\node[en,below=0.30cm of e1] (e2) {\textbf{3 lớp Conv2d} 3$\times$3, stride 2, 480 kênh, GELU\\thời gian 100 \ra{} 50 \ra{} 25 \ra{} 13; tần số 128 \ra{} 16};
+\node[en,below=0.30cm of e2] (e3) {\textbf{Linear} 480$\times$16 = 7680 \ra{} 1024\\+ vị trí sin, \textbf{đánh lại 0--12 ở mỗi khúc}};
+\node[en,below=0.30cm of e3] (e4) {\textbf{24 lớp Transformer encoder} (d = 1024)\\LayerNorm \ra{} self-attn 16 head, \textbf{hai chiều trong khối 8 s}\\LayerNorm \ra{} FFN 1024 \ra{} 4096 \ra{} 1024, GELU};
+\node[en,below=0.30cm of e4] (e5) {\textbf{Projector}: LayerNorm \ra{} Linear 1024\ra1024\\\ra{} GELU \ra{} Linear 1024 \ra{} 2048};
+\draw[ar] (e0) -- node[sh]{[1000 $\times$ 128]} (e1);
+\draw[ar] (e1) -- node[sh]{[10 $\times$ 128 $\times$ 100]} (e2);
+\draw[ar] (e2) -- node[sh]{[10 $\times$ 480 $\times$ 16 $\times$ 13]} (e3);
+\draw[ar] (e3) -- node[sh]{[130 $\times$ 1024]} (e4);
+\draw[ar] (e4) -- node[sh]{[130 $\times$ 1024]} (e5);
+% merge
+\node[mg] (m1) at (4.95,-0.35) {\textbf{Phần chữ của prompt}\\system + \textcolor{RiskRed}{\textbf{list}} + user + 130 ô \texttt{<|audio\_pad|>} + assistant\\tokenizer \ra{} id \ra{} \textbf{bảng embedding} 151936 $\times$ 2048};
+\node[mg] (m2) at (4.95,-2.45) {\textbf{Thay 130 ô pad bằng 130 vector audio}\\(\texttt{masked\_scatter}, không có cross-attention)};
+\node[mg] (m3) at (4.95,-4.15) {\textbf{Một chuỗi duy nhất} [L $\times$ 2048]\\\textcolor{RiskRed}{list} $\cdot$ \textcolor{Primary}{audio} $\cdot$ \textcolor{GoodGreen}{chữ đã viết}\\vị trí RoPE 0, 1, 2, … liên tục};
+\draw[ar] (m1) -- (m2);
+\draw[ar] (m2) -- (m3);
+\draw[ar] (e5.east) -- node[sh,above,text=RiskRed]{[130 $\times$ 2048]} ++(0.62,0) |- (m2.west);
+% llm
+\node[ll] (l1) at (9.9,0) {\textbf{RMSNorm}};
+\node[ll,below=0.26cm of l1] (l2) {\textbf{Self-attention (GQA)}: 16 head Q, 8 head K/V, mỗi head 128 chiều; RMSNorm trên q, k; RoPE $\theta = 10^6$\\\textbf{mask causal}: chỉ nhìn token đứng trước};
+\node[ll,below=0.26cm of l2] (l3) {+ residual \ra{} \textbf{RMSNorm} \ra{} \textbf{MLP SwiGLU}\\2048 \ra{} 6144 \ra{} 2048 \ra{} + residual};
+\node[ll,below=0.42cm of l3] (l4) {\textbf{RMSNorm cuối} \ra{} \textbf{LM head} (config ghi tied; checkpoint lưu riêng) \ra{} \textbf{151936 logits}};
+\node[ll,below=0.26cm of l4,fill=Accent!15,draw=Accent] (l5) {\textbf{Greedy}: lấy token điểm cao nhất, nối vào cuối chuỗi, lặp tới \texttt{<|im\_end|>}};
+\draw[ar,GoodGreen!70!black] (l1) -- (l2);
+\draw[ar,GoodGreen!70!black] (l2) -- (l3);
+\draw[ar,GoodGreen!70!black] (l3) -- (l4);
+\draw[ar,GoodGreen!70!black] (l4) -- (l5);
+\node[draw=GoodGreen,dashed,rounded corners=3pt,fit=(l1)(l2)(l3),inner sep=2.5pt] (grp) {};
+\node[font=\tiny\bfseries,text=GoodGreen!70!black,anchor=south east,fill=white,inner sep=1pt] at (grp.north east) {lặp 28 lớp};
+\draw[ar] (m3.east) -- ++(0.35,0) |- (l1.west);
+\draw[ar,Accent!80!black,dashed] (l5.south) -- ++(0,-0.22) -| node[pos=0.25,below,font=\tiny,text=Accent!80!black]{token mới quay lại cuối chuỗi} (m3.south);
+\end{tikzpicture}
+\src{config.json (thinker\_config) + modeling\_qwen3\_asr.py của qwen\_asr 0.0.6. Kích thước trong ngoặc vuông = tensor cho 1 câu 10 s. \CODE}
+\end{frame}
+
+\begin{frame}{Phóng to encoder: 10 giây thành 130 vector, mỗi vector là một lát thời gian}
+\centering
+\begin{tikzpicture}[font=\tiny,>={Stealth},xscale=1.18]
+% truc thoi gian
+\draw[->,TextGray] (0,0.55) -- (10.25,0.55) node[right]{giây};
+\foreach \ii in {0,...,10}{\draw[TextGray] (\ii,0.5) -- (\ii,0.6) node[above,inner sep=1pt]{\ii};}
+% hang 1: khuc mel
+\node[anchor=east,font=\tiny\bfseries,text=Secondary,align=right] at (-0.08,0) {Mel\\10 khúc};
+\foreach \ii in {0,...,9}{\draw[Primary,fill=SoftBlue] (\ii+0.03,-0.2) rectangle (\ii+0.97,0.2); \node at (\ii+0.5,0) {khúc \ii: 100 khung};}
+% hang 2: 130 vector
+\node[anchor=east,font=\tiny\bfseries,text=Secondary,align=right] at (-0.08,-0.85) {Sau conv\\130 vector};
+\foreach \ii in {0,...,9}{\foreach \jj in {0,...,12}{\draw[Primary!60,fill=Primary!18] (\ii+\jj/13+0.008,-1.05) rectangle (\ii+\jj/13+1/13-0.008,-0.65);}}
+\foreach \jj in {41,...,50}{\pgfmathsetmacro{\xx}{floor(\jj/13)+mod(\jj,13)/13}\draw[Accent!80!black,fill=Accent!70] (\xx+0.008,-1.05) rectangle (\xx+1/13-0.008,-0.65);}
+\foreach \ii in {0,...,9}{\pgfmathtruncatemacro{\kk}{13*\ii}\node[below,inner sep=1pt,font=\tiny,text=TextGray] at (\ii+0.04,-1.05) {\kk};}
+\draw[->,TextGray] (0.5,-0.2) -- (0.5,-0.65);
+% so vi tri trong khuc 3
+\foreach \jj in {0,...,12}{\node[font=\fontsize{3.5}{4}\selectfont,text=Secondary] at (3+\jj/13+0.5/13,-1.42) {\jj};}
+\node[anchor=west,font=\tiny,text=Secondary] at (4.05,-1.42) {\ra{} số vị trí sin trong khúc 3: lại đếm 0--12 (mọi khúc đều vậy)};
+% bertolucci
+\draw[Accent!80!black,thick,decorate,decoration={brace,amplitude=3pt}] (3.15,0.24) -- (3.92,0.24);
+\node[fill=Accent!20,draw=Accent,rounded corners=1pt,inner sep=1.5pt,align=center] at (6.35,1.28) {Scorer: \textbf{``Bertolucci'' ở 3.2--3.9 s} \ra{} vector \textbf{41--50} (tô vàng)};
+\draw[->,Accent!80!black] (5.0,1.18) -- (3.6,0.5);
+% hang 3: khoi attention
+\node[anchor=east,font=\tiny\bfseries,text=Secondary,align=right] at (-0.08,-2.15) {Attention\\24 lớp};
+\draw[Primary,fill=GoodGreen!12,rounded corners=2pt] (0.03,-2.45) rectangle (7.97,-1.85);
+\node at (4,-2.15) {\textbf{Khối 1}: vector 0--103 (0--8 s) nhìn qua lại \textbf{hai chiều} trong khối};
+\draw[Primary,fill=GoodGreen!12,rounded corners=2pt] (8.03,-2.45) rectangle (9.97,-1.85);
+\node[align=center] at (9,-2.15) {\textbf{Khối 2}: vector\\104--129 (8--10 s)};
+\node[text=RiskRed,font=\scriptsize\bfseries] at (8,-2.15) {$\times$};
+\node[text=RiskRed,below,inner sep=1pt] at (8,-2.45) {không nhìn qua ranh giới khối};
+% hang 4: conv cua 1 khuc
+\begin{scope}[xscale=1/1.18,
+ cb/.style={draw=Primary,fill=SoftBlue,rounded corners=1.5pt,align=center,inner sep=2pt,minimum height=0.62cm}]
+\node[anchor=west,font=\tiny\bfseries,text=Secondary] at (-1.5,-3.05) {Bên trong 1 khúc (conv):};
+\node[cb] (c0) at (0.15,-3.7) {mel\\128 $\times$ 100};
+\node[cb,right=0.38cm of c0] (c1) {Conv 1\\480 $\times$ 64 $\times$ 50};
+\node[cb,right=0.38cm of c1] (c2) {Conv 2\\480 $\times$ 32 $\times$ 25};
+\node[cb,right=0.38cm of c2] (c3) {Conv 3\\480 $\times$ 16 $\times$ 13};
+\node[cb,right=0.38cm of c3] (c4) {gộp kênh $\times$ tần số\\13 $\times$ 7680};
+\node[cb,right=0.38cm of c4] (c5) {Linear + vị trí sin\\textbf{13 $\times$ 1024}};
+\foreach \u/\v in {c0/c1,c1/c2,c2/c3,c3/c4,c4/c5}{\draw[->,thick,Primary] (\u) -- (\v);}
+\end{scope}
+\end{tikzpicture}
+
+\vspace{0.12cm}
+\nghiala{Công thức đổi giây sang vector: \textbf{k = 13 $\times$ (số giây nguyên) + (phần lẻ $\times$ 13)}. Ví dụ 3.2 s \ra{} 39 + 2 = 41. Vì không có bước nén theo nội dung, \textbf{vị trí thời gian còn nguyên} tới khi vào LLM. \CODE}
+\src{\_get\_feat\_extract\_output\_lengths; khối attention = 13 $\times$ (n\_window\_infer 800 / 100) = 104 vector (cu\_seqlens, không trượt).}
+\end{frame}
+
+\begin{frame}{Encoder: vector thứ k ứng với một giây xác định, tính được bằng phép chia}
+\begin{columns}[T]
+\column{0.52\textwidth}
+\cauhoi{Từ 1000 khung mel ra 130 vector thế nào?}
+\nbox{\textbf{1. Cắt khúc 1 s} = 100 khung mel; mỗi khúc qua 3 conv, mỗi lớp giảm một nửa: 100 \ra{} 50 \ra{} 25 \ra{} \textbf{13 vector}.\\[2pt]
+\textbf{2. Attention trong cửa sổ 8 s} (104 vector): mỗi vector chỉ ``nghe'' audio trong vòng 8 s.\\[2pt]
+\textbf{3.} Positional embedding \textbf{đánh số lại từ 0 ở mỗi khúc 1 s}.}
+\vspace{0.08cm}
+\nbox[block body alerted]{\textbf{Ví dụ:} vector thứ k = 40: khúc = 40 div 13 = 3, vị trí trong khúc = 40 mod 13 = 1 \ra{} khoảng \textbf{3.08 s}.}
+\column{0.45\textwidth}
+\cauhoi{Vì sao chi tiết này quan trọng?}
+\nghiala{Từ \textbf{giây} của scorer (2.10--2.80 s) ta biết ngay \textbf{vector audio số mấy} (khoảng 27--36). Không cần đoán.}
+\vspace{0.08cm}
+\nbox{Mở ra 2 cách cắm: \textbf{(1)} sửa hoặc chèn vào \textbf{đúng các vector đó} (cổng B); \textbf{(2)} xem token chữ đang sinh \textbf{nhìn vào vector nào} \ra{} biết decoder đang nghe giây nào (cổng C, D).}
+\vspace{0.08cm}
+\yeu{\textbf{Chưa biết:} cửa sổ 8 s và việc đánh số lại theo khúc có làm vị trí ``nhoè'' ở ranh giới khúc không. Phải đo.}
+\end{columns}
+\src{\_get\_feat\_extract\_output\_lengths; n\_window = 50, n\_window\_infer = 800 khung = 8 s.}
+\end{frame}
+
+\begin{frame}[fragile]{LLM thấy một chuỗi duy nhất: list $\rightarrow$ audio $\rightarrow$ chữ đang viết}
+\begin{columns}[T]
+\column{0.53\textwidth}
+\cauhoi{Prompt thật sự trông thế nào?}
+\begin{beamercolorbox}[sep=0.4em,rounded=true]{block body}
+\scriptsize
+\begin{Verbatim}[commandchars=\\\{\}]
+<|im_start|>system
+\textcolor{RiskRed}{bertolucci, bertolini, ... (list)}<|im_end|>
+<|im_start|>user
+<|audio_start|>\textcolor{Primary}{[130 vector audio]}<|audio_end|>
+<|im_end|>
+<|im_start|>assistant
+language English<asr_text>\textcolor{GoodGreen}{he hoped ...}
+\end{Verbatim}
+\end{beamercolorbox}
+\vspace{0.1cm}
+{\footnotesize Code tạo 130 token giả \texttt{<|audio\_pad|>}, rồi \textbf{thay embedding} của chúng bằng 130 vector audio (\texttt{masked\_scatter}). Vị trí (RoPE) đánh số liên tục 1 chiều cho cả chuỗi. \CODE}
+\column{0.44\textwidth}
+\cauhoi{Thứ tự này dẫn tới điều gì?}
+\nbox{LLM là \textbf{causal}: mỗi token chỉ nhìn các token \textbf{đứng trước}. \textcolor{GoodGreen}{\textbf{Chữ đang viết}} nhìn được list và audio; \textcolor{Primary}{\textbf{audio}} nhìn được list; \textcolor{RiskRed}{\textbf{list}} không nhìn được audio.}
+\vspace{0.08cm}
+\nghiala{Ở các lớp LLM, \textbf{biểu diễn audio bị ``trộn'' với list}: list dài có thể nhiễu cả phần nghe, không chỉ phần chọn từ. \TA}
+\vspace{0.08cm}
+\yeu{List 2000 từ dài $\geq$ 4000 token (mỗi từ $\geq$ 1 token + dấu phẩy), gấp hơn 30 lần 130 token audio.}
+\end{columns}
+\src{Chat template HF; inference/qwen3\_asr.py; bench/run\_qwen3asr.py ép language English.}
+\end{frame}
+
+\begin{frame}{Phóng to LLM: list, audio và chữ nằm chung một chuỗi, nhìn nhau theo mask causal}
+\centering
+\begin{tikzpicture}[font=\tiny,>={Stealth},
+ tk/.style={draw,rounded corners=1.5pt,minimum height=0.55cm,align=center,inner sep=1.5pt},
+ gy/.style={tk,draw=TextGray,fill=TextGray!10},
+ rd/.style={tk,draw=RiskRed,fill=RiskRed!12},
+ bl/.style={tk,draw=Primary,fill=Primary!15},
+ gr/.style={tk,draw=GoodGreen,fill=GoodGreen!15}]
+% chuoi token
+\node[gy,text width=1.35cm] (t0) at (0,0) {\texttt{<|im\_start|>}\\system};
+\node[rd,text width=3.0cm,right=0.06cm of t0] (t1) {\textbf{list}: bertolucci , bertolini , …\\2000 từ $\approx$ 4000+ token};
+\node[gy,text width=1.75cm,right=0.06cm of t1] (t2) {\texttt{<|im\_end|>} user\\\texttt{<|audio\_start|>}};
+\node[bl,text width=2.55cm,right=0.06cm of t2] (t3) {\textbf{audio}: a0 a1 … a129\\130 vector từ encoder};
+\node[gy,text width=2.1cm,right=0.06cm of t3] (t4) {\texttt{<|audio\_end|>} … assistant\\language English\texttt{<asr\_text>}};
+\node[gr,text width=1.5cm,right=0.06cm of t4] (t5) {\textbf{chữ}: he hoped\\… (đang viết)};
+\node[font=\tiny,text=TextGray,anchor=south west] at (t0.north west) {vị trí RoPE: 0 \ra{} \ra{} \ra{} tăng dần 1 chiều \ra{} \ra{} \ra{} L};
+\node[font=\tiny,text=TextGray,below=0.05cm of t1] {embedding tra bảng};
+\node[font=\tiny,text=Primary,below=0.05cm of t3] {thay ô pad (\texttt{masked\_scatter})};
+\node[font=\tiny,text=TextGray,below=0.05cm of t5] {embedding tra bảng};
+% mask causal
+\begin{scope}[shift={(-0.55,-1.25)}]
+\def\cw{1.05}
+\node[font=\tiny\bfseries,text=Secondary,anchor=south west] at (-0.75,0.05) {Ma trận attention (mỗi lớp, mỗi head)};
+\foreach \lab [count=\ci from 0] in {list,audio,chữ}{
+  \node[font=\tiny,anchor=south] at (\ci*\cw+0.5*\cw,-0.02) {\lab};
+  \node[font=\tiny,anchor=east] at (-0.02,-\ci*\cw-0.5*\cw) {\lab};}
+\node[font=\tiny,text=TextGray,anchor=south] at (1.5*\cw,0.28) {cột = token được nhìn};
+\node[font=\tiny,text=TextGray,rotate=90,anchor=south] at (-0.42,-1.5*\cw) {hàng = token đang tính};
+% o duoi cheo
+\fill[RiskRed!25] (0,-\cw) -- (0,0) -- (\cw,-\cw) -- cycle;
+\fill[RiskRed!25] (0,-\cw) rectangle (\cw,-2*\cw);
+\fill[Primary!25] (\cw,-2*\cw) -- (\cw,-\cw) -- (2*\cw,-2*\cw) -- cycle;
+\fill[RiskRed!25] (0,-2*\cw) rectangle (\cw,-3*\cw);
+\fill[Accent!55] (\cw,-2*\cw) rectangle (2*\cw,-3*\cw);
+\fill[GoodGreen!30] (2*\cw,-3*\cw) -- (2*\cw,-2*\cw) -- (3*\cw,-3*\cw) -- cycle;
+\draw[TextGray] (0,0) grid[step=\cw] (3*\cw,-3*\cw);
+\node[text=RiskRed,font=\small\bfseries] at (1.5*\cw,-0.5*\cw) {$\times$};
+\node[text=RiskRed,font=\small\bfseries] at (2.5*\cw,-0.5*\cw) {$\times$};
+\node[text=RiskRed,font=\small\bfseries] at (2.5*\cw,-1.5*\cw) {$\times$};
+\node[font=\tiny,align=center] at (0.5*\cw,-1.5*\cw) {audio\\nhìn list};
+\node[font=\tiny,align=center] at (1.5*\cw,-2.5*\cw) {\textbf{chữ nhìn}\\\textbf{audio}};
+\end{scope}
+% giai thich
+\node[draw=Accent,fill=Accent!12,rounded corners=2pt,text width=3.55cm,align=left,inner sep=3pt,anchor=north west] at (3.0,-1.15) {\textbf{Ô vàng} = token chữ đang viết nhìn vào 130 vector audio. Nếu có head nhìn \textbf{đúng giây của chữ}, ta biết decoder đang nghe đâu \ra{} \textbf{đó là bước 0}.\\[2pt]
+\textcolor{RiskRed}{\textbf{$\times$}} = bị che: \textbf{list không nhìn được audio}, nên list không thể tự lọc theo audio.};
+% 1 lop decoder
+\begin{scope}[shift={(9.7,-1.05)},
+ lb/.style={draw=GoodGreen,fill=GoodGreen!10,rounded corners=1.5pt,text width=3.2cm,align=center,inner sep=1.5pt,minimum height=0.4cm}]
+\node[font=\tiny\bfseries,text=Secondary] at (0,0.05) {Bên trong 1 lớp (lặp 28 lần)};
+\node[lb] (d1) at (0,-0.38) {x [L $\times$ 2048] \ra{} RMSNorm};
+\node[lb,below=0.13cm of d1] (d2) {Q: 16 head $\times$ 128 \enspace K, V: 8 head $\times$ 128\\(2 head Q dùng chung 1 cặp K/V)};
+\node[lb,below=0.13cm of d2] (d3) {RMSNorm trên q, k \ra{} RoPE};
+\node[lb,below=0.13cm of d3,fill=Accent!15,draw=Accent] (d4) {softmax(q$\cdot$k) có \textbf{mask causal} \ra{} trộn V \ra{} o\_proj};
+\node[lb,below=0.13cm of d4] (d5) {+ x \ra{} RMSNorm \ra{} SwiGLU 6144 \ra{} + };
+\foreach \u/\v in {d1/d2,d2/d3,d3/d4,d4/d5}{\draw[->,GoodGreen!70!black] (\u) -- (\v);}
+\end{scope}
+\end{tikzpicture}
+
+\vspace{0.1cm}
+\nghiala{LLM không có ``kênh audio'' riêng: mọi thứ đi qua \textbf{cùng một phép attention}. Muốn biết decoder đang nghe giây nào thì phải \textbf{đọc ô vàng} (cổng C); muốn ép từ thì sửa \textbf{logits ở cuối} (cổng D). \TA}
+\src{modeling\_qwen3\_asr.py: Qwen3ASRTextAttention (q\_norm, k\_norm, GQA 16/8, head\_dim 128), MLP gate/up/down; config text\_config.}
+\end{frame}
+
+\begin{frame}{Qwen3-ASR được train 4 giai đoạn; kênh context được dạy ở SFT}
+\begin{columns}[T]
+\column{0.55\textwidth}
+\renewcommand{\arraystretch}{1.1}\footnotesize
+\begin{tabular}{C{0.4cm}L{2.3cm}L{4.3cm}}
+\toprule
+\# & Giai đoạn & Làm gì \\
+\midrule
+1 & Pretrain AuT & Train riêng encoder, khoảng \textbf{40 triệu giờ} nhãn giả \\
+2 & Pretrain Omni & Ghép encoder + LLM, \textbf{3T token} đa nhiệm (audio, ảnh, chữ) \\
+\rowcolor{Accent!15} 3 & SFT cho ASR & Dữ liệu ASR + \textbf{dữ liệu context biasing}: học dùng chữ trong system prompt \\
+4 & RL (GSPO) & Khoảng 50k câu \\
+\bottomrule
+\end{tabular}
+\PA
+\vspace{0.15cm}
+
+\yeu{Report \textbf{không} nói dữ liệu context được dựng ra sao (bao nhiêu từ, có nhiễu không), và \textbf{không} báo số biasing.}
+\column{0.42\textwidth}
+\nbox{\textbf{Cùng họ: Qwen3-ForcedAligner-0.6B}\\[2pt]
+Đưa vào audio + transcript có chèn ô \texttt{[time]} sau mỗi từ. Model đoán mỗi ô là khung 80 ms thứ mấy, tất cả ô cùng lúc (không tự hồi quy). Nhãn train lấy từ MFA.}
+\vspace{0.12cm}
+\nghiala{(1) Qwen \textbf{đã được dạy} đọc list trong prompt, nên prompt là kênh ``chính chủ''. (2) Có sẵn một công cụ căn chữ với audio, dùng được để biết ``chữ đã viết nằm tới giây nào''.}
+\end{columns}
+\src{\PA{} Qwen3-ASR Technical Report, arXiv 2601.21337 §2.2 (train), §3 (ForcedAligner).}
+\end{frame}
+
+\begin{frame}{Hệ quả đo được: list càng dài, Qwen3-ASR càng viết sai từ hiếm}
+\begin{columns}[T]
+\column{0.52\textwidth}
+\cauhoi{Đưa thẳng list vào prompt thì sao?}
+\renewcommand{\arraystretch}{1.0}\footnotesize
+\begin{tabular}{L{3.3cm}C{1.3cm}C{1.3cm}}
+\toprule
+Context (test-other) & B-WER & WER \\
+\midrule
+Không có & 16.08 & 3.41 \\
+Oracle (chỉ từ đúng) & \good{7.73} & 2.43 \\
+N100 & 11.61 & 3.17 \\
+N500 & 14.88 & 3.33 \\
+N2000 & \bad{16.45} & 3.55 \\
+\midrule
+N2000, scorer lọc p $\geq$ 0.5 & 9.71 & 2.68 \\
+\bottomrule
+\end{tabular}
+\DO
+\column{0.45\textwidth}
+\cauhoi{Nhóm khác có thấy giống vậy không?}
+\nbox{\textbf{Huber \& Waibel (arXiv 2608.05759)}, Qwen3-ASR-1.7B, test-other:\\[2pt]
+B-WER 10.26 (0 từ nhiễu) \ra{} \bad{21.06} (250 từ nhiễu).\\[2pt]
+Model còn \textbf{nhạy thứ tự}: từ đặt đầu prompt được lợi hơn. \PA\\[2pt]
+{\scriptsize\color{TextGray}Cách chọn từ hiếm khác IS21: không so số trực tiếp với bảng trái.}}
+\vspace{0.08cm}
+\nghiala{Prompt chỉ tốt khi list \textbf{ngắn và sạch} (oracle 7.73). Lọc bằng p lấy lại phần lớn (9.71), còn cách oracle 2 điểm.}
+\end{columns}
+\src{bench/results.md §3, §5 (wnorm, 2939 câu, list ``w1, w2, ...''); Huber \& Waibel Table I, §IV-A.}
+\end{frame}
+
+% ==================================================================
+\section{Sáu cổng}
+\begin{frame}{Có 6 chỗ để đưa tín hiệu bias vào Qwen3-ASR}
+\centering
+\begin{tikzpicture}[font=\scriptsize,>={Stealth},
+  bx/.style={draw=Primary,fill=SoftBlue,rounded corners=2pt,minimum height=1.0cm,text width=2.0cm,align=center,inner sep=2pt},
+  gt/.style={circle,draw=Accent,fill=Accent!25,thick,inner sep=1.2pt,font=\footnotesize\bfseries}]
+\node[bx] (enc) at (0,0) {\textbf{Encoder}\\+ projector};
+\node[bx] (seq) at (3.05,0) {\textbf{Chuỗi input}\\list + audio};
+\node[bx] (llm) at (6.1,0) {\textbf{28 lớp LLM}\\self-attention};
+\node[bx] (lg) at (9.15,0) {\textbf{Logits}\\chọn token kế};
+\node[bx] (tx) at (12.2,0) {\textbf{Text}\\đã viết xong};
+\foreach \u/\v in {enc/seq,seq/llm,llm/lg,lg/tx}{\draw[->,thick,Primary] (\u) -- (\v);}
+\node[gt] (A) at (3.05,1.0) {A}; \node[above=1pt of A,text width=2.6cm,align=center] {prompt (list chữ)};
+\node[gt] (B) at (1.52,-0.95) {B}; \node[below=1pt of B,text width=2.6cm,align=center] {chèn / cộng vào vector audio};
+\node[gt] (C) at (6.1,1.0) {C}; \node[above=1pt of C,text width=2.6cm,align=center] {chỉnh attention};
+\node[gt] (D) at (9.15,1.0) {D}; \node[above=1pt of D,text width=2.6cm,align=center] {cộng điểm token};
+\node[gt] (E) at (12.2,1.0) {E}; \node[above=1pt of E,text width=2.4cm,align=center] {sửa sau decode};
+\node[gt] (F) at (6.1,-0.95) {F}; \node[below=1pt of F,text width=3.2cm,align=center] {train lại / RL trọng số};
+\end{tikzpicture}
+\vspace{0.3cm}
+
+\begin{columns}[T]
+\column{0.32\textwidth}
+\nbox{\textbf{Ví von:} A = đưa danh bạ cho thư ký đọc trước. B = dán ghi chú lên đúng đoạn băng ghi âm. C = chỉ tay ``nhìn chỗ này''.}
+\column{0.32\textwidth}
+\nbox{D = khi thư ký sắp viết, nhắc ``chữ này nhé''. E = viết xong rồi mới sửa. F = cho thư ký đi học lại.}
+\column{0.32\textwidth}
+\nbox[block body alerted]{\textbf{Ràng buộc của mình:} model frozen, cắm mọi SpeechLLM \ra{} F bị loại; B cần train adapter riêng cho từng model.}
+\end{columns}
+\end{frame}
+
+\begin{frame}{So 6 cổng: chỉ C và D vừa không cần train vừa dùng được vị trí lúc decode}
+\renewcommand{\arraystretch}{1.05}\setlength{\tabcolsep}{3.5pt}\scriptsize
+\begin{tabular}{C{0.3cm}L{1.6cm}L{4.2cm}C{1.3cm}C{1.0cm}C{1.3cm}L{3.3cm}}
+\toprule
+ & Cổng & Paper tiêu biểu & Train? & Dùng p & Dùng vị trí & Với Qwen3-ASR \\
+\midrule
+A & Prompt & Hou25; BR-ASR; CTC-assisted LLM-ASR; Qwen-Audio-3.0 (P0/P1) & Không & gián tiếp & \bad{không} & Kênh chính chủ; trần thấp với lỗi gần âm \\
+B & Vector audio & Spike-triggered CB (AED+CTC) & \bad{Có} & có & \good{có} & Qwen chưa thấy kiểu input này \\
+\rowcolor{Accent!12} C & Attention & Steering audio LLM (AVS); chưa ai dùng cho biasing & Không & có & \good{có} & Chưa có tiền lệ \ra{} rủi ro \\
+\rowcolor{Accent!12} D & Logits & \textbf{LOGIC} 2601.15397 & Không & có & \bad{họ không dùng} & Chỉ cần logits + tokenizer (mức 1) \\
+E & Sửa sau & PTC-Bias 2609.28727; GER & Tùy & có & có & Mức 2; không cứu câu lệch hẳn \\
+F & Train lại & Hotword + RL; IBM (vị trí làm loss phụ) & \bad{Có, cả ASR} & -- & -- & Chỉ làm đối chứng \\
+\bottomrule
+\end{tabular}
+\vspace{0.15cm}
+
+\nghiala{``Đẩy đúng lúc'' trên model frozen phải đi qua \textbf{C hoặc D}, và cần biết \textbf{decoder đang nghe giây nào} (trang \pageref{fr:decpos}).}\end{frame}
+
+\begin{frame}{Bốn paper gần nhất: mỗi cái có một nửa, chưa ai ghép vị trí với lúc decode}
+\begin{columns}[T]
+\column{0.49\textwidth}
+\nbox{\textbf{LOGIC} (Microsoft, arXiv 2601.15397) \PA\\[1pt]
+List thành \textbf{cây tiền tố} theo token. Mỗi bước decode, token đi tiếp được trên cây thì cộng $\lambda$; lệch khỏi cây giữa chừng thì \textbf{trừ lại} điểm đã cộng. Phi-4-mini frozen, list tới khoảng 2100 tên.\\[1pt]
+\bad{Thiếu:} đẩy ở \textbf{mọi} thời điểm.}
+\vspace{0.06cm}
+\nbox{\textbf{PTC-Bias} (arXiv 2609.28727) \PA\\[1pt]
+CTC âm vị tìm từ + khoảng [a, b], lọc list, rồi \textbf{sửa text sau decode}. Qwen3-ASR-0.6B: B-WER test-other 7.76.\\[1pt]
+\bad{Thiếu:} có vị trí nhưng không dùng lúc decode.}
+\column{0.49\textwidth}
+\nbox{\textbf{DOA} (arXiv 2605.31432) \PA\\[1pt]
+SpeechLLM decoder-only (Qwen3-Omni, Phi-4-MM): attention từ token đang sinh tới đoạn audio, \textbf{trung bình mọi lớp, mọi head}, argmax \ra{} khung đang nghe. Không train.\\[1pt]
+\bad{Thiếu:} dùng cho dịch streaming, \textbf{không đo} độ lệch.}
+\vspace{0.06cm}
+\nbox{\textbf{Qwen-Audio-3.0-ASR} (arXiv 2609.07549) \PA\\[1pt]
+Hotword 2 tầng: \textbf{P0} (chắc chắn), \textbf{P1} (ứng viên rộng), độ mạnh khác nhau; ứng viên lấy từ nhánh CTC.\\[1pt]
+\bad{Thiếu:} train lại cả model; không có vị trí.}
+\end{columns}
+\vspace{0.06cm}
+\nghiala{Chỗ trống = \textbf{vị trí} (PTC, scorer) + \textbf{lúc decode} (LOGIC) + \textbf{biết đang nghe đâu} (DOA). \TA}
+\end{frame}
+
+\begin{frame}{Câu hỏi ngược chiều: Qwen đang ``nghe'' giây nào khi viết chữ?}\label{fr:decpos}
+\cauhoi{Whisper có alignment heads trong cross-attention. Qwen không có, vậy lấy vị trí decoder từ đâu?}
+\renewcommand{\arraystretch}{1.05}\footnotesize
+\begin{tabular}{C{0.3cm}L{5.0cm}L{3.9cm}L{4.1cm}}
+\toprule
+\# & Cách & Ưu & Nhược \\
+\midrule
+1 & \textbf{Self-attention từ chữ tới đoạn audio} (kiểu DOA, hoặc tìm head tốt nhất kiểu Simul-Whisper) & Không train, gần như miễn phí & Chưa ai đo độ chính xác trên Qwen3-ASR \\
+2 & \textbf{Căn chữ đã viết với audio} (G6a, hoặc Qwen3-ForcedAligner) & Không đọc bên trong model, cắm mọi SpeechLLM & Chạy thêm aligner mỗi khi xong một từ \\
+3 & \textbf{Gradient theo input} (arXiv 2607.06831) & Mọi model khả vi & Một lượt backward mỗi token: chậm \\
+4 & \textbf{Không cần biết}: dùng cổng A hoặc E & Đơn giản & Mất lợi ích ``đúng lúc'' \\
+\bottomrule
+\end{tabular}
+\vspace{0.12cm}
+
+\nghiala{DOA: trung bình mọi head thì ổn định, \bad{6 lớp đơn lẻ} hỏng hoàn toàn \PA. \textbf{Cách 1 rẻ nhất, đo trước}; không đủ chính xác thì dùng cách 2 (G6a).}
+\src{DOA §2.1, §4; Simul-Whisper 2406.10052 §2.1; 2607.06831 mới đọc abstract.}
+\end{frame}
+
+% ==================================================================
+\section{Đề xuất}
+\begin{frame}{``Adaptive'' tách thành 4 việc, đều lấy từ output của scorer}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\renewcommand{\arraystretch}{1.08}\footnotesize
+\begin{tabular}{C{0.3cm}L{2.0cm}L{4.2cm}}
+\toprule
+\# & Điều chỉnh & Cách làm (scorer cho gì) \\
+\midrule
+1 & \textbf{Bao nhiêu từ} & Không cố định top-50; câu không có từ hiếm thì 0 từ (p + ``không từ nào'') \\
+2 & \textbf{Mạnh bao nhiêu} & Độ mạnh tỉ lệ với p, kiểu P0/P1 nhưng liên tục (p) \\
+3 & \textbf{Lúc nào} & Chỉ bật khi decoder nghe tới [t\_đầu, t\_cuối] (span) \\
+4 & \textbf{Từ nào thắng} & Các từ nghe giống trỏ cùng chỗ: chỉ đẩy từ p cao nhất \\
+\bottomrule
+\end{tabular}
+\column{0.47\textwidth}
+\cauhoi{Ví dụ ``... the Bertolucci film ...'' (minh hoạ, số giả định)}
+\nbox{\textbf{Cách Hou25:} \texttt{bertolucci}, \texttt{bertolini} và 48 từ khác vào prompt, có tác dụng suốt cả câu.}
+\vspace{0.06cm}
+\nbox[kbox]{\textbf{Cách adaptive:} \textbf{(1)} chỉ 1 từ \texttt{bertolucci}; \textbf{(2)} mạnh theo p = 0.93; \textbf{(3)} chỉ trong 2.1--2.8 s; \textbf{(4)} \texttt{bertolini} (0.41, cùng chỗ) bị loại. 48 từ còn lại: không đụng tới.}
+\end{columns}
+\vspace{0.1cm}
+\nghiala{Việc 1, 2, 4 là chuyện của scorer (đã làm phần lớn). Việc 3 cần cổng C hoặc D + biết decoder đang nghe đâu.}
+\end{frame}
+
+\begin{frame}{Đề xuất 1 (chính): prompt vài từ chắc chắn + boost logits có gate}
+\centering
+\begin{tikzpicture}[font=\scriptsize,>={Stealth},
+  bx/.style={draw=Primary,fill=SoftBlue,rounded corners=2pt,minimum height=1.05cm,text width=2.15cm,align=center,inner sep=2pt},
+  ky/.style={draw=Accent,fill=Accent!15,rounded corners=2pt,minimum height=1.05cm,text width=2.15cm,align=center,inner sep=2pt,thick}]
+\node[bx] (s) at (0,0) {\textbf{Scorer}\\(p, span) cho 2000 từ};
+\node[bx] (a) at (3.1,0.85) {\textbf{Prompt}\\chỉ từ p $\geq$ $\theta$\textsubscript{cao}\\(0--3 từ)};
+\node[ky] (g) at (3.1,-0.85) {\textbf{Boost list}\\từ p $\geq$ $\theta$\textsubscript{thấp}\\+ span};
+\node[bx] (q) at (6.3,0.85) {\textbf{Qwen3-ASR}\\frozen};
+\node[ky] (pos) at (6.3,-0.85) {\textbf{Đang nghe giây t?}\\attention (cách 1)\\hoặc G6a};
+\node[ky] (lg) at (9.5,0) {\textbf{Logits}\\nếu t $\in$ span(w):\\+$\lambda$(p) cho token của w};
+\node[bx] (o) at (12.4,0) {\textbf{Token kế}};
+\draw[->,thick,Primary] (s) -- (a); \draw[->,thick,Primary] (s) -- (g);
+\draw[->,thick,Primary] (a) -- (q); \draw[->,thick,Primary] (q) -- (lg);
+\draw[->,thick,Primary] (q) -- (pos); \draw[->,thick,Primary] (pos) -- (lg);
+\draw[->,thick,Primary] (g) -- (lg); \draw[->,thick,Primary] (lg) -- (o);
+\end{tikzpicture}
+\vspace{0.3cm}
+
+\begin{columns}[T]
+\column{0.32\textwidth}
+\nbox[kbox]{\textbf{Vì sao chọn:} tách đúng 2 việc. Prompt nói \textbf{có} từ gì (Qwen giỏi, oracle 7.73). Boost có gate sửa lỗi \textbf{viết chính tả quen hơn} mà prompt không sửa được.}
+\column{0.32\textwidth}
+\nbox{\textbf{Khớp kế hoạch:} đây là ``mức 1'' đã chốt (chỉ cần logits + tokenizer). Trên Whisper, gate đã thắng prompt: 7.53 so với 9.69 \DO.}
+\column{0.32\textwidth}
+\yeu{\textbf{Rủi ro:} boost lặp từ (trên Whisper chèn lặp +2.02). Cần luật: \textbf{mỗi từ chỉ đẩy một lần} trong span, dừng khi đã viết xong. \YT}
+\end{columns}
+\src{Cây tiền tố + trừ lại điểm: LOGIC §3.2. Gate theo span: phần của mình.}
+\end{frame}
+
+\begin{frame}{Đề xuất 2 và 3: mới hơn hoặc trực tiếp hơn, nhưng rủi ro cao hơn}
+\begin{columns}[T]
+\column{0.49\textwidth}
+\nbox[block body alerted]{\textbf{Đề xuất 2. Gate attention tới chữ trong prompt} (cổng A + C) \YT\\[2pt]
+List nhỏ (vài chục từ, p $\geq$ $\theta$\textsubscript{thấp}) vào system prompt như bình thường. Mỗi bước decode: nếu đang nghe span của w thì \textbf{cộng thêm vào attention} từ token đang sinh tới các token của w trong prompt, trừ bớt cho từ khác. Ngoài span, list gần như ``tắt''.}
+\vspace{0.06cm}
+\nbox[kbox]{\textbf{Hợp với Qwen:} dùng đúng kênh Qwen đã học (đọc list để chép), chỉ điều khiển \textbf{lúc nào} được đọc. Không đổi vocab, không đổi trọng số.}
+\vspace{0.06cm}
+\yeu{Chưa có tiền lệ; độ nhạy theo lớp/head chưa biết.}
+\column{0.49\textwidth}
+\nbox[block body alerted]{\textbf{Đề xuất 3. Chèn ``ghi chú'' vào đúng chỗ trong chuỗi audio} (cổng B) \YT\\[2pt]
+Ngay sau các vector audio thuộc span của w (ví dụ vector 27--36), chèn vài embedding token của w kèm p; hoặc cộng một vector học được vào các vector đó. Train adapter nhỏ, Qwen frozen.}
+\vspace{0.06cm}
+\nbox[kbox]{\textbf{Hay ở chỗ:} vị trí đi vào \textbf{trực tiếp}, không cần đoán decoder đang nghe đâu.}
+\vspace{0.06cm}
+\yeu{Adapter gắn với embedding của Qwen \ra{} \bad{phá mục tiêu ``cắm mọi model''}. Hợp làm \textbf{trần tham khảo}.}
+\end{columns}
+\end{frame}
+
+\begin{frame}{So 3 đề xuất: chọn 1 làm chính, 2 làm ablation, 3 làm trần}
+\renewcommand{\arraystretch}{1.08}\footnotesize
+\begin{tabular}{L{4.0cm}C{3.0cm}C{2.8cm}C{2.8cm}}
+\toprule
+ & \textbf{1. Prompt + gate logits} & 2. Gate attention & 3. Chèn vào audio \\
+\midrule
+Cổng & A + D & A + C & B \\
+Train thêm? & \good{Không} & \good{Không} & \bad{Có (adapter)} \\
+Cắm model khác? & \good{Có (logits + tokenizer)} & Model mở & \bad{Mỗi model 1 adapter} \\
+Cần biết decoder nghe đâu? & Có & Có & \good{Không} \\
+Đã có bằng chứng? & \good{Có trên Whisper} & Chưa & Chưa \\
+Mới so với paper? & Thêm gate vào LOGIC & \good{Mới nhất} & Gần Spike-triggered \\
+\midrule
+\rowcolor{Accent!15} Vai trò & \textbf{Phương pháp chính} & Ablation / điểm mới phụ & Trần tham khảo \\
+\bottomrule
+\end{tabular}
+\vspace{0.12cm}
+
+\nghiala{Cả 1 và 2 phụ thuộc một câu hỏi chưa có số: \textbf{Qwen3-ASR có cho biết nó đang nghe giây nào không?} \ra{} bước 0 đo câu đó trước.}
+\end{frame}
+
+% ==================================================================
+\section{Đi tiếp}
+\begin{frame}{Ba bước tiếp theo, bước 0 không cần train}
+\begin{columns}[T]
+\column{0.32\textwidth}
+\nbox[qbox]{\textbf{Bước 0. Qwen có biết đang nghe giây nào?}\\[2pt]
+Teacher forcing transcript đúng. Mỗi token chữ: attention tới 130 vector audio, đổi sang giây.\\[2pt]
+So với MFA (\texttt{align.tsv}): sai số trung vị, \% trong span $\pm$0.2 s, theo từng lớp $\times$ head. So thêm ForcedAligner, G6a.}
+\column{0.32\textwidth}
+\nbox{\textbf{Bước 1. Trần của gate trên Qwen}\\[2pt]
+Từ đúng + span MFA (oracle hoàn toàn). Boost logits có gate, có và không có prompt.\\[2pt]
+So với prompt oracle (B-WER 7.73). Giống E1 trên Whisper.}
+\column{0.32\textwidth}
+\nbox{\textbf{Bước 2. Thay oracle bằng scorer}\\[2pt]
+(p, span) thật, N2000 và \texttt{missing\_N}. Mốc: prompt lọc p $\geq$ 0.5 (9.71), PTC-Bias (7.76, bản 0.6B), Hou25 top-50. Đếm riêng chèn sai, chèn lặp.}
+\end{columns}
+\vspace{0.12cm}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\nghiala{\textbf{Sau bước 0:} có head lệch $\leq$ 0.1 s \ra{} đề xuất 1 và 2 gần như miễn phí. Không có \ra{} dùng G6a cho đề xuất 1, bỏ đề xuất 2.}
+\column{0.48\textwidth}
+\yeu{\textbf{Cần:} 1 GPU và duyệt code trước khi viết. Mốc 0.1 s là đề xuất của mình, chưa chốt (G1 sẽ cho mốc thật).}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Nguồn và mức đã đọc}
+\renewcommand{\arraystretch}{1.08}\scriptsize
+\begin{tabular}{L{6.3cm}L{2.7cm}L{5.0cm}}
+\toprule
+Nguồn & Mức đọc & Dùng cho \\
+\midrule
+Code \texttt{qwen\_asr} 0.0.6, config.json Qwen3-ASR-1.7B, chat template HF & đọc trực tiếp & Trang 5--7 \\
+Qwen3-ASR Technical Report, arXiv 2601.21337 §2.1, §2.2, §3 & HTML, qua tóm tắt & Kiến trúc, train, ForcedAligner \\
+Huber \& Waibel, arXiv 2608.05759, Table I--III & \textbf{toàn văn PDF} & Qwen3-ASR nhạy nhiễu, nhạy thứ tự \\
+Qwen-Audio-3.0-ASR, arXiv 2609.07549 §3.4, §5.4 & đoạn hotword (PDF) & P0/P1, CTC lấy ứng viên \\
+LOGIC, arXiv 2601.15397 §3, Table 1, 2, 4 & HTML, qua tóm tắt & Cổng D \\
+DOA, arXiv 2605.31432 §2.1, §4 & HTML, qua tóm tắt & Vị trí decoder từ self-attention \\
+PTC-Bias, arXiv 2609.28727 & toàn văn (trước đó) & Cổng E, số Qwen3-ASR-0.6B \\
+CTC-assisted LLM-ASR 2411.06437; BR-ASR 2505.19179; Gradient alignment 2607.06831 & abstract & Cổng A; vị trí decoder cách 3 \\
+Hotword + RL 2512.21828; AVS 2510.12851; Steering 2606.11400 & kết quả tìm kiếm & Cổng F; cổng C \\
+\bottomrule
+\end{tabular}
+\vspace{0.2cm}
+
+\yeu{Khoảng 15 lượt tra trong một buổi. \textbf{Chưa đủ để khẳng định ``chưa ai làm''}: phải tra tiếp trước khi viết paper.}
+\end{frame}
+
+\end{document}

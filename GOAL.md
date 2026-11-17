@@ -131,4 +131,6 @@ Cách kể chuyện: Hou25 vứt thời gian ở bước pool; ta chứng minh t
    - Sáng 15/11: scorer hai nhánh (khớp tự do + khớp đúng thứ tự) có dạy vị trí. Một model 89.3 Sạch@1; cộng điểm hai model 90.8. Vào Whisper không prompt: WER 3.14–3.22, B-WER 7.53–7.65 (Hou25 3.39 / 9.69). Kênh prompt bão hoà.
    - Bước tiếp theo: bảng 1b trong báo cáo (chấm bản train có dạy vị trí; ghép pmaxsim + pmono; tranh nhau tại chỗ + "không từ nào" được train; nhóm từ ASR nghe sai; 960h; đủ N100–2000).
 
+10. **(17/11) Bàn giao: `scorer/analysis/TIEN-DO-1117.md`.** Số chính dùng bản 1 model `pdual2_dl`: Recall@1 89.3, precision lọc list 55% → 86% (cùng ngưỡng), B-WER 9.69 → 7.65. Việc tiếp: (1) "không có từ nào", (2) từ Whisper nghe sai, (3) 960 h, (4) so công bằng, (5) Qwen3-ASR, (6) chỉnh logit khác.
+
 Hạn Interspeech 2027: 09/02/2027.
