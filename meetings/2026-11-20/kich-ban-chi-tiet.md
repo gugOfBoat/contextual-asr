@@ -20,7 +20,7 @@
 
 1. Cứ đến slide phát hiện là đọc theo khung: **ô vàng Câu hỏi → Nghĩ → Thử → Thấy → ô xanh Nghĩa là**. Đọc ô vàng trước, ô xanh lá sau cùng.
 2. Đã nói "thắng Hou25" thì phải kèm chữ **B-WER** (lỗi trên từ hiếm).
-3. Ý vệt chéo là của **anh Hoàng**. Nhắc tên anh ở trang 5 và trang 12.
+3. Ý vệt chéo là của **anh Hoàng**. Nhắc tên anh ở trang 8 và trang 11.
 
 ---
 
@@ -34,69 +34,83 @@
 - Đưa vào Whisper, không cần prompt: **B-WER 9.69 → 7.53**, có ý nghĩa thống kê. WER tổng **mới ngang**.
 - Dòng cuối: Hou25 ở đây là bản nhóm tái hiện, train 2 epoch.
 
-**Trang 3 – Mạch trình bày.** "Em đi 6 phần. Mỗi phát hiện có cùng một khung: câu hỏi, nghĩ gì, thử gì, thấy gì, nghĩa là gì. Màu xanh là tốt, màu đỏ là xấu. Khoảng trong ngoặc vuông là khoảng tin cậy 95%; khoảng nào không chứa 0 là có ý nghĩa."
+**Trang 3 – Mạch trình bày.** "Em đi 6 phần: đặt câu hỏi, rồi **vì sao lại là vị trí**, rồi scorer, Whisper, tổng hợp, đi tiếp. Mỗi phát hiện có cùng một khung: câu hỏi, nghĩ gì, thử gì, thấy gì, nghĩa là gì. Màu xanh là tốt, màu đỏ là xấu. Khoảng trong ngoặc vuông là khoảng tin cậy 95%; khoảng nào không chứa 0 là có ý nghĩa."
 
-## Bài toán (trang 4–7, ~4 phút)
+## Phần 0: Đặt câu hỏi (trang 4–7, ~4 phút)
 
-**Trang 4 – Thư ký, danh bạ, trợ lý.**
-- ASR là thư ký: chép tốt từ thường, nhưng hay sai tên riêng ("Pileser" thành "pillar sir").
-- Bias list là danh bạ 2000 từ. Mỗi câu chỉ có 1–3 từ thật sự được nói.
-- Scorer là trợ lý: nghe audio trước rồi chọn vài từ đáng tin.
-- Không đưa cả danh bạ cho thư ký được, vì đưa 2000 từ thì thư ký sẽ "nghe ra" những từ không hề có.
+Thầy đã biết bài toán và Hou25 từ các buổi trước, nên phần này đi nhanh.
 
-**Trang 5 – Hou25 và chỗ làm mất vị trí.** Chỉ vào hai ô đỏ trong hình:
-1. Lấy trung bình cả bản đồ, nên vị trí của từ bị vứt đi.
-2. Đưa top-50 vào prompt: 50 từ mà không biết từ nào ở đâu, và khoảng 48 trong số đó là nhiễu.
+**Trang 4 – Từ điển tên gọi.** Không đọc hết bảng. "Đây là tên các hệ em sẽ nhắc. Hệ đề xuất là dòng tô vàng **pdual2_dl**: một model, hai nhánh, có dạy vị trí. Cách đưa vào ASR được đề xuất là **nhắc đúng lúc**."
 
-"Anh Hoàng thấy bản đồ ở bước 3 có một **vệt chéo** đúng chỗ từ được nói. Vị trí có sẵn ở đó, nhưng bị bỏ đi."
-
-**Trang 6 – Ý tưởng.** Một câu: "Trợ lý trả ra (từ, độ tin, vị trí) chứ không chỉ một điểm." Chỉ vào hình trục thời gian: pileser nằm ở giây 3.0–3.6, nên chỉ nhắc thư ký ở giây 3.2; ở giây 1 và giây 5 thì im lặng. Vị trí mang lại hai lợi: ở scorer thì loại được nhiễu, ở ASR thì nhắc đúng lúc.
-
-**Trang 7 – Từ điển tên gọi.** Không cần đọc hết bảng. "Đây là tên các hệ em sẽ nhắc. Hệ đề xuất là dòng tô vàng **pdual2_dl**: một model, hai nhánh, có dạy vị trí. Cách đưa vào ASR được đề xuất là **nhắc đúng lúc**."
-
-## Đặt câu hỏi (trang 8–9, ~2 phút)
-
-**Trang 8 – 3 quyết định, luật viết trước.**
+**Trang 5 – 3 quyết định, luật viết trước.**
 - D1 chọn nền cho scorer, D2 hỏi Whisper có cần vị trí không, D3 chọn cách nhắc.
 - Nhấn mạnh: "Em viết luật trước khi chạy, để không thấy kết quả rồi mới chọn luật. Ví dụ ở D1: Hou25 sửa xong phải đạt ≥ 85.7 thì mới giữ."
-- Bảng bên phải là lịch chạy: 2 ngày, phần lớn chạy trên GPU.
+- Bảng bên phải là lịch chạy.
 
-**Trang 9 – Thước đo Sạch@1.**
-- Ví dụ trắc nghiệm: "cho khoanh 50 đáp án thì ai cũng đúng 95–98%".
-- Sạch@1 hỏi từ đúng có đứng trên mọi từ nhiễu không. Từ đúng khác đứng trên thì **không bị tính phạt**.
+**Trang 6 – Thước đo Sạch@1.**
+- "Lọt top-50 giống chấm trắc nghiệm mà cho khoanh 50 đáp án: hệ nào cũng 95–98%."
+- Sạch@1 hỏi từ đúng có đứng trên mọi từ nhiễu không. Từ đúng khác đứng trên thì **không bị phạt**.
 
-## Scorer: 6 phát hiện (trang 10–17, ~9 phút)
+**Trang 7 – Đo lại.** Lọt top-50 thì Hou25 và âm vị cách nhau 3 điểm, Sạch@1 thì cách nhau **15**. "Cứ 4 từ đúng thì Hou25 để hơn 1 từ bị nhiễu vượt mặt. Câu hỏi tiếp theo: vì sao?"
 
-**Trang 10 – Đo lại.** Hai thước cho hai khoảng cách khác nhau: lọt top-50 thì cách nhau 3 điểm, Sạch@1 thì cách nhau 15. "Cứ 4 từ đúng thì Hou25 để hơn 1 từ bị nhiễu vượt mặt."
+## Phần 1: Vì sao vị trí (trang 8–12, ~6 phút)
 
-**Trang 11 – Phát hiện 1.** Trang này ngược với điều nhóm tin trước đây.
-- Nhóm từng nghĩ từ đúng bị pha loãng. Thực tế là **từ nhiễu nổi lên**: 96% số lần từ đúng bị vượt là do một từ khác hẳn, không phải từ nghe giống.
-- Câu càng dài càng báo nhầm nhiều: từ 1.4 lên 12.4 từ mỗi câu (đường xám trong hình).
+Phần này trình bày như một mục **Phân tích** trong paper: nói kết luận trước, rồi đưa bằng chứng.
+
+**Trang 8 – Kết luận phần 1.** Đọc ô vàng:
+> "Hou25 sai không phải vì thiếu tín hiệu, mà vì cách gộp. Tín hiệu đúng là một vệt có thứ tự, và nó có sẵn. Trung bình bỏ qua thứ tự, nên ở câu dài nhiễu được đẩy lên. Đọc theo vệt và train lại thì sửa được phần lớn, và có thêm vị trí."
+
+Sau đó chỉ vào bảng 4 dòng: "4 kết luận nhỏ, mỗi cái một thí nghiệm, em đi qua từng cái."
+- Nói rõ: "mảng rời rạc cộng dồn" là em diễn giải, chưa đo trực tiếp.
+- Ghi công: vệt chéo là phát hiện của **anh Hoàng**.
+
+**Trang 9 – 1a. Lỗi ở đâu** (kết luận nhỏ 1).
+- Nhóm từng nghĩ từ đúng bị pha loãng. Thực tế là **từ nhiễu nổi lên**: 96% số lần từ đúng bị vượt là do một từ khác hẳn.
+- Câu càng dài càng báo nhầm nhiều: 1.4 lên 12.4 từ mỗi câu (đường xám).
 - Ghi chú dưới hình: tiện tay sửa được lỗi encoder chỉ nhìn 30 s đầu, bằng cửa sổ trượt.
 
-**Trang 12 – Phát hiện 2, giả thuyết của anh Hoàng.**
-- Giữ nguyên Hou25, chỉ đổi bước gộp thành "đọc vệt chéo", rồi train lại: **+9.5 Sạch@1**, báo nhầm ở câu dài giảm 3 lần, định vị trúng 99%.
-- Dòng "ô cao nhất" là đối chứng và không tăng. Vậy thứ có ích là **hình dạng vệt**.
-- Nếu thầy hỏi vì sao trang 2 ghi 73.3 còn trang 10 ghi 72.6: 73.3 là bản Hou25 train **trong cùng lượt** với bản vệt chéo, để so cho công bằng; 72.6 là bản dùng cho các bảng còn lại.
+**Trang 10 – 1b. Vì sao** (ví dụ 8×3 để thấy cơ chế).
+- Chỉ vào hai lưới: từ đúng có **3 ô nối chéo**, từ nhiễu có **4 ô rải rác**.
+- Đọc bảng từ trên xuống:
+  - **Trung bình:** chỉ đếm tổng độ sáng, nên nhiễu thắng (0.83 so với 0.63).
+  - **Ô cao nhất:** chỉ cần chỗ sáng, nên hoà.
+  - **Vệt chéo:** đòi các ô nối đúng thứ tự, nên từ đúng thắng (5.0 so với 1.67).
+- Ô xanh: điểm bắt đầu t0 = 3 **chính là vị trí của từ**.
+- Nói rõ: số trong ví dụ là tự đặt, nhưng cách tính giống hệt code.
 
-**Trang 13 – Phát hiện 3, chốt D1.**
+**Trang 11 – 1c. Sửa** (kết luận nhỏ 2–4).
+- Bảng: 3 bản Hou25 train chung một lượt, chỉ khác bước gộp. Vệt chéo **+9.5** [+7.9; +11.2], báo nhầm ở câu dài 6.1 xuống 1.9, định vị 99%.
+- Đối chứng "ô cao nhất" không tăng (73.8). Vậy thứ có ích là **thứ tự**, khớp với ví dụ ở trang 10.
+- Ô đỏ: không train lại thì hỏng (A1: R#10 −3.6). Model phải được dạy cho cách đọc mới.
+- Nếu thầy hỏi vì sao 73.3 ở đây mà 72.6 ở trang 7: 73.3 là bản train **cùng lượt** với bản vệt chéo, để so cho công bằng; 72.6 là bản dùng cho các bảng khác.
+
+**Trang 12 – 1d. Hệ quả.** Nối sang phần sau:
+- Hou25 + vệt chỉ đạt 82.9, chưa tới 85.7, nên chuyển sang **nền âm vị**. Hou25 + vệt giữ lại làm đối thủ mạnh.
+- "Thứ tự" trở thành nhánh khớp đúng thứ tự trong scorer âm vị.
+- "Vị trí" dùng để lọc list và nhắc Whisper đúng lúc.
+- Đọc hình bên phải từ trên xuống: chuỗi 4 bước, cũng chính là phần còn lại của bài.
+- Câu cuối: "Nếu viết paper thì phần này là mục Phân tích, đặt trước Method. Em không claim vệt chéo là ý mới, vì nó gần với dò từ khoá bằng audio mẫu; em cần tra thêm."
+
+## Phần 2: Scorer, 4 phát hiện (trang 13–17, ~6 phút)
+
+**Trang 13 – Phát hiện 1, chốt D1.**
 - Hou25 sửa đạt 82.9, chưa tới mức 85.7, nên theo luật đặt trước thì **chọn nền âm vị**.
 - Với từ nghe giống, âm vị vẫn hơn giọng máy 9.7 điểm.
 - Âm vị nhanh hơn khoảng 200 lần và không cần TTS.
 - Hou25 vệt chéo vẫn có ích: dùng làm đối thủ mạnh trong paper.
 
-**Trang 14 – Phát hiện 4.**
+**Trang 14 – Phát hiện 2.**
 - Hai kiểu khớp bù cho nhau: khớp tự do thì ít sót, khớp đúng thứ tự thì ít nhiễu và cho biên chuẩn.
 - Cộng hai model cùng kiểu được +1.1; cộng hai kiểu khác nhau được +2.6. Vậy 1.5 điểm là nhờ khác kiểu.
 - Mức lợi đó ngang với train thêm 9.6 lần dữ liệu, nên em dồn thành **một model hai nhánh**.
 
-**Trang 15 – Phát hiện 5, scorer đề xuất.**
+**Trang 15 – Phát hiện 3, scorer đề xuất.**
 - Hình bên trái: hai nhánh có bản đồ riêng, đầu ra là (từ, p, đầu, cuối).
 - Dạy vị trí giúp nhánh đúng thứ tự nhiều nhất (+2.5).
 - Dòng vàng: **89.3**. Nhóm từ Whisper nghe sai tăng từ 45.9 (Hou25) lên 70.9.
 - Nói thật: bản cộng hai model vẫn hơn 1.5 điểm.
 
-**Trang 16 – Phát hiện 6, tranh nhau.**
+**Trang 16 – Phát hiện 4, tranh nhau.**
 - Luật: hai từ cùng chỗ thì chỉ giữ từ điểm cao hơn. Ví dụ pileser với pillar.
 - Bảng: Hou25 top-50 có precision 3–4%; scorer đề xuất sau tranh nhau đạt **91%**, mất khoảng 1–2 điểm từ đúng.
 - Câu chốt: bài "tìm 1 trong 2000" thành nhiều bài nhỏ "tìm 1 trong vài từ cùng chỗ".
@@ -162,13 +176,16 @@ Câu chốt: "Scorer chỉ có lời khi ra (từ, p, vị trí) và được d�
 
 | Câu hỏi | Trả lời ngắn | Mở trang |
 |---|---|---|
-| Sạch@1 khác Recall thế nào? | Chỉ đếm từ **nhiễu** đứng trên, nên câu nhiều từ hiếm không bị phạt oan | 9, 27 |
-| Sao không so top-50 như paper? | Có báo top-50 (95.4 / 98.4), nhưng mình chỉ đưa ~2 từ cho ASR nên phải đo ở đầu bảng | 10 |
-| 73.3 và 72.6 khác gì nhau? | 73.3 là Hou25 train cùng lượt với bản vệt chéo (so công bằng); 72.6 là bản dùng cho các bảng khác | 12 |
+| Sạch@1 khác Recall thế nào? | Chỉ đếm từ **nhiễu** đứng trên, nên câu nhiều từ hiếm không bị phạt oan | 6, 27 |
+| Sao không so top-50 như paper? | Có báo top-50 (95.4 / 98.4), nhưng mình chỉ đưa ~2 từ cho ASR nên phải đo ở đầu bảng | 7 |
+| 73.3 và 72.6 khác gì nhau? | 73.3 là Hou25 train cùng lượt với bản vệt chéo (so công bằng); 72.6 là bản dùng cho các bảng khác | 11 |
+| Vì sao tác giả Hou25 lấy trung bình? | Paper không nêu lý do (theo ghi chép của nhóm). Em đoán: bản đồ có kích thước thay đổi, mục tiêu của họ chỉ là top-50 cho prompt nên không cần vị trí, và train chỉ cần nhãn có/không | 10 |
+| Vệt chéo có phải ý mới không? | Không claim. Gần với dò từ khoá bằng audio mẫu (DTW); cái mới là chỉ ra cách gộp là nguồn lỗi của scorer, và dùng vị trí cho ASR | 12 |
+| Vệt dốc 1 giả định người nói cùng tốc độ giọng máy? | Đúng là giả định vậy. CNN nhìn được vùng 9×9 nên bù được phần nào, nhưng chưa đo riêng | 10 |
 | Từ nghe giống thì sao? | List nghe giống: âm vị 64.7 so với giọng máy 51.4; hai nhánh đạt 67.7 | 13, 15 |
 | Vì sao không dùng luôn bản cộng điểm 90.8? | Tốn 2 model; việc 3 là cho một model đuổi kịp | 15, 25 |
 | Lấy giây đang nghe kiểu gì? | Alignment heads của Whisper, như Simul-Whisper (2406.10052 §2.1) | 18 |
-| Tham số chọn ở đâu? | dev-other 400 câu, không chọn trên test | 8, 18 |
+| Tham số chọn ở đâu? | dev-other 400 câu, không chọn trên test | 5, 18 |
 | WER tổng có thắng không? | Chưa: −0.25 [−0.47; +0.03]. Thêm prompt thì thắng có ý nghĩa nhưng chèn sai gấp đôi | 19 |
 | List nhỏ hơn thì sao? | N100: Sạch@1 98.2, precision 97.8, WER 2.96, B-WER 7.14 | 21 |
 | Audio không có từ nào trong list? | Chưa ổn: WER 4.49 so với 4.25. Đây là việc số 1 | 24, 25 |
@@ -179,7 +196,7 @@ Câu chốt: "Scorer chỉ có lời khi ra (từ, p, vị trí) và được d�
 
 ## Đường tắt 12 phút (khi bị giục)
 
-Trang **2** (tóm tắt) → **5** (Hou25 mất gì) → **10** (đo lại) → **12** (vệt chéo của anh Hoàng) → **15** (scorer đề xuất) → **16** (tranh nhau) → **19** (bảng Whisper) → **20** (3 phát hiện ASR) → **24** (chỗ yếu) → **26** (3 câu hỏi).
+Trang **2** (tóm tắt) → **7** (đo lại) → **8** (kết luận phần 1) → **10** (ví dụ vệt chéo) → **11** (train lại +9.5) → **15** (scorer đề xuất) → **16** (tranh nhau) → **19** (bảng Whisper) → **20** (3 phát hiện ASR) → **24** (chỗ yếu) → **26** (3 câu hỏi).
 
 ## Sau buổi họp
 
