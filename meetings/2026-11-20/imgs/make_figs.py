@@ -13,7 +13,7 @@ R = D.parents[2]
 PRI, ACC, GRAY, RED, GREEN = "#111B88", "#F2A900", "#8A94A6", "#A23B3B", "#26734D"
 plt.rcParams.update({"font.size": 11, "axes.spines.top": False, "axes.spines.right": False, "font.family": "DejaVu Sans"})
 
-# 1. Sạch@K (test-other, N2000) — REPORT mục 3, 5, 7c
+# 1. Recall@K (test-other, N2000) — REPORT mục 3, 5, 7c
 sysn = ["Hou25\n(tái hiện)", "Hou25\nđọc vệt chéo", "pmaxsim\n(âm vị)", "Hai nhánh\n+ dạy vị trí"]
 vals = {1: [72.6, 82.9, 87.5, 89.3], 5: [87.1, 95.3, 96.2, 97.5], 10: [90.9, 96.7, 97.4, 98.6]}
 cols = [GRAY, "#5B6BC0", PRI, ACC]
@@ -23,7 +23,7 @@ for i, (k, v) in enumerate(vals.items()):
     for j, x in enumerate(v):
         b = ax.bar(i + (j - 1.5) * w, x, w * 0.92, color=cols[j], label=sysn[j].replace("\n", " ") if i == 0 else None)
         ax.text(i + (j - 1.5) * w, x + 0.6, f"{x:.1f}", ha="center", va="bottom", fontsize=8.5)
-ax.set_xticks(range(3)); ax.set_xticklabels(["Sạch@1", "Sạch@5", "Sạch@10"])
+ax.set_xticks(range(3)); ax.set_xticklabels(["Recall@1", "Recall@5", "Recall@10"])
 ax.set_ylim(65, 102); ax.set_ylabel("% từ đúng")
 ax.legend(ncol=4, fontsize=8.5, frameon=False, loc="upper center", bbox_to_anchor=(0.5, 1.16))
 fig.tight_layout(); fig.savefig(D / "sach_k.pdf"); plt.close(fig)
@@ -97,7 +97,7 @@ fig.tight_layout(rect=(0, 0.03, 1, 1)); fig.savefig(D / "tranh_nhau.pdf"); plt.c
 N = [100, 500, 1000, 2000]
 s1 = [98.2, 94.1, 92.6, 89.0]; prec = [97.8, 89.2, 81.4, 69.9]; bw = [7.14, 7.37, 7.47, 7.65]
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(8.6, 3.0))
-a1.plot(N, s1, "o-", color=ACC, lw=2.2, label="Sạch@1"); a1.plot(N, prec, "s--", color=PRI, lw=2, label="precision (p ≥ 0.3)")
+a1.plot(N, s1, "o-", color=ACC, lw=2.2, label="Recall@1"); a1.plot(N, prec, "s--", color=PRI, lw=2, label="precision (p ≥ 0.3)")
 a1.set_xscale("log"); a1.set_xticks(N); a1.set_xticklabels(N); a1.set_ylabel("%"); a1.set_xlabel("số từ trong list")
 a1.legend(fontsize=9, frameon=False); a1.set_title("Scorer", fontsize=10)
 a2.plot(N, bw, "o-", color=ACC, lw=2.2, label="scorer + đẩy có vị trí")
