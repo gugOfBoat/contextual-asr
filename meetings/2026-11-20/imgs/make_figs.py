@@ -41,6 +41,17 @@ ax.set_ylabel("từ nhiễu có p ≥ 0.5 / câu"); ax.set_xlim(-0.2, 3.5)
 ax.legend(fontsize=9, frameon=False)
 fig.tight_layout(); fig.savefig(D / "bao_nham.pdf"); plt.close(fig)
 
+# 2b. Như trên nhưng chỉ Hou25 (cho phần 1, khi chưa giới thiệu các scorer khác)
+v = fa["Hou25 (tái hiện)"][0]
+fig, ax = plt.subplots(figsize=(6.4, 3.3))
+ax.bar(range(4), v, 0.6, color=GRAY)
+for i, x in enumerate(v):
+    ax.text(i, x + 0.25, f"{x}", ha="center", fontsize=11, fontweight="bold")
+ax.set_xticks(range(4)); ax.set_xticklabels(bk, fontsize=9)
+ax.set_ylabel("từ nhiễu có p ≥ 0.5 / câu"); ax.set_ylim(0, 14.5)
+ax.set_title("Hou25 (tái hiện): câu càng dài, càng nhiều từ nhiễu bị chấm cao", fontsize=10)
+fig.tight_layout(); fig.savefig(D / "bao_nham_hou25.pdf"); plt.close(fig)
+
 # 3. Tranh nhau tại chỗ: 2 câu thật (pdual2_dl, test-other, p ≥ 0.3)
 O = R / "scorer/runs/2026-11-14/out/pdual2_dl/test-other"
 prob = json.load(open(O / "prob_N2000.json", encoding="utf-8"))

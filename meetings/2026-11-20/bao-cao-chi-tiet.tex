@@ -232,67 +232,87 @@ cách nhau & 3 & \textbf{15} \\
 1 & Lỗi do \textbf{nhiễu nổi lên}, không phải từ đúng bị chìm & báo nhầm 1.4 \ra{} \bad{12.4} từ/câu theo độ dài; 96\% lần bị vượt là từ khác hẳn & E1, trang sau \\
 2 & Vệt có sẵn, nhưng \textbf{đổi cách đọc lúc chấm thì không đủ} & S1 định vị trúng 92\%; không train lại thì R\#10 \bad{$-$3.6} & A1 (02--04/11) \\
 3 & \textbf{Train lại} với cách đọc vệt thì sửa được & Sạch@1 73.3 \ra{} \good{82.9}; báo nhầm câu dài 6.1 \ra{} 1.9; định vị 99\% & E2 (14/11) \\
-4 & Thứ có ích là \textbf{thứ tự}, không phải ``chỗ sáng'' & đối chứng ``ô cao nhất'': 73.8, gần như không tăng & E2 \\
+4 & Với Hou25, thứ có ích là \textbf{thứ tự}, không phải ``chỗ sáng'' & đối chứng ``ô cao nhất'': 73.8, gần như không tăng & E2 \\
 \bottomrule
 \end{tabular}
 \src{test-other N2000; Hou25 = bản nhóm tái hiện. ``Mảng rời rạc cộng dồn'' = nhóm diễn giải, chưa đo. Vệt chéo: Hoàng (F10, F14).}
 \end{frame}
 
 \begin{frame}{1a. Lỗi ở đâu: từ nhiễu nổi lên ở câu dài, không phải từ đúng bị chìm}
-\cauhoi{Khi từ đúng bị vượt, ai vượt nó, và vì sao?}
+\cauhoi{Khi từ đúng không đứng đầu, ai đã vượt nó?}
 \begin{columns}[T]
 \column{0.53\textwidth}
-\centering\includegraphics[width=0.92\linewidth]{imgs/bao_nham.pdf}\par\vspace{0.05cm}
-\raggedright{\scriptsize \textbf{Lỗi nhặt được trên đường:} encoder Whisper chỉ nhìn 30 s đầu \ra{} từ sau giây 30 bị sót ở mọi hệ (5--6/6). Sửa bằng cửa sổ trượt: \good{0/6}.}
+\centering\includegraphics[width=0.95\linewidth]{imgs/bao_nham_hou25.pdf}\par\vspace{0.05cm}
+\raggedright{\scriptsize Mỗi cột = một nhóm câu theo độ dài. Cao = số từ \textbf{nhiễu} được chấm $p \geq 0.5$ mỗi câu.}
 \column{0.45\textwidth}
-\step{Nghĩ:}{trước đây nhóm tin ``lấy trung bình làm \textbf{từ đúng} bị pha loãng''.}
-\step{Thử:}{xem kỹ mọi lần từ đúng bị vượt.}
+\step{Nghĩ:}{trước đây nhóm tin ``lấy trung bình làm \textbf{từ đúng} bị chấm thấp'' (pha loãng).}
+\step{Thử:}{xem mọi lần từ đúng bị vượt: ai vượt, câu dài hay ngắn.}
 \step{Thấy:}{\textbullet\ 96\% số lần, từ vượt lên là từ \bad{khác hẳn}, không phải từ nghe giống.\\
-\textbullet\ 76\% từ báo nhầm \bad{không giống đoạn âm nào} trong câu.\\
-\textbullet\ Câu càng dài càng báo nhầm: 1.4 \ra{} 12.4 từ/câu (đường xám).}
-\nghiala{lỗi nằm ở phía \textbf{nhiễu}: câu dài cho nhiễu nhiều cơ hội ``trông giống''. \bad{Ngược} giả thuyết cũ.}
+\textbullet\ 76\% từ báo nhầm \bad{không giống âm nào} trong câu.\\
+\textbullet\ Câu càng dài càng nhiều báo nhầm: 1.4 \ra{} \bad{12.4} từ/câu.}
+\nghiala{lỗi ở phía \textbf{từ nhiễu được chấm cao}, nhất là câu dài. \bad{Ngược} giả thuyết cũ.}
 \end{columns}
-\src{test-other N2000; SMALL\_R N2--N4; TAIL mục 2}
+\src{test-other N2000; Hou25 tái hiện (Sạch@1 72.6); SMALL\_R N2--N4. Phụ: encoder chỉ nhìn 30 s đầu (đã sửa bằng cửa sổ trượt).}
 \end{frame}
 
-\begin{frame}{1b. Vì sao: lấy trung bình bỏ qua thứ tự (ví dụ nhỏ, câu 8 khung, từ 3 khung)}
+\begin{frame}{1b. Bản đồ giống nhau của Hou25: đọc thế nào (ví dụ nhỏ)}
 \begin{columns}[T]
-\column{0.40\textwidth}
+\column{0.47\textwidth}
 \centering
-\begin{tikzpicture}[font=\tiny]
-\def\cs{0.40}
-\foreach \gx/\ttl in {0/{từ đúng\\``pileser''},2.2/{từ nhiễu\\``pillar''}}{
-  \node[font=\scriptsize\bfseries,align=center] at (\gx+1.5*\cs,0.70) {\ttl};
-  \foreach \cc in {0,1,2}{\node[text=TextGray] at (\gx+\cc*\cs+0.5*\cs,0.18) {j\cc};}
+\begin{tikzpicture}[font=\scriptsize,>={Stealth}]
+\def\cs{0.42}
+\foreach \gx/\ttl in {0/{từ ĐÚNG ``pileser''\\(có được nói)},2.6/{từ NHIỄU ``pillar''\\(không được nói)}}{
+  \node[font=\scriptsize\bfseries,align=center] at (\gx+1.5*\cs,0.80) {\ttl};
+  \foreach \cc in {0,1,2}{\node[text=TextGray,font=\tiny] at (\gx+\cc*\cs+0.5*\cs,0.20) {\cc};}
   \foreach \rr in {0,...,7}{\foreach \cc in {0,1,2}{\draw[gray!45] (\gx+\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs);}}
 }
-\foreach \rr in {0,...,7}{\node[text=TextGray] at (-0.22,-\rr*\cs-0.5*\cs) {t\rr};}
+\foreach \rr in {0,...,7}{\node[text=TextGray,font=\tiny] at (-0.2,-\rr*\cs-0.5*\cs) {\rr};}
 \foreach \rr/\cc in {3/0,4/1,5/2}{\fill[GoodGreen!55] (\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs); \node at (\cc*\cs+0.5*\cs,-\rr*\cs-0.5*\cs) {5};}
 \draw[GoodGreen,very thick,dashed] (0,-3*\cs) -- (3*\cs,-6*\cs);
-\foreach \rr/\cc in {1/2,2/0,5/0,7/1}{\fill[RiskRed!45] (2.2+\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs); \node at (2.2+\cc*\cs+0.5*\cs,-\rr*\cs-0.5*\cs) {5};}
-\node[text=GoodGreen,align=left,anchor=west] at (-0.1,-3.55) {3 ô \textbf{nối chéo}};
-\node[text=RiskRed,align=left,anchor=west] at (2.1,-3.55) {4 ô \textbf{rải rác}};
-\end{tikzpicture}\par\vspace{0.1cm}
-{\tiny\color{TextGray}Mỗi ô = điểm sau CNN (ô trống = 0). Số tự đặt cho dễ tính; cách gộp giống hệt code \texttt{Hou25(pool=\ldots)}.}
-\column{0.58\textwidth}
-\renewcommand{\arraystretch}{1.25}\scriptsize
-\begin{tabular}{L{2.1cm}L{2.0cm}ccL{1.3cm}}
-\toprule
-Cách gộp & Đòi hỏi & đúng & nhiễu & \\
-\midrule
-\textcircled{\tiny 1} trung bình (Hou25) & không gì & 0.63 & 0.83 & \bad{nhiễu thắng} \\
-\textcircled{\tiny 2} ô cao nhất & chỗ sáng & 1.67 & 1.67 & hoà \\
-\rowcolor{Accent!15}\textcircled{\tiny 3} \textbf{vệt chéo} & chỗ sáng \textbf{nối đúng thứ tự} & \textbf{5.0} & 1.67 & \good{đúng thắng} \\
-\bottomrule
-\end{tabular}
-{\tiny Trung bình: đúng 15/24, nhiễu 20/24. Ô cao nhất: lấy 3 hàng sáng nhất, mỗi hàng 5/3.}\par\vspace{0.12cm}
-
-\nbox{\textbf{Vệt chéo tính thế nào:} thử mọi điểm bắt đầu $t_0$, cộng 3 ô $(t_0,j0)+(t_0{+}1,j1)+(t_0{+}2,j2)$, chia 3, lấy $t_0$ lớn nhất.\\
-Từ đúng: $t_0 = 3$ \ra{} 5+5+5. Nhiễu: tốt nhất 5+0+0.\\
-\textbf{Thưởng thêm:} $t_0 = 3$ \hi{chính là vị trí của từ} (khung 3--5).}
-\vspace{0.08cm}
-\nghiala{trung bình chỉ đếm \textbf{tổng độ sáng}. Câu càng dài càng nhiều ô sáng tình cờ \ra{} nhiễu thắng. Phải đòi \textbf{thứ tự}.}
+\foreach \rr/\cc in {1/2,2/0,5/0,7/1}{\fill[RiskRed!45] (2.6+\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs); \node at (2.6+\cc*\cs+0.5*\cs,-\rr*\cs-0.5*\cs) {5};}
+\node[text=GoodGreen,anchor=north] at (1.5*\cs,-8*\cs-0.08) {3 ô \textbf{nối chéo}};
+\node[text=RiskRed,anchor=north] at (2.6+1.5*\cs,-8*\cs-0.08) {4 ô \textbf{rải rác}};
+\node[text=TextGray,font=\tiny,rotate=90] at (-0.5,-4*\cs) {khung của \textbf{câu} (thời gian) \ra};
+\end{tikzpicture}
+\column{0.51\textwidth}
+\nbox{\textbf{Mỗi từ trong list có một bản đồ.} Hàng = thời gian trong \textbf{câu} (8 khung); cột = thời gian trong \textbf{từ} đọc bằng giọng máy (3 khung). Ô có số 5 = đoạn đó của câu \textbf{giống} đoạn đó của từ; ô trống = 0.}
+\vspace{0.1cm}
+\nbox{\good{Từ được nói} thì ô sáng \textbf{nối thành vệt chéo}: đầu từ giống khung 3, giữa từ giống khung 4, cuối từ giống khung 5.\\[2pt]
+\bad{Từ không được nói} thì vẫn có thể có ô sáng \textbf{tình cờ}, nhưng chúng \textbf{rải rác}, không nối nhau.}
+\vspace{0.1cm}
+\nbox[block body alerted]{\textbf{Vấn đề:} để xếp hạng các từ, phải gộp 24 ô thành \textbf{1 điểm}. Gộp thế nào? \ra{} trang sau so 3 cách.}
 \end{columns}
+\src{Số tự đặt (câu thật $\sim$1000 khung, từ $\sim$25 khung). Ô = điểm sau CNN của Hou25.}
+\end{frame}
+
+\begin{frame}{1b (tiếp). Ba cách gộp 24 ô thành 1 điểm, tính trên hai bản đồ ở trang trước}
+\begin{columns}[T]
+\column{0.32\textwidth}
+\nbox[rbox]{\textbf{\textcircled{\scriptsize 1} Trung bình} (Hou25 gốc)\\
+\textit{Cộng 24 ô rồi chia 24.}\\[2pt]
+Đúng: 15/24 = \textbf{0.63}\\
+Nhiễu: 20/24 = \textbf{0.83}\\
+\ra{} \bad{nhiễu thắng}\\[1pt]
+{\scriptsize Chỉ đếm \textbf{tổng độ sáng}; nhiễu có 4 ô sáng, nhiều hơn 3.}}
+\column{0.32\textwidth}
+\nbox{\textbf{\textcircled{\scriptsize 2} Ô cao nhất} (đối chứng)\\
+\textit{Giữ 3 hàng sáng nhất, lấy trung bình.}\\[2pt]
+Đúng: hàng 3, 4, 5 \ra{} \textbf{1.67}\\
+Nhiễu: hàng 1, 2, 5 \ra{} \textbf{1.67}\\
+\ra{} \textbf{hoà}\\[1pt]
+{\scriptsize Nhìn \textbf{chỗ sáng}, không cần chúng nối nhau.}}
+\column{0.32\textwidth}
+\nbox[kbox]{\textbf{\textcircled{\scriptsize 3} Vệt chéo} (ý của Hoàng)\\
+\textit{Đi dọc đường chéo 3 ô, thử mọi chỗ bắt đầu, lấy đường tốt nhất.}\\[2pt]
+Đúng: từ hàng 3 \ra{} (5+5+5)/3 = \textbf{5.0}\\
+Nhiễu: tốt nhất (5+0+0)/3 = \textbf{1.67}\\
+\ra{} \good{từ đúng thắng}\\[1pt]
+{\scriptsize Bắt ô sáng \textbf{nối nhau đúng thứ tự}.}}
+\end{columns}
+\vspace{0.15cm}
+{\footnotesize\textbf{Thưởng thêm của \textcircled{\scriptsize 3}:} đường tốt nhất bắt đầu ở khung 3 \ra{} biết luôn \hi{từ nằm ở khung 3--5}: một phép tính ra cả điểm lẫn vị trí.}\par\vspace{0.1cm}
+\nghiala{câu thật $\sim$1000 khung nên có rất nhiều ô sáng tình cờ; trung bình cộng hết lại \ra{} nhiễu thắng ở câu dài. Muốn chặn phải \textbf{đòi thứ tự}. {\scriptsize(Ví dụ minh hoạ; số thật ở trang sau.)}}
+
 \end{frame}
 
 \begin{frame}{1c. Sửa: đọc theo vệt \textbf{và} train lại; thứ có ích là thứ tự}
@@ -312,10 +332,10 @@ chỉ đổi bước gộp & & câu $\geq$20 s & nghe sai & trúng \\
 \end{tabular}
 \vspace{0.12cm}
 
-{\footnotesize $\Delta$Sạch@1 \textcircled{\tiny 3} so với \textcircled{\tiny 1} = \good{+9.5 [+7.9; +11.2]}. Cùng dữ liệu, seed, số epoch.}
+{\footnotesize $\Delta$Sạch@1 \textcircled{\tiny 3} so với \textcircled{\tiny 1} = \good{+9.5 [+7.9; +11.2]}. Cùng dữ liệu, seed, epoch. (6.1: bản train cùng lượt; 12.4 ở tr.\,9: bản 72.6.)}
 \vspace{0.1cm}
 
-\yeu{\textbf{Không train lại thì hỏng} (A1, 02--04/11): lấy model đã train với trung bình, chỉ đổi cách đọc lúc chấm \ra{} R\#10 88.8 \ra{} 85.3 (\bad{$-$3.6}). Model phải được dạy làm từng ô trên vệt sáng rõ.}
+\yeu{\textbf{Không train lại thì hỏng} (A1, 02--04/11): lấy model đã train với trung bình, chỉ đổi cách đọc lúc chấm \ra{} R\#10 88.8 \ra{} 85.3 (\bad{$-$3.6}). Phải dạy model làm vệt sáng rõ.}
 \column{0.40\textwidth}
 \step{Nghĩ (Hoàng):}{vệt chéo = âm của từ khớp audio theo đúng trình tự. Đọc vệt thì bỏ được mảng ngẫu nhiên.}
 \step{Thử:}{3 bản Hou25 train chung một lượt, chỉ khác bước gộp. ``Ô cao nhất'' là \textbf{đối chứng}: đọc cục bộ, không cần thành vệt.}
@@ -456,6 +476,31 @@ cộng điểm 2 model riêng & 90.8 & 69.6 & -- \\
 \end{columns}
 \vspace{0.05cm}
 \nghiala{dạy vị trí giúp nhánh đúng thứ tự nhiều nhất (+2.5), và giúp nhóm từ Whisper nghe sai nhiều nhất. \textbf{Scorer đề xuất: 89.3}, định vị lệch 0.02 s; kém bản cộng điểm 1.5.}
+\end{frame}
+
+\begin{frame}{Phát hiện 3 (tiếp): báo nhầm ở câu dài, so 4 scorer}
+\cauhoi{Lỗi ``câu dài thì báo nhầm nhiều'' của Hou25 (trang 9) có còn ở các scorer khác không?}
+\begin{columns}[T]
+\column{0.55\textwidth}
+\centering\includegraphics[width=\linewidth,height=3.9cm,keepaspectratio]{imgs/bao_nham.pdf}
+\column{0.43\textwidth}
+\renewcommand{\arraystretch}{1.1}\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{L{2.2cm}L{1.7cm}c}
+\toprule
+Scorer & Gộp bằng & $\geq$20 s \\
+\midrule
+Hou25 & trung bình & \bad{12.4} \\
+Hou25 vệt chéo & vệt chéo & 1.9 \\
+pmaxsim & max, tự do & 1.3 \\
+\rowcolor{Accent!15}\textbf{hai nhánh + vị trí} & tự do + vệt & \good{0.9} \\
+\bottomrule
+\end{tabular}
+\vspace{0.12cm}
+\nghiala{chỉ cách \textbf{lấy trung bình cả bản đồ} mới báo nhầm tăng theo độ dài câu.}
+\end{columns}
+\vspace{0.05cm}
+\yeu{\textbf{Chưa tách được:} pmaxsim không đòi thứ tự mà vẫn phẳng, nhưng nó khác Hou25 \textbf{hai} chỗ (âm vị; max thay trung bình).}
+\src{test-other N2000, số từ nhiễu $p \geq 0.5$ mỗi câu. Hou25 ở đây là bản 72.6 (bản train cùng lượt ở trang 12: 6.1).}
 \end{frame}
 
 \begin{frame}{Phát hiện 4: có vị trí thì lọc được list (cho các từ tranh nhau tại chỗ)}
