@@ -148,9 +148,9 @@ trần & biết sẵn đúng từ + đúng chỗ: mức tốt nhất có thể \
 \toprule
 Câu hỏi & Luật đặt trước & Trả lời ở \\
 \midrule
-\textbf{D1.} Scorer xây trên nền nào: sửa Hou25 hay âm vị? & Hou25 sửa xong phải đạt Recall@1 $\geq$ 85.7 (mức của âm vị khi đó) mới giữ & trang 10 \\
-\textbf{D2.} Whisper có cần vị trí không? & Cùng list, nhắc đúng lúc phải tốt hơn nhắc mọi lúc, có ý nghĩa thống kê & trang 18 \\
-\textbf{D3.} Chọn ngưỡng, độ mạnh nhắc thế nào? & Chọn trên \textbf{dev-other}, không chọn trên test & trang 21 \\
+\textbf{D1.} Scorer xây trên nền nào: sửa Hou25 hay âm vị? & Hou25 sửa xong phải đạt Recall@1 $\geq$ 85.7 (mức của âm vị khi đó) mới giữ & trang 11 \\
+\textbf{D2.} Whisper có cần vị trí không? & Cùng list, nhắc đúng lúc phải tốt hơn nhắc mọi lúc, có ý nghĩa thống kê & trang 19 \\
+\textbf{D3.} Chọn ngưỡng, độ mạnh nhắc thế nào? & Chọn trên \textbf{dev-other}, không chọn trên test & trang 22 \\
 \bottomrule
 \end{tabular}
 \src{Kế hoạch: scorer/PLAN-2011.md. Chạy 13--15/11 (CPU phân tích lại, rồi 2 đêm GPU).}
@@ -184,6 +184,32 @@ Hạng & Từ & \\
 \nbox{\textbf{Không tự chế:} cách ``lọc'' là \textit{filtered} của Bordes et al.\ 2013 (TransE, NeurIPS, mục 4.2): đáp án đúng khác đứng trên không tính là lỗi.}
 \end{columns}
 \src{Thước đo phụ: Dự phòng 1. Chưa tra bài contextual ASR nào dùng Recall@1 lọc cho bias list.}
+\end{frame}
+
+\begin{frame}{Hai scorer đem ra so: Hou25 và scorer âm vị}
+\insight{Cùng hỏi ``từ này có được nói trong câu không?''. Hou25 cho \nb{máy đọc từ} rồi so hai đoạn audio. Scorer âm vị so audio thẳng với \nb{cách phát âm} của từ.}
+\begin{tikzpicture}[font=\scriptsize,>={Stealth},
+  b/.style={draw=Primary,fill=SoftBlue,rounded corners=2pt,align=center,inner sep=3pt,minimum height=0.8cm},
+  o/.style={draw=GoodGreen,fill=GoodGreen!12,rounded corners=2pt,align=center,inner sep=3pt,minimum height=0.8cm}]
+\node[font=\footnotesize\bfseries,anchor=west] at (-0.2,0.75) {Hou25 (paper Interspeech 2025, nhóm tái hiện)};
+\node[b,text width=1.7cm] (h1) at (0.8,0) {từ\\\texttt{pileser}};
+\node[b,text width=2.0cm] (h2) at (3.4,0) {máy đọc từ\\(TTS) \ra{} audio};
+\node[b,text width=2.6cm] (h3) at (6.6,0) {so với audio câu:\\bảng giống nhau};
+\node[b,text width=2.1cm] (h4) at (9.75,0) {CNN, rồi\\\textbf{lấy trung bình}};
+\node[o,text width=1.6cm] (h5) at (12.5,0) {1 điểm};
+\foreach \u/\v in {h1/h2,h2/h3,h3/h4,h4/h5}{\draw[->,thick] (\u) -- (\v);}
+\node[font=\footnotesize\bfseries,anchor=west] at (-0.2,-1.05) {Scorer âm vị (nhóm làm)};
+\node[b,text width=1.7cm] (p1) at (0.8,-1.8) {từ\\\texttt{pileser}};
+\node[b,text width=2.0cm] (p2) at (3.4,-1.8) {phiên âm\\{\tiny P-AY-L-IY-Z-ER}};
+\node[b,text width=2.6cm] (p3) at (6.6,-1.8) {mỗi âm vị tìm chỗ\\giống nhất trong câu};
+\node[b,text width=2.1cm] (p4) at (9.75,-1.8) {cộng điểm\\các âm vị};
+\node[o,text width=1.6cm] (p5) at (12.5,-1.8) {1 điểm\\+ chỗ};
+\foreach \u/\v in {p1/p2,p2/p3,p3/p4,p4/p5}{\draw[->,thick] (\u) -- (\v);}
+\end{tikzpicture}
+\vspace{0.2cm}
+
+{\small Scorer âm vị \textbf{không cần máy đọc} \ra{} nhanh hơn $\sim$200 lần (4--7 ms so với $\sim$1200 ms mỗi câu), và \textbf{biết luôn từ nằm ở đâu}.\par}
+\src{Cả hai dùng chung encoder Whisper-large-v3 đóng băng cho audio câu, cùng train trên train-clean-100. Tên trong code: hou25, pmaxsim. REPORT-1115 mục 3.}
 \end{frame}
 
 \begin{frame}{Đo lại ở hạng 1}
@@ -265,27 +291,27 @@ Chỗ sáng nhất & 73.8 & 8.0 & 4\% \\
 \src{3 bản Hou25 train cùng lượt, chỉ khác cách gộp; +9.5 [+7.9; +11.2]. test-other N2000; REPORT-1115 mục 5; A1\_REPORT mục 3.1.}
 \end{frame}
 
-\begin{frame}{Quyết định D1: chọn nền âm vị}
-\insight{Luật đặt trước: Hou25 sửa xong phải đạt Recall@1 $\geq$ \nb{85.7} (mức scorer âm vị) mới giữ làm nền. Đạt \nb{82.9} \ra{} \nb{không đạt} \ra{} \nb{chọn nền âm vị}.}
-\begin{columns}[T]
-\column{0.50\textwidth}
-\vspace{0.2cm}
-{\small Từ phần 1, mang sang phần sau \textbf{hai thứ}:\par\vspace{0.2cm}
-\textbf{\hi{Thứ tự}} \ra{} scorer âm vị có một nhánh khớp đúng thứ tự.\par\vspace{0.15cm}
-\textbf{\hi{Vị trí}} \ra{} lọc từ tranh nhau cùng chỗ, và nhắc Whisper đúng lúc.\par\vspace{0.2cm}
-Vì sao âm vị: còn hơn ở từ \textbf{nghe giống} (64.7 so với 51.4), nhanh hơn $\sim$\textbf{200 lần}, không cần TTS. Hou25 vệt chéo giữ làm \textbf{đối thủ mạnh}.\par}
-\column{0.47\textwidth}
+\begin{frame}{Quyết định D1: sửa Hou25 rồi vẫn thua scorer âm vị}
+\insight{Vệt chéo kéo Hou25 từ 72.6 lên \nb{82.9}, nhưng vẫn \nb{dưới} scorer âm vị (85.7). Luật đặt trước: không vượt thì bỏ Hou25 làm nền \ra{} \nb{xây tiếp trên âm vị}.}
 \centering
-\begin{tikzpicture}[font=\scriptsize,>={Stealth},
-  box/.style={draw=Primary,fill=SoftBlue,rounded corners=2pt,align=center,inner sep=4pt,text width=4.4cm}]
-\node[box,draw=Accent,fill=Accent!15] (a) at (0,0) {\textbf{Phần 1:} trung bình bỏ thứ tự \ra{} nhiễu thắng};
-\node[box] (b) at (0,-1.1) {\textbf{Scorer:} âm vị + hai nhánh + vị trí \ra{} 89.3};
-\node[box] (c) at (0,-2.2) {\textbf{Lọc:} 2000 từ \ra{} $\sim$2 từ/câu};
-\node[box,draw=GoodGreen,fill=GoodGreen!12] (d) at (0,-3.3) {\textbf{Whisper:} B-WER 9.69 \ra{} 7.53};
-\draw[->,thick] (a) -- (b); \draw[->,thick] (b) -- (c); \draw[->,thick] (c) -- (d);
+\begin{tikzpicture}[font=\scriptsize,>={Stealth},x=0.62cm]
+\draw[->,thick,TextGray] (70,0) -- (90.5,0) node[right] {Recall@1};
+\foreach \v in {70,75,80,85,90}{\draw[TextGray] (\v,0.08) -- (\v,-0.08) node[below] {\v};}
+\fill[RiskRed] (72.6,0) circle (3.5pt) node[above=4pt,text=RiskRed,align=center] {\textbf{Hou25}\\72.6};
+\fill[Accent] (82.9,0) circle (3.5pt) node[above=4pt,align=center] {\textbf{Hou25 vệt chéo}\\82.9};
+\draw[->,very thick,Accent] (73.3,0.2) -- node[above] {+ vệt chéo, train lại} (82.3,0.2);
+\draw[dashed,thick,Primary] (85.7,-0.3) -- (85.7,0.9) node[right,text=Primary,align=left] {\textbf{luật 85.7}\\= scorer âm vị};
+\fill[GoodGreen] (87.5,0) circle (3.5pt) node[below=8pt,text=GoodGreen] {âm vị train lại 87.5};
 \end{tikzpicture}
+\vspace{0.05cm}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\nbox{\textbf{Âm vị còn hơn:} từ nghe giống 64.7 so với 51.4; nhanh hơn $\sim$200 lần.}
+\column{0.48\textwidth}
+\nbox[block body alerted]{\textbf{Mang sang:} \hi{thứ tự} \ra{} nhánh khớp đúng thứ tự; \hi{vị trí} \ra{} lọc từ, nhắc Whisper đúng lúc.}
 \end{columns}
-\src{Vệt chéo: Hoàng (F10, F14). Không claim vệt chéo là ý mới (gần dò từ khoá bằng audio mẫu, cần tra).}
+\src{85.7 = scorer âm vị lúc viết luật; 87.5 = bản train lại sau đó (số ở trang Đo lại ở hạng 1). Hou25 vệt chéo giữ làm đối thủ mạnh. Vệt chéo: ý của Hoàng.}
 \end{frame}
 
 % ==================================================================
@@ -380,7 +406,7 @@ khớp tự do & 1.3 \\
 \par\vspace{0.15cm}
 {\scriptsize\color{RiskRed}\textbf{Chưa tách được:} ``khớp tự do'' không đòi thứ tự mà vẫn thấp, nhưng nó khác Hou25 hai chỗ cùng lúc (âm vị; max thay trung bình).\par}
 \end{columns}
-\src{test-other N2000, từ nhiễu $p \geq 0.5$. Hou25 ở đây là bản 72.6 (bản train cùng lượt ở trang 9: 6.1).}
+\src{test-other N2000, từ nhiễu $p \geq 0.5$. Hou25 ở đây là bản 72.6 (bản train cùng lượt ở trang 10: 6.1).}
 \end{frame}
 
 \begin{frame}{Scorer 4. Biết vị trí thì lọc được list}
@@ -523,7 +549,7 @@ List toàn nhiễu không làm hại & WER vẫn tệ hơn 0.25 & \bad{chưa đ�
 \end{tabular}
 \vspace{0.3cm}
 
-{\small Đóng góp đặt ở scorer, ở cách nhắc, hay cả hai? \ra{} \textbf{câu hỏi số 1 cho thầy} (trang 24).\par}
+{\small Đóng góp đặt ở scorer, ở cách nhắc, hay cả hai? \ra{} \textbf{câu hỏi số 1 cho thầy} (trang 25).\par}
 \end{frame}
 
 % ==================================================================
