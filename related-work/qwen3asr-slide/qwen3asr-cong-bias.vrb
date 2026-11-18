@@ -1,0 +1,27 @@
+\frametitle{LLM thấy một chuỗi duy nhất: list $\rightarrow $ audio $\rightarrow $ chữ đang viết}
+\begin{columns}[T]
+\column{0.53\textwidth}
+\cauhoi{Prompt thật sự trông thế nào?}
+\begin{beamercolorbox}[sep=0.4em,rounded=true]{block body}
+\scriptsize
+\begin{Verbatim}[commandchars=\\\{\}]
+<|im_start|>system
+\textcolor{RiskRed}{bertolucci, bertolini, ... (list)}<|im_end|>
+<|im_start|>user
+<|audio_start|>\textcolor{Primary}{[130 vector audio]}<|audio_end|>
+<|im_end|>
+<|im_start|>assistant
+language English<asr_text>\textcolor{GoodGreen}{he hoped ...}
+\end{Verbatim}
+\end{beamercolorbox}
+\vspace{0.1cm}
+{\footnotesize Code tạo 130 token giả \texttt{<|audio\_pad|>}, rồi \textbf{thay embedding} của chúng bằng 130 vector audio (\texttt{masked\_scatter}). Vị trí (RoPE) đánh số liên tục 1 chiều cho cả chuỗi. \CODE}
+\column{0.44\textwidth}
+\cauhoi{Thứ tự này dẫn tới điều gì?}
+\nbox{LLM là \textbf{causal}: mỗi token chỉ nhìn các token \textbf{đứng trước}. \textcolor{GoodGreen}{\textbf{Chữ đang viết}} nhìn được list và audio; \textcolor{Primary}{\textbf{audio}} nhìn được list; \textcolor{RiskRed}{\textbf{list}} không nhìn được audio.}
+\vspace{0.08cm}
+\nghiala{Ở các lớp LLM, \textbf{biểu diễn audio bị ``trộn'' với list}: list dài có thể nhiễu cả phần nghe, không chỉ phần chọn từ. \TA}
+\vspace{0.08cm}
+\yeu{List 2000 từ dài $\geq$ 4000 token (mỗi từ $\geq$ 1 token + dấu phẩy), gấp hơn 30 lần 130 token audio.}
+\end{columns}
+\src{Chat template HF; inference/qwen3\_asr.py; bench/run\_qwen3asr.py ép language English.}

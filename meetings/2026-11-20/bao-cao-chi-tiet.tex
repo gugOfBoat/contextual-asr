@@ -1,7 +1,7 @@
 \documentclass[aspectratio=169,xcolor=table]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1,T5]{fontenc}
-\usepackage{amsmath,amssymb,booktabs,array,graphicx,tikz}
+\usepackage{amsmath,amssymb,booktabs,array,graphicx,tikz,multirow}
 \usetikzlibrary{positioning,arrows.meta,fit,calc}
 
 \definecolor{Primary}{HTML}{111B88}
@@ -147,9 +147,9 @@ trần & biết sẵn đúng từ + đúng chỗ: mức tốt nhất có thể \
 \toprule
 Câu hỏi & Luật đặt trước & Trả lời ở \\
 \midrule
-\textbf{D1.} Scorer xây trên nền nào: sửa Hou25 hay âm vị? & Hou25 sửa xong phải đạt Recall@1 $\geq$ 85.7 (mức của âm vị khi đó) mới giữ & trang 13 \\
-\textbf{D2.} Whisper có cần vị trí không? & Cùng list, nhắc đúng lúc phải tốt hơn nhắc mọi lúc, có ý nghĩa thống kê & trang 30 \\
-\textbf{D3.} Chọn ngưỡng, độ mạnh nhắc thế nào? & Chọn trên \textbf{dev-other}, không chọn trên test & trang 32 \\
+\textbf{D1.} Scorer xây trên nền nào: sửa Hou25 hay âm vị? & Hou25 sửa xong phải đạt Recall@1 $\geq$ 85.7 (mức của âm vị khi đó) mới giữ & trang 14 \\
+\textbf{D2.} Whisper có cần vị trí không? & Cùng list, nhắc đúng lúc phải tốt hơn nhắc mọi lúc, có ý nghĩa thống kê & trang 34 \\
+\textbf{D3.} Chọn ngưỡng, độ mạnh nhắc thế nào? & Chọn trên \textbf{dev-other}, không chọn trên test & trang 36 \\
 \bottomrule
 \end{tabular}
 \src{Kế hoạch: scorer/PLAN-2011.md. Chạy 13--15/11 (CPU phân tích lại, rồi 2 đêm GPU).}
@@ -233,12 +233,32 @@ cách nhau & 3.0 & \textbf{14.9} \\
 \bottomrule
 \end{tabular}
 \par\vspace{0.08cm}
-{\scriptsize\textbf{Hou25}: nhóm tái hiện paper Interspeech 2025: máy đọc từ \ra{} so 2 đoạn audio \ra{} CNN \ra{} \textbf{trung bình} (trang 10).\par\vspace{0.03cm}
-\textbf{Khớp tự do} (code \texttt{pmaxsim}): scorer âm vị bản đầu; mỗi âm vị tìm chỗ giống nhất (trang 17).\par\vspace{0.03cm}
+{\scriptsize\textbf{Hou25}: nhóm tái hiện paper Interspeech 2025: máy đọc từ \ra{} so 2 đoạn audio \ra{} CNN \ra{} \textbf{trung bình} (trang 11).\par\vspace{0.03cm}
+\textbf{Khớp tự do} (code \texttt{pmaxsim}): scorer âm vị bản đầu; mỗi âm vị tìm chỗ giống nhất (trang 19).\par\vspace{0.03cm}
 Hou25: 95.4 $-$ 72.6 = 22.8 điểm bị nhiễu vượt. Âm vị: 10.9.\par\vspace{0.04cm}}
 {\tiny\color{RiskRed}\textbf{Chưa đo:} Recall@1 cao hơn có chắc làm B-WER thấp hơn không.\par}
 \end{columns}
 \src{test-other, list N2000, 2939 câu, 5248 lượt từ hiếm; REPORT-1115 mục 3; SMALL\_R N1.}
+\end{frame}
+
+\begin{frame}{Bốn cột của biểu đồ: mỗi hệ chạy gì ra số}
+\insight{Mỗi dòng chỉ đổi \nb{1--2 chỗ} so với dòng trên (ô vàng). Hai bước nhảy lớn: \nb{bỏ trung bình} (+10.3) và \nb{dùng âm vị thay audio máy đọc} (+4.6).}
+\renewcommand{\arraystretch}{1.0}\scriptsize\setlength{\tabcolsep}{3pt}
+\newcommand{\cg}{\cellcolor{Accent!25}}
+\begin{tabular}{L{2.3cm}L{2.0cm}L{3.7cm}L{3.8cm}c}
+\toprule
+Hệ & Từ ở dạng & Bảng giống nhau \ra{} 1 điểm & Train bao lâu, giữ bản nào & Recall@1 \\
+\midrule
+\textbf{Hou25} (tr.\,11) & audio máy đọc từ & CNN, rồi \textbf{trung bình mọi ô} & 2 lượt, giữ bản cuối & 72.6 \\
+\textbf{Hou25 vệt chéo} (tr.\,12) & audio máy đọc từ & \cg CNN, rồi \textbf{trung bình dọc đường chéo} tốt nhất & \cg \textbf{train lại từ đầu}, 2 lượt & 82.9 \\
+\textbf{Khớp tự do} (tr.\,19) & \cg \textbf{dãy âm vị} & \cg mỗi âm vị lấy \textbf{ô sáng nhất}, rồi trung bình & \cg 6 lượt, giữ lượt 5 (cao nhất trên dev) & 87.5 \\
+\rowcolor{Accent!8}\textbf{Đề xuất} (tr.\,16) & dãy âm vị & \cg \textbf{tự do + đúng thứ tự}, cộng hai điểm & \cg 6 lượt \textbf{+ dạy vị trí}, giữ lượt 3 & \textbf{89.3} \\
+\bottomrule
+\end{tabular}
+\par\vspace{0.06cm}
+{\scriptsize\textbf{Giống nhau:} cùng bộ mã hoá audio Whisper (không train), cùng 28\,539 câu train, 1 từ đúng + 4 nhiễu mỗi câu (trang 23).\par
+\textbf{Ra con số:} chấm từ đúng + 2000 nhiễu, xếp hạng; \textbf{không nhiễu nào vượt} = trúng. 89.3 $\approx$ 4687 / 5248.\par}
+\src{Chưa công bằng: Hou25 2 lượt, âm vị 6 lượt; mỗi hệ train 1 lần. Mốc cùng lượt với vệt chéo: 73.3.}
 \end{frame}
 
 % ==================================================================
@@ -320,7 +340,7 @@ với $c_{ij} = w\cdot h_{ij}$ = \textbf{điểm của ô} $(i,j)$. Điểm cả
 \end{tabular}
 \par\vspace{0.1cm}
 {\scriptsize\textbf{Chứng minh:} trung bình = (tổng mọi ô)/24. Đổi chỗ các ô, tổng không đổi \ra{} điểm không đổi. Vậy ``3 ô nối chéo'' và ``3 ô rải rác'' \textbf{luôn bằng điểm}: điểm không chứa thứ tự. (Hou25 thật: đổi chỗ được các mảnh cách nhau $>$ 9 ô.)\par\vspace{0.05cm}
-\textbf{Câu dài} \ra{} nhiều hàng \ra{} nhiều ô sáng ngẫu nhiên để cộng \ra{} nhiễu điểm cao tăng theo độ dài (trang 9: 1.4 \ra{} 12.4).\par\vspace{0.05cm}
+\textbf{Câu dài} \ra{} nhiều hàng \ra{} nhiều ô sáng ngẫu nhiên để cộng \ra{} nhiễu điểm cao tăng theo độ dài (trang 10: 1.4 \ra{} 12.4).\par\vspace{0.05cm}
 \textbf{Vệt chéo} (ý của Hoàng): chỉ cộng các ô trên một đường chéo, lấy đường tốt nhất; đường đó cho luôn \textbf{chỗ} của từ: hàng $t_0$ tới $t_0+T_b$.\par}
 \end{columns}
 \src{Ví dụ đồ chơi. Code: models.py, Hou25 pool=mean và pool=diag (diag\_sum). Đường chéo dốc 1: từ máy đọc và từ trong câu phải cùng tốc độ.}
@@ -333,9 +353,9 @@ với $c_{ij} = w\cdot h_{ij}$ = \textbf{điểm của ô} $(i,j)$. Điểm cả
 \toprule
 Cách gộp bảng & Làm gì & Recall@1 & nhiễu/câu, câu $\geq$20 s & \% tâm trúng \\
 \midrule
-Trung bình (Hou25) & trung bình mọi ô (trang 10) & 73.3 & 6.1 & 79\% \\
+Trung bình (Hou25) & trung bình mọi ô (trang 11) & 73.3 & 6.1 & 79\% \\
 Chỗ sáng nhất & giữ $T_b$ hàng sáng nhất, \textbf{không cần liền nhau} & 73.8 & 8.0 & 4\% \\
-\rowcolor{Accent!15}\textbf{Vệt chéo} (Hoàng) & cộng dọc đường chéo tốt nhất & \good{82.9} & \good{1.9} & \good{99\%} \\
+\rowcolor{Accent!15}\textbf{Vệt chéo} (Hoàng) & trung bình dọc đường chéo tốt nhất & \good{82.9} & \good{1.9} & \good{99\%} \\
 \bottomrule
 \end{tabular}
 \par\vspace{0.12cm}
@@ -385,7 +405,7 @@ Chỗ sáng nhất & giữ $T_b$ hàng sáng nhất, \textbf{không cần liền
 \end{tikzpicture}
 \vspace{0.25cm}
 
-{\small Tổng quan: trang 15. Từng bước (bảng $M$, tự do, thứ tự, ra $p$, train): trang 16--21. Số đo: trang 22--27.\par}
+{\small Tổng quan: trang 16. Từng bước (bảng $M$, tự do, thứ tự, ra $p$, train): trang 17--23. Số đo: trang 25--31.\par}
 \src{REPORT-1115 mục 5, 6, 6b, 7c. Tên trong code: khớp tự do = pmaxsim, đúng thứ tự = pmono, đề xuất = pdual2\_dl (scorer/models.py, DualSim).}
 \end{frame}
 
@@ -450,12 +470,19 @@ Chỗ sáng nhất & giữ $T_b$ hàng sáng nhất, \textbf{không cần liền
 \end{tikzpicture}
 \par\vspace{0.1cm}\raggedright
 {\scriptsize\textbf{Câu 10 s, list 2000 từ:} mỗi từ một bảng $\sim$6$\times$500 ô; cả list = \textbf{1 phép nhân ma trận}, 4--7 ms/câu (Hou25 $\sim$1200 ms).\par\vspace{0.05cm}
-Đề xuất có \textbf{hai bộ chiếu riêng} \ra{} hai bảng $M^{\text{tự do}}$, $M^{\text{thứ tự}}$ (trang 20).\par}
+Đề xuất có \textbf{hai bộ chiếu riêng} \ra{} hai bảng $M^{\text{tự do}}$, $M^{\text{thứ tự}}$ (trang 22).\par}
 \end{columns}
 \src{scorer/data/g2p.py; scorer/models.py: PhoneEnc (256 chiều, 2 lớp, 4 head), DualSim. Hou25 chậm vì phải đọc TTS từng từ rồi qua encoder.}
 \end{frame}
 
-\begin{frame}{Scorer 4. Khớp tự do: mỗi âm vị lấy ô sáng nhất}
+\begin{frame}{Scorer 4. Nhìn bằng hình: hai cách đọc cùng một bảng}
+\insight{Từ nhiễu \texttt{ghetto} có 4 ô sáng \nb{rời nhau, sai thứ tự}. Tự do vẫn cho \nb{0.79}, sát từ đúng (0.87). Đúng thứ tự không nối được đường \ra{} \nb{0.48}.}
+\centering\includegraphics[width=\linewidth,height=4.15cm,keepaspectratio]{imgs/moxe_tudo_thutu.pdf}\par
+\raggedright{\scriptsize Hàng = âm vị, cột = 20 ms audio, ô sáng = giống nhau. \textcolor{Accent}{\textbf{Vòng cam}}: tự do, mỗi hàng lấy ô sáng nhất, ở đâu cũng được. \textcolor{Primary}{\textbf{Đường xanh}}: đúng thứ tự, âm vị sau nằm sau âm vị trước 1--3 khung. Trang 19--21 tính tay.\par}
+\src{Số giả, chỉ minh hoạ cách tính (imgs/make\_moxe.py, cùng công thức với models.py). Bảng thật: $\sim$6 hàng $\times$ 500 khung, bước 1--15 khung.}
+\end{frame}
+
+\begin{frame}{Scorer 5. Khớp tự do: mỗi âm vị lấy ô sáng nhất}
 \insight{Điểm tự do = trung bình \nb{ô sáng nhất mỗi hàng}, không hỏi các ô đó \nb{có theo thứ tự không} \ra{} nhiễu rải rác vẫn được \nb{0.75}, gần từ đúng \nb{0.85}.}
 \begin{columns}[T]
 \column{0.46\textwidth}
@@ -692,10 +719,10 @@ Chỗ sáng nhất & giữ $T_b$ hàng sáng nhất, \textbf{không cần liền
 \end{scope}
 \end{tikzpicture}
 \end{columns}
-\src{scorer/models.py: MaxSim. Số thật của khớp tự do (\texttt{pmaxsim}): trang 22. Ví dụ đồ chơi, không phải số đo.}
+\src{scorer/models.py: MaxSim. Số thật của khớp tự do (\texttt{pmaxsim}): trang 25. Ví dụ đồ chơi, không phải số đo.}
 \end{frame}
 
-\begin{frame}{Scorer 5. Khớp đúng thứ tự: tính bảng $D$ từng bước}
+\begin{frame}{Scorer 6. Khớp đúng thứ tự: tính bảng $D$ từng bước}
 \insight{$D[p,t]$ = điểm \nb{đường tốt nhất} qua âm vị 1..$p$, \nb{kết thúc ở khung $t$}. Từ đúng: hàng cuối đạt 3.4 \ra{} 3.4/4 = \nb{0.85}.}
 \begin{columns}[T]
 \column{0.42\textwidth}
@@ -734,7 +761,7 @@ $p$=4 & $-$&$-$&$-$&.8&.9&2.8&\cellcolor{GoodGreen!35}\textbf{3.4}&2.1\\
 \src{scorer/models.py: MonoSim. Cài bằng max\_pool1d cỡ $G$ trượt theo thời gian: mỗi hàng 1 phép.}
 \end{frame}
 
-\begin{frame}{Scorer 6. Từ nhiễu bị chặn, và lần ngược ra vị trí}
+\begin{frame}{Scorer 7. Từ nhiễu bị chặn, và lần ngược ra vị trí}
 \insight{Nhiễu có ô sáng nhưng \nb{sai thứ tự} \ra{} chỉ còn \nb{0.20} (tự do: 0.75). Lần ngược đường của từ đúng \ra{} \nb{khung 2--6}.}
 \begin{columns}[T]
 \column{0.52\textwidth}
@@ -759,7 +786,7 @@ $p$=4 & $-$&$-$&$-$&\textbf{.8}&.7&.8&.7&.8\\
 \par\vspace{0.04cm}
 {\tiny Vàng: đường qua ô sáng tới 1.8 ở khung 7; âm vị 4 phải ở \textbf{sau} khung 7 \ra{} hết chỗ. Tốt nhất: 0.8/4 = 0.20.\par}
 \column{0.46\textwidth}
-\nbox{\textbf{Lần ngược ra vị trí} (từ đúng, trang 18)\\[2pt]
+\nbox{\textbf{Lần ngược ra vị trí} (từ đúng, trang 20)\\[2pt]
 \scriptsize
 Khi tính $D$, nhớ mỗi ô lấy max từ ô nào.\\
 $p$=4: max hàng cuối 3.4 ở \textbf{khung 6} = \textbf{cuối từ}\\
@@ -768,19 +795,19 @@ $p$=2: 2.6 lấy từ $D[2,3]$ = 1.7 \ra{} khung 3\\
 $p$=1: 1.7 lấy từ $D[1,2]$ = .9 \ra{} \textbf{khung 2 = đầu từ}\\[2pt]
 \ra{} từ ở khung \textbf{2--6} = 0.04--0.14 s.}
 \vspace{0.08cm}
-{\scriptsize\textbf{Vì sao chuẩn hơn tự do?} Tự do lấy trung vị các ô chọn: một âm vị phổ biến (vd.\ ER) khớp chỗ khác sẽ \textbf{kéo tâm lệch}. Thứ tự buộc mọi âm vị nằm \textbf{liền một đoạn} (diễn giải; số đo trang 22--23).\par}
+{\scriptsize\textbf{Vì sao chuẩn hơn tự do?} Tự do lấy trung vị các ô chọn: một âm vị phổ biến (vd.\ ER) khớp chỗ khác sẽ \textbf{kéo tâm lệch}. Thứ tự buộc mọi âm vị nằm \textbf{liền một đoạn} (diễn giải; số đo trang 25--27).\par}
 \end{columns}
 \src{Ví dụ đồ chơi, $G$ = 2. Code: MonoSim lưu khung bắt đầu của đường qua chỉ số của max\_pool1d.}
 \end{frame}
 
-\begin{frame}{Scorer 7. Từ hai điểm ra xác suất $p$}
+\begin{frame}{Scorer 8. Từ hai điểm ra xác suất $p$}
 \insight{$\text{logit} = a\cdot\text{thứ tự} + a_2\cdot\text{tự do} + c$, $p$ = sigmoid(logit). Nhiễu rải rác: chỉ tự do cho \nb{$p$ = 0.92} (lọt ngưỡng 0.5); thêm thứ tự còn \nb{0.38} (bị loại).}
 \begin{columns}[T]
 \column{0.52\textwidth}
 \renewcommand{\arraystretch}{1.1}\scriptsize\setlength{\tabcolsep}{3pt}
 \begin{tabular}{L{3.3cm}L{1.6cm}L{1.6cm}}
 \toprule
-Ví dụ trang 17--19 & \textbf{từ đúng} & \textbf{từ nhiễu} \\
+Ví dụ trang 19--21 & \textbf{từ đúng} & \textbf{từ nhiễu} \\
 \midrule
 điểm tự do / thứ tự & .85 / .85 & .75 / .20 \\
 \midrule
@@ -793,7 +820,7 @@ Ví dụ trang 17--19 & \textbf{từ đúng} & \textbf{từ nhiễu} \\
 \par\vspace{0.06cm}
 {\tiny $a, a_2, c$ là tham số học; các số 10, $-$10, $-$5 là \textbf{giá trị khởi tạo}, chỉ để minh hoạ, không phải giá trị sau train.\par}
 \vspace{0.08cm}
-\nbox[block body alerted]{\scriptsize\textbf{Ra cho ASR:} (từ, $p$, đầu, cuối); đầu--cuối từ nhánh thứ tự (trang 19); giữ từ có $p \geq$ ngưỡng chọn trên dev.}
+\nbox[block body alerted]{\scriptsize\textbf{Ra cho ASR:} (từ, $p$, đầu, cuối); đầu--cuối từ nhánh thứ tự (trang 21); giữ từ có $p \geq$ ngưỡng chọn trên dev.}
 \column{0.46\textwidth}
 \nbox{\textbf{Vì sao cần cả hai nhánh?}\\[2pt]\scriptsize
 \textbf{Luôn có: tự do $\geq$ thứ tự} (max một hàng $\geq$ ô của hàng đó trên đường).\\[1pt]
@@ -801,39 +828,70 @@ Ví dụ trang 17--19 & \textbf{từ đúng} & \textbf{từ nhiễu} \\
 \textbullet\ Tự do \textbf{cao}, thứ tự \textbf{thấp} \ra{} ô sáng sai thứ tự \ra{} nhiễu.\\
 \textbullet\ Chỉ thứ tự: một âm vị khớp kém (G2P sai, nuốt âm) kéo cả đường xuống \ra{} \textbf{sót}. Tự do chịu được: mỗi hàng tính riêng.}
 \end{columns}
-\src{scorer/models.py: DualSim(two=True). ``Chỉ thứ tự thì sót'' là diễn giải, khớp số đo trang 22 (thứ tự Recall@1 $-$1.7).}
+\src{scorer/models.py: DualSim(two=True). ``Chỉ thứ tự thì sót'' là diễn giải, khớp số đo trang 25 (thứ tự Recall@1 $-$1.7).}
 \end{frame}
 
-\begin{frame}{Scorer 8. Train: dạy chấm đúng từ, và dạy đúng chỗ}
-\insight{Mỗi câu: từ hiếm của câu là \nb{đúng}, thêm \nb{4 lần} số đó từ nhiễu. Từ đúng chỉ được khớp \nb{trong đoạn nó được nói} \ra{} model học chấm \nb{đúng chỗ}.}
+\begin{frame}{Scorer 9. Train (1): một câu thành 5 cặp, mỗi cặp một số phạt}
+\insight{Model chỉ học trả lời từng cặp: ``\nb{từ này có được nói trong câu không?}'' Recall@1 \nb{không} dùng để train, chỉ để \nb{chọn bản tốt nhất} sau mỗi lượt.}
+\begin{columns}[T]
+\column{0.56\textwidth}
+{\scriptsize\textbf{Câu train:} ``\ldots met \textbf{bartley} at the gate \ldots''\par\vspace{0.04cm}}
+\renewcommand{\arraystretch}{1.05}\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lL{2.3cm}ccc}
+\toprule
+Từ & Lấy từ đâu & đáp án & model đoán & phạt \\
+\midrule
+\texttt{bartley} & từ hiếm có trong câu & có & .90 & 0.11 \\
+\texttt{bentley} & \multirow{2}{2.3cm}{viết gần giống} & không & .40 & \bad{0.51} \\
+\texttt{bartlett} & & không & .30 & 0.36 \\
+\texttt{kirkland} & \multirow{2}{2.3cm}{bốc bừa trong kho} & không & .05 & 0.05 \\
+\texttt{ghetto} & & không & .02 & 0.02 \\
+\midrule
+\multicolumn{4}{l}{phạt của câu = trung bình 5 số} & \textbf{0.21} \\
+\bottomrule
+\end{tabular}
+\par\vspace{0.04cm}
+{\tiny Phạt = $-\log$(xác suất model gán cho đáp án đúng). Vd.\ \texttt{bentley}: đáp án ``không'', model chỉ cho 0.60 \ra{} $-\log 0.60$ = 0.51. Đoán càng sai, phạt càng nặng. Số ``model đoán'' là minh hoạ.\par}
+\column{0.42\textwidth}
+{\scriptsize\textbf{Một lần train:}\par
+\textbullet\ Mỗi bước 8 câu; 28\,539 câu = \textbf{3568 bước} = 1 lượt.\par
+\textbullet\ Chạy 6 lượt. Hết mỗi lượt: chấm 500 câu dev (list 2000 từ) \ra{} Recall@1 \ra{} giữ bản cao nhất.\par\vspace{0.04cm}}
+\begin{tikzpicture}[font=\tiny,x=0.62cm,y=0.34cm]
+\draw[->,gray] (-0.3,0)--(5.6,0) node[right]{lượt};
+\draw[->,gray] (-0.3,0)--(-0.3,4.6);
+\foreach \v/\yy in {86/1,88/3}{\draw[gray] (-0.38,\yy)--(-0.22,\yy) node[left,xshift=-2pt]{\v};}
+\foreach \x in {0,...,5}{\pgfmathtruncatemacro{\lx}{\x+1}\node[below] at (\x,0) {\lx};}
+\draw[Primary,thick] (0,1.74)--(1,2.22)--(2,2.69)--(3,1.98)--(4,3.17)--(5,1.98);
+\draw[TextGray,thick,dashed] (0,2.34)--(1,0.78)--(2,0.78)--(3,0.66)--(4,2.22)--(5,2.10);
+\draw[Accent,very thick] (0,1.62)--(1,3.05)--(2,4.13)--(3,3.89)--(4,1.62)--(5,4.01);
+\draw[Primary,thick] (4,3.17) circle (3pt); \draw[TextGray,thick] (0,2.34) circle (3pt); \draw[Accent!80!black,thick] (2,4.13) circle (3pt);
+\node[Accent!80!black,anchor=west] at (5.1,4.0) {đề xuất};
+\node[TextGray,anchor=west] at (5.1,2.6) {thứ tự};
+\node[Primary,anchor=west] at (5.1,1.6) {tự do};
+\end{tikzpicture}
+\par{\tiny Recall@1 trên dev sau mỗi lượt; vòng = bản được giữ. Lên xuống 2--3 điểm giữa các lượt.\par}
+\end{columns}
+\src{training/train.py; AdamW lr 2e-4, cắt gradient 1.0; lệnh runs/2026-11-14/scripts/g1\_train.sh. Hou25: lr 5e-5, 2 lượt.}
+\end{frame}
+
+\begin{frame}{Scorer 10. Train (2): dạy vị trí}
+\insight{Không thêm gì vào model. Chỉ \nb{xoá phần bảng} của từ đúng nằm ngoài chỗ nó được nói \ra{} muốn điểm cao thì phải sáng \nb{đúng chỗ}.}
+\centering\includegraphics[width=\linewidth,height=2.4cm,keepaspectratio]{imgs/moxe_day_vitri.pdf}\par
+\raggedright
 \begin{columns}[T]
 \column{0.52\textwidth}
-\scriptsize
-\textcolor{Primary}{\textbf{Dữ liệu.}} LibriSpeech train-clean-100 (100 giờ). Đoạn thật của từ: căn chỉnh MFA.\par\vspace{0.05cm}
-\textcolor{Primary}{\textbf{Mỗi câu.}} Đúng = từ hiếm trong câu (tối đa 8). Nhiễu = 4 $\times$ số đó: 40\% từ \textbf{gần âm} (khoảng cách sửa nhỏ, vd.\ \texttt{pillar} cho \texttt{pileser}), 60\% ngẫu nhiên trong kho 209k.\par\vspace{0.05cm}
-\textcolor{Primary}{\textbf{Loss BCE}} cho từng cặp (câu, từ): $\ell = -[\,y\log p + (1-y)\log(1-p)\,]$.\par
-Vd.\ \texttt{pileser} ($y$=1, $p$=.9) \ra{} $\ell$ = 0.11. Nhiễu ($y$=0, $p$=.38) \ra{} $\ell$ = 0.48: bị phạt, đẩy $p$ xuống.\par\vspace{0.05cm}
+{\scriptsize\textbf{Làm gì:}\par
+1.\ Công cụ căn chữ vào audio (MFA) cho biết \texttt{bartley} được nói ở 0.12--0.34 s, tức khung 6--16 (1 khung = 20 ms).\par
+2.\ Nới thêm 5 khung mỗi bên (0.1 s).\par
+3.\ Ngoài đoạn đó: mọi ô bảng đặt $-1$ (= không giống). Chỉ làm với từ \textbf{đúng}, chỉ lúc train.\par}
 \column{0.46\textwidth}
-\nbox[block body alerted]{\textbf{Dạy vị trí}\\[2pt]\scriptsize
-Từ đúng: mọi ô của $M$ \textbf{ngoài} đoạn MFA $\pm$5 khung ($\pm$0.1 s) bị đặt $-1$ \ra{} điểm cao chỉ có được nếu khớp \textbf{đúng đoạn đó}.\\[1pt]
-Từ nhiễu: không đặt gì \ra{} ô sáng ở đâu cũng bị phạt.}
-\vspace{0.08cm}
-\centering
-\begin{tikzpicture}[font=\tiny]
-\def\cs{0.18}
-\foreach \rr in {0,...,3}{\foreach \cc in {0,...,19}{\draw[gray!40] (\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs);}}
-\fill[gray!55] (0,0) rectangle (7*\cs,-4*\cs); \fill[gray!55] (14*\cs,0) rectangle (20*\cs,-4*\cs);
-\foreach \rr/\cc in {0/8,1/9,2/11,3/12}{\fill[GoodGreen!60] (\cc*\cs,-\rr*\cs) rectangle ++(\cs,-\cs);}
-\fill[Accent] (2*\cs,-1*\cs) rectangle ++(\cs,-\cs); \fill[Accent] (17*\cs,-3*\cs) rectangle ++(\cs,-\cs);
-\draw[thick,Primary] (7*\cs,0.05) -- (7*\cs,-4*\cs-0.05); \draw[thick,Primary] (14*\cs,0.05) -- (14*\cs,-4*\cs-0.05);
-\node[anchor=south] at (10.5*\cs,0.05) {đoạn MFA $\pm$0.1 s};
-\node[anchor=north] at (10*\cs,-4*\cs-0.03) {xám = đặt $-1$: ô vàng ngoài đoạn hết tác dụng};
-\end{tikzpicture}
+\nbox{\scriptsize\textbf{Hình trái:} âm vị T lấy ô sáng ở khung 21 (chữ t của từ sau) mà vẫn được thưởng. \textbf{Hình phải:} ô đó đã bị xoá.\\[2pt]
+\textbf{Đo được:} Recall@1 87.5 \ra{} \textbf{88.3}.}
 \end{columns}
-\src{scorer/training/train.py. 6 epoch, AdamW, chọn checkpoint theo Recall@1 dev-other. Hou25: cùng dữ liệu, 2 epoch, chọn trên dev-clean (trang 24).}
+\src{training/train.py, cờ --loc. Số: e\_loc\_other.md (khớp tự do + dạy vị trí). Hình: số giả.}
 \end{frame}
 
-\begin{frame}{Scorer 9. Hai cách khớp đo thật: số nào, vì sao ra vậy}
+\begin{frame}{Scorer 11. Hai cách khớp đo thật: số nào, vì sao ra vậy}
 \insight{Đúng như ví dụ: thứ tự \nb{ít nhận nhầm} (precision 75.8 \ra{} 82.3) nhưng \nb{sót hơn} (Recall@1 87.5 \ra{} 85.8). Sai ở chỗ khác nhau \ra{} cộng hai model \nb{+2.6}.}
 \renewcommand{\arraystretch}{1.0}\scriptsize\setlength{\tabcolsep}{3pt}
 \begin{tabular}{L{2.9cm}ccL{8.4cm}}
@@ -857,21 +915,28 @@ Lệch đầu từ, 10--90\% & $-$.12; +.08 & \good{+.03; +.10} & đầu = khung
 \src{REPORT-1115 mục 6, 6b. Thứ tự $-$ tự do: $-$1.7 [$-$2.7; $-$0.7]. 87.2 = tự do chấm lại trong lượt cộng điểm.}
 \end{frame}
 
-\begin{frame}{Scorer 10. Vị trí lấy ra đúng tới đâu}
+\begin{frame}{Scorer 12. Vị trí: đường đi \ra{} khung \ra{} giây}
+\insight{Vị trí \nb{không học riêng}: là chính đường đi đã dùng để tính điểm \ra{} \texttt{bartley} ở \nb{0.12--0.34 s}.}
+\begin{columns}[T]
+\column{0.60\textwidth}
+\centering\includegraphics[width=\linewidth,height=3.9cm,keepaspectratio]{imgs/moxe_vitri.pdf}
+\column{0.38\textwidth}
+{\scriptsize
+\textbf{1.} Lúc tính điểm thứ tự (trang 20), mỗi ô nhớ nó đi tới từ ô nào.\par\vspace{0.04cm}
+\textbf{2.} Âm vị cuối IY sáng nhất ở \textbf{khung 16}. Đi ngược: L 14, T 12, R 10, AA 8, B \textbf{6}.\par\vspace{0.04cm}
+\textbf{3.} Khung $t$ phủ $0.02t$ tới $0.02(t{+}1)$ s: khung 6 bắt đầu 0.12, khung 16 hết 0.34 \ra{} \textbf{0.12--0.34 s}.\par\vspace{0.04cm}
+\textbf{4.} Đoạn thật (MFA): 0.10--0.36 s. Tâm cùng 0.23 s \ra{} \good{trúng}.\par\vspace{0.05cm}}
+\nbox{\scriptsize\textbf{Dùng vào:} lọc list (trang 30), nhắc Whisper đúng giây (trang 34).\\[1pt]Khớp tự do không có đường, phải đoán tâm bằng trung vị.}
+\end{columns}
+\src{models.py: MonoSim; rank.py: khung / 50 = giây. Hình: số giả.}
+\end{frame}
+
+\begin{frame}{Scorer 13. Vị trí lấy ra đúng tới đâu}
 \insight{So với căn chỉnh MFA: đề xuất đặt tâm từ lệch \nb{0.02 s} (1 khung), \nb{99.1\%} tâm nằm trong đoạn thật. Hou25 gốc chỉ \nb{44\%}.}
 \begin{columns}[T]
 \column{0.40\textwidth}
 \centering
-\begin{tikzpicture}[font=\tiny,>={Stealth}]
-\draw[->,gray] (0,0)--(4.6,0) node[right]{giây};
-\fill[gray!35] (1.2,0.55) rectangle (3.2,0.85); \node[anchor=east] at (1.15,0.7) {MFA};
-\fill[GoodGreen!55] (1.4,0.05) rectangle (3.3,0.35); \node[anchor=east] at (1.35,0.2) {scorer};
-\draw[gray!70,dashed] (1.0,0.5)--(1.0,1.0); \draw[gray!70,dashed] (3.4,0.5)--(3.4,1.0);
-\node[above] at (2.2,0.95) {đoạn thật $\pm$0.1 s};
-\draw[thick] (2.2,0.5)--(2.2,0.9); \draw[thick,GoodGreen!70!black] (2.35,0.0)--(2.35,0.4);
-\draw[<->,RiskRed] (2.2,0.45)--(2.35,0.45); \node[RiskRed,anchor=west] at (3.45,0.45) {sai số tâm};
-\end{tikzpicture}
-\par\raggedright
+\raggedright
 {\scriptsize\textbf{Cách đo} (5248 lượt từ hiếm, test-other):\par
 1.\ MFA căn transcript vào audio \ra{} đoạn thật của từ.\par
 2.\ Scorer chấm từ đúng \ra{} đoạn đoán (đề xuất: lần ngược đường đi nhánh thứ tự).\par
@@ -892,13 +957,13 @@ khớp đúng thứ tự & 0.02 s & 98.9 & 95.6 \\
 \end{tabular}
 \par\vspace{0.06cm}
 {\tiny \textbf{Đúng@chỗ}: tại đoạn thật, từ đúng đứng trên mọi từ nhiễu bị đặt chồng lên đó (câu có 2--4 từ hiếm).\par\vspace{0.08cm}}
-{\scriptsize\textbf{Dùng ở:} lọc list (trang 26); nhắc Whisper đúng lúc, $-$0.44 WER (trang 30).\par\vspace{0.06cm}}
+{\scriptsize\textbf{Dùng ở:} lọc list (trang 30); nhắc Whisper đúng lúc, $-$0.44 WER (trang 34).\par\vspace{0.06cm}}
 {\tiny\color{RiskRed}\textbf{Chưa đo:} chỉ đo trên từ đúng (từ nhiễu không có đoạn thật); 0.9\% trượt chưa xem từng ca; lệch đầu/cuối của đề xuất chưa tách riêng; MFA cũng là ước lượng.\par}
 \end{columns}
 \src{e\_dual\_other.md mục 4--5; REPORT-1115 mục 3, 5. Hou25 lượt train lại cùng đợt với vệt chéo: 0.06 s / 79.3\%.}
 \end{frame}
 
-\begin{frame}{Scorer 11. Kết quả: mỗi bước cộng thêm bao nhiêu}
+\begin{frame}{Scorer 14. Kết quả: mỗi bước cộng thêm bao nhiêu}
 \insight{Khớp tự do \ra{} đề xuất: \nb{+1.8} Recall@1. Lợi lớn nhất ở \nb{từ Whisper tự nghe sai}: \nb{64.5 \ra{} 70.9}, chỗ scorer cần nhất. So với Hou25 vệt chéo: \nb{+6.4} và \nb{+10.0}.}
 \begin{columns}[T]
 \column{0.58\textwidth}
@@ -907,15 +972,15 @@ khớp đúng thứ tự & 0.02 s & 98.9 & 95.6 \\
 \toprule
 test-other, N2000 & Recall@1 & nghe sai \\
 \midrule
-Hou25 (trang 10) & 72.6 & 45.9 \\
-Hou25 vệt chéo (trang 11) & 82.9 & 60.9 \\
+Hou25 (trang 11) & 72.6 & 45.9 \\
+Hou25 vệt chéo (trang 12) & 82.9 & 60.9 \\
 \midrule
-khớp tự do (trang 17) & 87.5 & 64.5 \\
-\quad + dạy vị trí (trang 21) & 88.3 & 65.9 \\
+khớp tự do (trang 19) & 87.5 & 64.5 \\
+\quad + dạy vị trí (trang 24) & 88.3 & 65.9 \\
 hai nhánh \textbf{chung} một bảng + vị trí & 88.3 & 68.8 \\
 \rowcolor{Accent!15}\textbf{đề xuất}: hai nhánh \textbf{hai bảng} + vị trí & \textbf{89.3} & \textbf{70.9} \\
 \midrule
-\textcolor{TextGray}{cộng 2 model riêng (trang 22)} & \textcolor{TextGray}{90.8} & \textcolor{TextGray}{--} \\
+\textcolor{TextGray}{cộng 2 model riêng (trang 25)} & \textcolor{TextGray}{90.8} & \textcolor{TextGray}{--} \\
 \bottomrule
 \end{tabular}
 \par\vspace{0.04cm}
@@ -931,7 +996,7 @@ hai nhánh \textbf{chung} một bảng + vị trí & 88.3 & 68.8 \\
 \src{REPORT-1115 mục 3, 5, 6c, 7c; e\_dual\_other.md. Hou25 vệt chéo là lượt train khác (bản trung bình cùng lượt: 73.3 / 46.3). test-clean: 93.4 \ra{} 94.7.}
 \end{frame}
 
-\begin{frame}{Scorer 12. Lỗi ``câu dài'' của Hou25 không còn}
+\begin{frame}{Scorer 15. Lỗi ``câu dài'' của Hou25 không còn}
 \insight{Chỉ Hou25 (\nb{lấy trung bình}) mới báo nhầm tăng theo độ dài câu. Scorer đề xuất thấp nhất: \nb{0.9} từ nhiễu/câu ở câu dài, so với \nb{12.4}.}
 \begin{columns}[T]
 \column{0.58\textwidth}
@@ -951,10 +1016,10 @@ khớp tự do & 1.3 \\
 \par\vspace{0.15cm}
 {\scriptsize\color{RiskRed}\textbf{Chưa tách được:} ``khớp tự do'' không đòi thứ tự mà vẫn thấp, nhưng nó khác Hou25 hai chỗ cùng lúc (âm vị; max thay trung bình).\par}
 \end{columns}
-\src{test-other N2000, từ nhiễu $p \geq 0.5$; câu $\geq$ 20 s chỉ có 40 câu. Hou25 ở đây là bản 72.6 (bản train cùng lượt ở trang 12: 6.1).}
+\src{test-other N2000, từ nhiễu $p \geq 0.5$; câu $\geq$ 20 s chỉ có 40 câu. Hou25 ở đây là bản 72.6 (bản train cùng lượt ở trang 13: 6.1).}
 \end{frame}
 
-\begin{frame}{Scorer 13. Lọc list: 2000 từ \ra{} 1.9 từ/câu}
+\begin{frame}{Scorer 16. Lọc list: 2000 từ \ra{} 1.9 từ/câu}
 \insight{Vào 2000 từ, ra trung bình \nb{1.92 từ/câu} = \nb{1.65 đúng + 0.27 nhiễu}. Câu thật có 1.79 từ hiếm \ra{} list sau lọc \nb{gần bằng} danh sách thật. Hou25: 1.30 đúng + 1.06 nhiễu.}
 \begin{columns}[T]
 \column{0.42\textwidth}
@@ -986,7 +1051,7 @@ Hou25 vệt chéo & 88.3\% & 0.59 & 2.17 & 72.9\% \\
 \src{scorer/analysis/nms\_fair\_other.md (tính lại 17/11). Từ/câu tính từ hai cột trước, vd.\ Hou25: 0.730$\times$5248/2939 + 1.06 = 2.36.}
 \end{frame}
 
-\begin{frame}{Scorer 14. Chỗ yếu: từ nhiễu nghe như một từ thường}
+\begin{frame}{Scorer 17. Chỗ yếu: từ nhiễu nghe như một từ thường}
 \insight{Từ nhiễu nghe giống \nb{một từ thường} trong câu thì \nb{không có từ hiếm nào tranh chỗ} nên nó lọt \ra{} cần thêm lựa chọn ``\nb{chỗ này không có từ nào}''.}
 \centering\includegraphics[width=0.92\linewidth,height=4.6cm,keepaspectratio]{imgs/tranh_nhau.pdf}\par
 \raggedright{\footnotesize \textbf{Câu A:} nhiễu trùng chỗ đều \good{bị loại}. \quad \textbf{Câu B:} \texttt{flauve} $\approx$ ``fall'', \texttt{emperour} $\approx$ ``empire'' \ra{} \bad{lọt}.\par}
@@ -1079,7 +1144,7 @@ N2000 & 89.0 & 0.73 & 69.9\% & 3.22 & 7.65 \\
 \bottomrule
 \end{tabular}
 \par\vspace{0.06cm}
-{\tiny N$x$ = từ hiếm đúng + $x$ từ nhiễu. Ngưỡng ở đây $p \geq 0.3$ (chọn trên dev cho Whisper) nên precision N2000 là 70\%, thấp hơn 86\% ở trang 26 (ngưỡng 0.5). Giữ từ đúng 95--96\% ở mọi N.\par}
+{\tiny N$x$ = từ hiếm đúng + $x$ từ nhiễu. Ngưỡng ở đây $p \geq 0.3$ (chọn trên dev cho Whisper) nên precision N2000 là 70\%, thấp hơn 86\% ở trang 30 (ngưỡng 0.5). Giữ từ đúng 95--96\% ở mọi N.\par}
 \column{0.40\textwidth}
 {\scriptsize\textbf{Đọc số:}\par
 \textbullet\ Mỗi câu thêm 0.7 từ nhiễu được nhắc, mà B-WER +0.51, WER +0.26 \ra{} phần lớn nhiễu được nhắc nhưng \textbf{Whisper không viết ra}: audio không ủng hộ.\par
