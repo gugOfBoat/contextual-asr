@@ -54,6 +54,8 @@ Máy chỉnh trọng số của hai phần nhỏ học được: phần đổi c
 
 ## 4. Âm và vị trí (trang 18, 26)
 
+*Ví dụ bartley/ghetto dưới đây dùng số minh hoạ; số đo thật chỉ có ở đoạn "Đo trên toàn bộ test".*
+
 Vẽ một bảng: **mỗi hàng là một âm** (B, AA, R, T, L, IY), **mỗi cột là 20 ms audio**. Ô càng đậm = âm đó càng giống đoạn audio đó.
 
 - **Khớp tự do:** mỗi hàng chọn ô đậm nhất, ở đâu cũng được (hai âm chọn trùng cột cũng được). Từ sai `ghetto` có 4 ô đậm nằm lung tung vẫn được 0.79, gần bằng từ thật 0.87 → dễ bị lừa.
